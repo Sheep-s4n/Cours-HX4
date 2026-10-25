@@ -1,0 +1,196 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+
+%==================================================================
+% COULEURS
+%==================================================================
+\definecolor{brun}{RGB}{140,90,15}        % définitions, titres de sous-sections
+\definecolor{bordeaux}{RGB}{150,30,45}    % sections, propositions, théorèmes
+\definecolor{bleu}{RGB}{40,100,170}       % démonstrations
+\definecolor{bleuclair}{RGB}{228,239,250}
+\definecolor{vert}{RGB}{30,120,80}        % remarques
+\definecolor{orange}{RGB}{205,100,20}     % exemples
+\definecolor{violet}{RGB}{110,60,150}     % méthodes
+
+%==================================================================
+% RACCOURCIS MATHÉMATIQUES
+%==================================================================
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\,\mathrm{d}}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\sgn}{signe}
+
+% Formule mise en valeur (cadre arrondi, comme dans le modèle)
+\newcommand{\cadre}[1]{%
+  \tcbox[on line,enhanced,colback=white,colframe=brun,arc=3pt,boxrule=0.7pt,
+         boxsep=3pt,left=2pt,right=2pt,top=1pt,bottom=1pt]{$\displaystyle #1$}}
+
+% Mot ou expression mis en valeur dans le texte
+\newcommand{\mot}[1]{\textcolor{bordeaux}{\textbf{#1}}}
+\newcommand{\cas}[1]{\textbf{\textcolor{orange}{#1}}}
+
+%==================================================================
+% PAGE, EN-TÊTE, TITRES
+%==================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{brun}{Mathématiques}}
+\fancyhead[R]{\small\textcolor{brun}{Équations différentielles linéaires du 1\textsuperscript{er} ordre}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{brun}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\labelitemi}{\textcolor{bleu}{\textbullet}}
+
+\titleformat{\section}{\Large\scshape\color{bordeaux}}{}{0pt}{}[{\color{bordeaux}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\large\scshape\color{brun}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{8pt}
+\titlespacing*{\subsection}{0pt}{14pt}{6pt}
+
+%==================================================================
+% BLOCS COLORÉS
+%==================================================================
+\newcommand{\titrebloc}[2]{\textsc{#1}\ifx\relax#2\relax\else\ \textsc{(#2)}\fi}
+\newcommand{\titreblocnum}[2]{\textsc{#1}\ifx\relax#2\relax\else~#2\fi}
+
+\tcbset{
+  bloc/.style={enhanced,breakable,arc=3pt,boxrule=0.8pt,
+    left=7pt,right=7pt,top=5pt,bottom=5pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=10pt,after skip=10pt},
+  marge/.style={enhanced,breakable,frame hidden,arc=2pt,
+    left=9pt,right=6pt,top=4pt,bottom=4pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=8pt,after skip=8pt}
+}
+
+% Définition : brun
+\newtcolorbox{definition}[1][]{bloc,
+  colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7,
+  title={\titrebloc{Définition}{#1}}}
+
+% Proposition : bordeaux
+\newtcolorbox{proposition}[1][]{bloc,
+  colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5,
+  title={\titrebloc{Proposition}{#1}}}
+
+% Théorème : bordeaux, trait plus épais
+\newtcolorbox{theoreme}[1][]{bloc,
+  colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt,
+  coltitle=bordeaux,colbacktitle=bordeaux!8,
+  title={\titrebloc{Théorème}{#1}}}
+
+% Démonstration : bleu clair avec filet bleu à gauche
+\newtcolorbox{demonstration}{marge,
+  colback=bleuclair,borderline west={2.5pt}{0pt}{bleu},
+  before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ },
+  after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+
+% Remarque : vert
+\newtcolorbox{remarque}[1][]{marge,
+  colback=vert!6,borderline west={2.5pt}{0pt}{vert},
+  coltitle=vert!70!black,colbacktitle=vert!6,
+  title={\titreblocnum{Remarque}{#1}}}
+
+% Exemple : orange
+\newtcolorbox{exemples}[1][Exemples]{marge,
+  colback=orange!6,borderline west={2.5pt}{0pt}{orange},
+  coltitle=orange!85!black,colbacktitle=orange!6,
+  title={\textsc{#1}}}
+
+% Méthode : violet
+\newtcolorbox{methode}[1][Méthode]{marge,
+  colback=violet!6,borderline west={2.5pt}{0pt}{violet},
+  coltitle=violet,colbacktitle=violet!6,
+  title={\textsc{#1}}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\scshape\color{bordeaux} Équations différentielles linéaires\\[2pt] du 1\textsuperscript{er} ordre}\\[2pt]
+  {\color{brun}\rule{0.45\linewidth}{0.8pt}}
+\end{center}
+
+% Fin de la page précédente du cahier
+
+\section*{I -- Généralités sur les EDL}
+%------------------------------------------------------------------
+Dans tous ce chapitre, I désigne un intervalle non trivial de $\mathbb{R}$. 
+Les fonctions considérées sont à valeur dans $\mathbb{K}=\mathbb{R}$ ou $\mathbb{C}$.
+On rappelle que toute fonction dérivable sur I, de dérivée nulle, est constante. Toute fonction continue sur I admet des primitives.
+
+\begin{remarque}{Rappel}
+$\mathscr{F}(I,\mathbb{K})$ Ceci est une remarque.
+\\
+
+$$\mathscr{D}^{1}(I,\mathbb{K})=\mathscr{D}(I,\mathbb{K})$$
+$$f^{(1)}=f'$$
+
+
+\end{remarque}
+
+\subsection*{1.1. partie}
+
+
+
+blabla
+
+\begin{theoreme}
+Soient \(a, b, c\) trois fonctions continues sur \(I\), telles que \(\forall t \in I,\ a(t) \neq 0\).
+
+L'ED \((E) : a(t)\,y' + b(t)\,y = c(t),\ t \in I\), admet \mot{toujours des solutions}.
+
+On peut déterminer une solution particulière par la méthode de variation de la constante.
+\end{theoreme}
+
+\begin{methode}[Méthode : trouver une solution particulière]
+méthode sinon, on met en œuvre la \mot{méthode de variation de la constante}.
+
+Elle consiste à chercher une solution particulière sous la forme \(y = \lambda \times y_0\) où :
+\end{methode}
+
+\begin{exemples}[Exemple]
+Exemple
+\[
+(1 - t^2)\,y' = t y + 1 \iff y' = \frac{t}{1 - t^2}\,y + \frac{1}{1 - t^2}.
+\]
+\end{exemples}
+
+%------------------------------------------------------------------
+\subsection*{2.3. Sous titre}
+
+\begin{proposition}
+Ceci est une proposition que vous ne pouvez pas refuser.
+\[
+a(t)\,y' + b(t)\,y = c(t), \qquad t \in I.
+\]
+
+\end{proposition}
+
+\begin{demonstration}
+dédémomo\[
+f = \varphi_0 + \lambda e^{A},
+\]
+
+\end{demonstration}
+
+\begin{remarque}[Interprétation graphique]
+uwu
+\end{remarque}
+
+\end{document}
