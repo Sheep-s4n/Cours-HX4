@@ -1,0 +1,171 @@
+name: Publier les cours
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Récupérer le contenu du repo
+      - uses: actions/checkout@v4
+
+      # 2. Copier les PDF et générer la page d'accueil (index.html)
+      - name: Préparer le site
+        run: |
+          python3 - <<'PY'
+          import datetime
+          import html
+          import re
+          import shutil
+          from pathlib import Path
+          from urllib.parse import quote
+
+          # ====== À PERSONNALISER ======
+          TITRE = "HX4 : Cours"
+          SOUS_TITRE = "..."
+          # =============================
+
+          IGNORER = {"_site", ".git", ".github"}
+          site = Path("_site")
+          site.mkdir(exist_ok=True)
+
+          def tri_naturel(texte):
+              # chap2 avant chap10
+              return [int(t) if t.isdigit() else t.lower() for t in re.split(r"(\d+)", texte)]
+
+          def libelle(p):
+              parties = list(p.parts[1:]) if len(p.parts) > 1 else [p.name]
+              parties[-1] = Path(parties[-1]).stem
+              if len(parties) > 1 and parties[-1] == parties[-2]:
+                  parties.pop()  # chap10/chap10.pdf -> chap10
+              return " › ".join(x.replace("_", " ").replace("-", " ") for x in parties)
+
+          pdfs = [p for p in Path(".").rglob("*.pdf") if not (set(p.parts) & IGNORER)]
+          pdfs.sort(key=lambda p: tri_naturel(p.as_posix()))
+
+          groupes = {}
+          for p in pdfs:
+              destination = site / p
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy(p, destination)
+              matiere = p.parts[0] if len(p.parts) > 1 else "Autres"
+              groupes.setdefault(matiere, []).append(p)
+
+          cartes = ""
+          for matiere in sorted(groupes, key=tri_naturel):
+              liens = "".join(
+                  '<li><a href="{}">{}</a></li>'.format(quote(p.as_posix()), html.escape(libelle(p)))
+                  for p in groupes[matiere]
+              )
+              cartes += "<section><h2>{}</h2><ul>{}</ul></section>".format(html.escape(matiere), liens)
+
+          if not cartes:
+              cartes = "<p>Aucun cours pour le moment.</p>"
+
+          PAGE = """<!doctype html>
+          <html lang="fr">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>__TITRE__</title>
+          <style>
+            :root {
+              --fond: #f6f7fb;
+              --carte: #ffffff;
+              --texte: #1f2430;
+              --discret: #6b7280;
+              --accent: #3b5bdb;
+              --bordure: #e3e6ee;
+            }
+            @media (prefers-color-scheme: dark) {
+              :root {
+                --fond: #14161c;
+                --carte: #1d2029;
+                --texte: #e8eaf0;
+                --discret: #9aa1b2;
+                --accent: #8ea2ff;
+                --bordure: #2b2f3b;
+              }
+            }
+            * { box-sizing: border-box; }
+            body {
+              margin: 0;
+              background: var(--fond);
+              color: var(--texte);
+              font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+              line-height: 1.5;
+            }
+            header, main, footer { max-width: 900px; margin: 0 auto; padding: 0 1.25rem; }
+            header { padding-top: 3rem; padding-bottom: 1.5rem; }
+            h1 { margin: 0 0 .25rem; font-size: 2.2rem; }
+            .sous-titre { margin: 0; color: var(--discret); }
+            main {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+              gap: 1rem;
+              padding-bottom: 2rem;
+            }
+            section {
+              background: var(--carte);
+              border: 1px solid var(--bordure);
+              border-radius: 12px;
+              padding: 1.1rem 1.25rem;
+            }
+            h2 { margin: 0 0 .6rem; font-size: 1.15rem; }
+            ul { list-style: none; margin: 0; padding: 0; }
+            li + li { border-top: 1px solid var(--bordure); }
+            a {
+              display: block;
+              padding: .5rem 0;
+              color: var(--accent);
+              text-decoration: none;
+            }
+            a:hover { text-decoration: underline; }
+            footer { padding-bottom: 2.5rem; color: var(--discret); font-size: .85rem; }
+          </style>
+          </head>
+          <body>
+          <header>
+            <h1>__TITRE__</h1>
+            <p class="sous-titre">__SOUS_TITRE__</p>
+          </header>
+          <main>
+          __CARTES__
+          </main>
+          <footer>Mis à jour le __DATE__</footer>
+          </body>
+          </html>
+          """
+
+          page = (
+              PAGE.replace("__TITRE__", html.escape(TITRE))
+              .replace("__SOUS_TITRE__", html.escape(SOUS_TITRE))
+              .replace("__CARTES__", cartes)
+              .replace("__DATE__", datetime.date.today().strftime("%d/%m/%Y"))
+          )
+          (site / "index.html").write_text(page, encoding="utf-8")
+          PY
+
+      # 3. Emballer le dossier _site pour GitHub Pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 4. Mettre en ligne
+      - id: deployment
+        uses: actions/deploy-pages@v4
