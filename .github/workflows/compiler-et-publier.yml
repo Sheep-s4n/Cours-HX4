@@ -70,6 +70,7 @@ jobs:
       # 3. Installer TeX Live (exécuté uniquement si des fichiers .tex doivent être compilés)
       - name: Installer TeX Live
         if: steps.detect-latex.outputs.has_tex == 'true'
+        continue-on-error: true
         run: |
           sudo apt-get update -qq
           DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends \
@@ -83,11 +84,13 @@ jobs:
             lmodern \
             latexmk
 
-      # 4. Compiler les fichiers LaTeX en PDF
+      # 4. Compiler les fichiers LaTeX en PDF (avec gestion d'erreur et fallback sur PDF GitHub)
       - name: Compiler les fichiers LaTeX
         if: steps.detect-latex.outputs.has_tex == 'true'
         run: |
           python3 - <<'PY'
+          import os
+          import shutil
           import subprocess
           import sys
           from pathlib import Path
@@ -100,40 +103,100 @@ jobs:
           tex_files = [Path(line.strip()) for line in list_file.read_text(encoding="utf-8").splitlines() if line.strip()]
           list_file.unlink(missing_ok=True)
 
+          has_latexmk = shutil.which("latexmk") is not None
+          if not has_latexmk:
+              print("::warning::latexmk n'a pas pu être installé. Les PDF du dépôt GitHub seront conservés en secours.", file=sys.stderr)
+
+          rapport = []
+
           for f in tex_files:
               print(f"\n========================================")
-              print(f"Compilation de : {f}")
+              print(f"Traitement de : {f}")
               print(f"========================================")
 
-              res = subprocess.run(
-                  ["latexmk", "-pdf", "-interaction=nonstopmode", f.name],
-                  cwd=f.parent,
-                  capture_output=True,
-                  text=True,
-              )
-
               pdf_path = f.with_suffix(".pdf")
+              backup_bytes = pdf_path.read_bytes() if pdf_path.exists() else None
 
-              if res.returncode != 0:
-                  print(f"Sortie de la compilation pour {f} :", file=sys.stderr)
-                  print(res.stdout, file=sys.stderr)
-                  print(res.stderr, file=sys.stderr)
-                  if not pdf_path.exists():
-                      print(f"❌ ERREUR FATALE : Le PDF n'a pas pu être généré pour {f}", file=sys.stderr)
-                      sys.exit(1)
+              succes = False
+              erreur_msg = ""
+
+              if has_latexmk:
+                  res = subprocess.run(
+                      ["latexmk", "-pdf", "-interaction=nonstopmode", f.name],
+                      cwd=f.parent,
+                      capture_output=True,
+                      text=True,
+                  )
+
+                  # Nettoyer les fichiers auxiliaires générés (.aux, .log, .fls, etc.)
+                  subprocess.run(["latexmk", "-c", f.name], cwd=f.parent, check=False)
+                  for ext in [".aux", ".log", ".out", ".toc", ".synctex.gz", ".fls", ".fdb_latexmk"]:
+                      (f.parent / f"{f.stem}{ext}").unlink(missing_ok=True)
+
+                  if res.returncode == 0 and pdf_path.exists() and pdf_path.stat().st_size > 0:
+                      succes = True
+                      print(f"✓ Compilation réussie : {pdf_path} ({pdf_path.stat().st_size} octets)")
+                      rapport.append({
+                          "source": str(f),
+                          "statut": "✅ Compilé",
+                          "pdf": f"📄 Nouveau PDF généré (`{pdf_path.name}`)"
+                      })
                   else:
-                      print(f"⚠️ Le PDF a été généré avec des avertissements/erreurs non bloquants.")
+                      erreur_msg = (res.stdout or "") + "\n" + (res.stderr or "")
 
-              # Nettoyer les fichiers auxiliaires (.aux, .log, .fls, etc.)
-              subprocess.run(["latexmk", "-c", f.name], cwd=f.parent, check=False)
-              for ext in [".aux", ".log", ".out", ".toc", ".synctex.gz", ".fls", ".fdb_latexmk"]:
-                  (f.parent / f"{f.stem}{ext}").unlink(missing_ok=True)
+              if not succes:
+                  # Afficher l'avertissement dans GitHub Actions
+                  print(f"::warning file={f}::Échec de la compilation LaTeX pour {f}. Recherche d'un PDF de secours sur GitHub...", file=sys.stderr)
+                  if erreur_msg.strip():
+                      lignes = [l for l in erreur_msg.strip().splitlines() if l.strip()]
+                      # Afficher les dernières lignes du log pour diagnostic rapide
+                      apercu = "\n".join(lignes[-20:])
+                      print(f"Extrait du journal d'erreur pour {f} :\n{apercu}\n", file=sys.stderr)
 
-              if pdf_path.exists():
-                  print(f"✓ Généré avec succès : {pdf_path}")
-              else:
-                  print(f"❌ ERREUR : Le PDF attendu n'a pas été trouvé : {pdf_path}", file=sys.stderr)
-                  sys.exit(1)
+                  # 1. Fallback direct : le PDF du même nom existait déjà dans le dépôt GitHub
+                  if backup_bytes is not None:
+                      pdf_path.write_bytes(backup_bytes)
+                      print(f"⚠️ Fallback GitHub activé : conservation du PDF existant ({pdf_path.name})")
+                      rapport.append({
+                          "source": str(f),
+                          "statut": "⚠️ Échec compilation",
+                          "pdf": f"📄 PDF GitHub conservé (`{pdf_path.name}`)"
+                      })
+                  else:
+                      # 2. Fallback alternatif : d'autres PDF existent dans le même dossier
+                      autres_pdfs = [p for p in f.parent.glob("*.pdf") if p.is_file() and p.stat().st_size > 0]
+                      if autres_pdfs:
+                          noms = ", ".join(f"`{p.name}`" for p in autres_pdfs)
+                          print(f"ℹ️ Aucun `{pdf_path.name}` préexistant, mais d'autres PDF sont disponibles : {noms}")
+                          rapport.append({
+                              "source": str(f),
+                              "statut": "⚠️ Échec compilation",
+                              "pdf": f"📄 PDF alternatif GitHub ({noms})"
+                          })
+                      else:
+                          # 3. Aucun PDF disponible pour ce cours
+                          if pdf_path.exists():
+                              pdf_path.unlink(missing_ok=True)
+                          print(f"❌ Aucun PDF de secours pour {f}. Ce cours sera ignoré sans bloquer le site.", file=sys.stderr)
+                          rapport.append({
+                              "source": str(f),
+                              "statut": "❌ Échec compilation",
+                              "pdf": "❌ Aucun PDF disponible (non publié)"
+                          })
+
+          # Écrire un rapport clair dans le résumé d'exécution GitHub Actions
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path and rapport:
+              try:
+                  with open(summary_path, "a", encoding="utf-8") as s:
+                      s.write("### 📑 Bilan de la compilation LaTeX\n\n")
+                      s.write("| Fichier source (.tex) | Statut compilation | PDF utilisé pour le site |\n")
+                      s.write("|---|---|---|\n")
+                      for item in rapport:
+                          s.write(f"| `{item['source']}` | {item['statut']} | {item['pdf']} |\n")
+                      s.write("\n")
+              except Exception as e:
+                  print(f"Impossible d'écrire le résumé GitHub : {e}", file=sys.stderr)
           PY
 
       # 5. Copier les PDF et générer la page d'accueil (index.html)
@@ -167,7 +230,7 @@ jobs:
                   parties.pop()  # chap10/chap10.pdf -> chap10
               return " › ".join(x.replace("_", " ").replace("-", " ") for x in parties)
 
-          pdfs = [p for p in Path(".").rglob("*.pdf") if not (set(p.parts) & IGNORER)]
+          pdfs = [p for p in Path(".").rglob("*.pdf") if not (set(p.parts) & IGNORER) and p.is_file() and p.stat().st_size > 0]
           pdfs.sort(key=lambda p: tri_naturel(p.as_posix()))
 
           groupes = {}
