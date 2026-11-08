@@ -1,4 +1,4 @@
-name: Publier les cours
+name: Compiler et publier les cours
 
 on:
   push:
@@ -17,7 +17,123 @@ jobs:
       # 1. Récupérer le contenu du repo
       - uses: actions/checkout@v4
 
-      # 2. Copier les PDF et générer la page d'accueil (index.html)
+      # 2. Détecter les fichiers LaTeX (.tex) à compiler
+      - name: Détecter les fichiers LaTeX
+        id: detect-latex
+        run: |
+          python3 - <<'PY'
+          import fnmatch
+          import os
+          from pathlib import Path
+
+          # ====== LISTE NOIRE ======
+          # Fichiers ou motifs .tex à NE PAS compiler en PDF.
+          # Exemples : "modèle/main.tex", "brouillon.tex", "templates/*"
+          BLACKLIST = [
+              r"modèle\main.tex",
+              "modèle/main.tex",
+          ]
+          IGNORER = {"_site", ".git", ".github"}
+          # =========================
+
+          def est_ignore(p: Path) -> bool:
+              if set(p.parts) & IGNORER:
+                  return True
+              posix = p.as_posix()
+              for pat in BLACKLIST:
+                  norm = pat.replace("\\", "/").strip("/")
+                  # Chemin exact ou fin de chemin (ex: modèle/main.tex)
+                  if posix == norm or posix.endswith("/" + norm):
+                      return True
+                  # Correspondance par nom de fichier (ex: main.tex)
+                  if fnmatch.fnmatch(p.name, norm):
+                      return True
+                  # Motifs glob
+                  if fnmatch.fnmatch(posix, norm) or fnmatch.fnmatch(posix, f"*/{norm}") or fnmatch.fnmatch(posix, f"**/{norm}"):
+                      return True
+              return False
+
+          tex_files = [p for p in Path(".").rglob("*.tex") if not est_ignore(p)]
+          has_tex = "true" if tex_files else "false"
+
+          print(f"Fichiers .tex trouvés à compiler : {len(tex_files)}")
+          for f in tex_files:
+              print(f"  - {f}")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"has_tex={has_tex}\n")
+
+          if tex_files:
+              Path(".tex_to_compile.txt").write_text("\n".join(str(f) for f in tex_files), encoding="utf-8")
+          PY
+
+      # 3. Installer TeX Live (exécuté uniquement si des fichiers .tex doivent être compilés)
+      - name: Installer TeX Live
+        if: steps.detect-latex.outputs.has_tex == 'true'
+        run: |
+          sudo apt-get update -qq
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-lang-french \
+            latexmk
+
+      # 4. Compiler les fichiers LaTeX en PDF
+      - name: Compiler les fichiers LaTeX
+        if: steps.detect-latex.outputs.has_tex == 'true'
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          list_file = Path(".tex_to_compile.txt")
+          if not list_file.exists():
+              print("Aucun fichier à compiler.")
+              sys.exit(0)
+
+          tex_files = [Path(line.strip()) for line in list_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+          list_file.unlink(missing_ok=True)
+
+          for f in tex_files:
+              print(f"\n========================================")
+              print(f"Compilation de : {f}")
+              print(f"========================================")
+
+              res = subprocess.run(
+                  ["latexmk", "-pdf", "-interaction=nonstopmode", f.name],
+                  cwd=f.parent,
+                  capture_output=True,
+                  text=True,
+              )
+
+              pdf_path = f.with_suffix(".pdf")
+
+              if res.returncode != 0:
+                  print(f"Sortie de la compilation pour {f} :", file=sys.stderr)
+                  print(res.stdout, file=sys.stderr)
+                  print(res.stderr, file=sys.stderr)
+                  if not pdf_path.exists():
+                      print(f"❌ ERREUR FATALE : Le PDF n'a pas pu être généré pour {f}", file=sys.stderr)
+                      sys.exit(1)
+                  else:
+                      print(f"⚠️ Le PDF a été généré avec des avertissements/erreurs non bloquants.")
+
+              # Nettoyer les fichiers auxiliaires (.aux, .log, .fls, etc.)
+              subprocess.run(["latexmk", "-c", f.name], cwd=f.parent, check=False)
+              for ext in [".aux", ".log", ".out", ".toc", ".synctex.gz", ".fls", ".fdb_latexmk"]:
+                  (f.parent / f"{f.stem}{ext}").unlink(missing_ok=True)
+
+              if pdf_path.exists():
+                  print(f"✓ Généré avec succès : {pdf_path}")
+              else:
+                  print(f"❌ ERREUR : Le PDF attendu n'a pas été trouvé : {pdf_path}", file=sys.stderr)
+                  sys.exit(1)
+          PY
+
+      # 5. Copier les PDF et générer la page d'accueil (index.html)
       - name: Préparer le site
         run: |
           python3 - <<'PY'
@@ -154,7 +270,7 @@ jobs:
           (site / "index.html").write_text(page, encoding="utf-8")
           PY
 
-      # 3. Emballer le dossier _site pour GitHub Pages
+      # 6. Emballer le dossier _site pour GitHub Pages
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
@@ -166,6 +282,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      # 4. Mettre en ligne
+      # 7. Mettre en ligne
       - id: deployment
         uses: actions/deploy-pages@v4
