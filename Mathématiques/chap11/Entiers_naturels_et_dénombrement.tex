@@ -573,6 +573,26 @@ $[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents ssi $n = p$.
 \begin{demonstration}
 Si $n = p$, prendre $f = \text{id}_{[\![1, n]\!]}$.
 Si $[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents, alors on a à la fois $n \le p$ et $p \le n$, donc $n = p$.
+
+\textbf{Sens «\,$\Leftarrow$\,» : $n=p \Rightarrow$ équipotents.}
+Détails: C'est la première phrase : si $n=p$, alors $\llbracket 1,n\rrbracket$ et
+$\llbracket 1,p\rrbracket$ sont le même ensemble, et l'identité en est une
+bijection. Celui-là est évident.
+
+\textbf{Sens «\,$\Rightarrow$\,» : équipotents $\Rightarrow n=p$.}
+C'est la deuxième phrase, et c'est le sens qui a du contenu. Il s'appuie sur
+le théorème juste avant, qui dit que $n \le p$ si et seulement s'il existe
+une injection $\llbracket 1,n\rrbracket \to \llbracket 1,p\rrbracket$.
+Si les deux ensembles sont équipotents, il existe une bijection
+$f : \llbracket 1,n\rrbracket \to \llbracket 1,p\rrbracket$.
+On en déduit deux injections :
+\begin{itemize}
+  \item $f$ elle-même est injective, donc $n \le p$ ;
+  \item $f^{-1} : \llbracket 1,p\rrbracket \to \llbracket 1,n\rrbracket$ est
+        aussi une bijection, donc injective, donc $p \le n$.
+\end{itemize}
+Comme $\le$ est antisymétrique, $n \le p$ et $p \le n$ donnent $n = p$.
+
 \end{demonstration}
 
 \begin{theoreme}[Corollaire 2]
