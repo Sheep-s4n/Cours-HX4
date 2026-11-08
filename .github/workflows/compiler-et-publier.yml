@@ -78,6 +78,7 @@ jobs:
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-pictures \
+            texlive-science \
             texlive-lang-french \
             lmodern \
             latexmk
