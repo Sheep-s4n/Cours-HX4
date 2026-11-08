@@ -1,0 +1,1140 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+
+%==================================================================
+% COULEURS
+%==================================================================
+\definecolor{brun}{RGB}{140,90,15}
+\definecolor{bordeaux}{RGB}{150,30,45}
+\definecolor{bleu}{RGB}{40,100,170}
+\definecolor{bleuclair}{RGB}{228,239,250}
+\definecolor{vert}{RGB}{30,120,80}
+\definecolor{orange}{RGB}{205,100,20}
+\definecolor{violet}{RGB}{110,60,150}
+
+%==================================================================
+% RACCOURCIS MATHÉMATIQUES
+%==================================================================
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\,\mathrm{d}}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\sgn}{signe}
+
+% Formule mise en valeur
+\newcommand{\cadre}[1]{%
+  \tcbox[on line,enhanced,colback=white,colframe=brun,arc=3pt,boxrule=0.7pt,
+         boxsep=3pt,left=2pt,right=2pt,top=1pt,bottom=1pt]{$\displaystyle #1$}}
+
+% Mot ou expression mis en valeur dans le texte
+\newcommand{\mot}[1]{\textcolor{bordeaux}{\textbf{#1}}}
+\newcommand{\cas}[1]{\textbf{\textcolor{orange}{#1}}}
+
+%==================================================================
+% PAGE, EN-TÊTE, TITRES (Aéré et espacé)
+%==================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{brun}{Mathématiques}}
+\fancyhead[R]{\small\textcolor{brun}{Chapitre 11 -- Entiers naturels et dénombrement}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{brun}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\renewcommand{\labelitemi}{\textcolor{bleu}{\textbullet}}
+
+\titleformat{\section}{\Large\scshape\color{bordeaux}}{}{0pt}{}[{\color{bordeaux}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\large\scshape\color{brun}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{20pt}{10pt}
+\titlespacing*{\subsection}{0pt}{16pt}{8pt}
+
+%==================================================================
+% BLOCS COLORÉS
+%==================================================================
+\newcommand{\titrebloc}[2]{\textsc{#1}\ifx\relax#2\relax\else\ \textsc{(#2)}\fi}
+\newcommand{\titreblocnum}[2]{\textsc{#1}\ifx\relax#2\relax\else~#2\fi}
+
+\tcbset{
+  bloc/.style={enhanced,breakable,arc=3pt,boxrule=0.8pt,
+    left=8pt,right=8pt,top=7pt,bottom=7pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=14pt,after skip=14pt},
+  marge/.style={enhanced,breakable,frame hidden,arc=2pt,
+    left=10pt,right=6pt,top=6pt,bottom=6pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=12pt,after skip=12pt}
+}
+
+% Environnements de base
+\newtcolorbox{definition}[1][]{bloc, colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7, title={\titrebloc{Définition}{#1}}}
+\newtcolorbox{proposition}[1][]{bloc, colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5, title={\titrebloc{Proposition}{#1}}}
+\newtcolorbox{theoreme}[1][]{bloc, colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt, coltitle=bordeaux,colbacktitle=bordeaux!8, title={\titrebloc{Théorème}{#1}}}
+\newtcolorbox{demonstration}{marge, colback=bleuclair,borderline west={2.5pt}{0pt}{bleu}, before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ }, after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+\newtcolorbox{remarque}[1][]{marge, colback=vert!6,borderline west={2.5pt}{0pt}{vert}, coltitle=vert!70!black,colbacktitle=vert!6, title={\titreblocnum{Remarque}{#1}}}
+\newtcolorbox{exemples}[1][Exemples]{marge, colback=orange!6,borderline west={2.5pt}{0pt}{orange}, coltitle=orange!85!black,colbacktitle=orange!6, title={\textsc{#1}}}
+\newtcolorbox{methode}[1][Méthode]{marge, colback=violet!6,borderline west={2.5pt}{0pt}{violet}, coltitle=violet,colbacktitle=violet!6, title={\textsc{#1}}}
+
+% Nouveaux environnements ajoutés pour la suite du document
+\newtcolorbox{lemme}[1][]{bloc, colback=bleu!5,colframe=bleu,coltitle=bleu,colbacktitle=bleu!5, title={\titrebloc{Lemme}{#1}}}
+\newtcolorbox{corollaire}[1][]{bloc, colback=orange!5,colframe=orange,coltitle=orange,colbacktitle=orange!5, title={\titrebloc{Corollaire}{#1}}}
+\newtcolorbox{synthese}[1][]{bloc, colback=violet!5,colframe=violet,coltitle=violet,colbacktitle=violet!5, title={\titrebloc{Synthèse}{#1}}}
+
+%==================================================================
+% DEBUT DU DOCUMENT
+%==================================================================
+\begin{document}
+
+\begin{center}
+  {\Huge \scshape \color{bordeaux} Chapitre 11 -- Entiers naturels et dénombrement}
+\end{center}
+\vspace{15pt}
+
+\section{I -- Ensemble des entiers naturels}
+
+\subsection{1.1. Axiome}
+
+\begin{definition}
+On appelle \mot{ensemble naturel} tout ensemble non vide $\mathcal{S}$ ordonné $\mathcal{N}$ vérifiant les 3 propriétés suivantes :
+\begin{itemize}
+    \item \textbf{(A1)} Toute partie non vide de $\mathcal{N}$ a un plus petit élément (ppe).
+    \item \textbf{(A2)} Toute partie non vide et majorée de $\mathcal{N}$ a un plus grand élément (pge).
+    \item \textbf{(A3)} $\mathcal{N}$ n'a pas de plus grand élément (pge).
+\end{itemize}
+\end{definition}
+
+La théorie ZF postule l'existence d'un tel ensemble. Plus précisément, un nouvel axiome, appelé \mot{axiome de l'infini}, permet de prouver l'existence d'un ensemble naturel $\mathcal{N}$.
+
+\vspace{10pt}
+De manière intuitive, on construit :
+\[
+\emptyset^+ = \{\emptyset\} = \{0\}
+\]
+\[
+\{\emptyset\}^+ = \{\emptyset\} \cup \{\{\emptyset\}\} = \{\emptyset, \{\emptyset\}\} = \{0, 1\} \quad (\text{noté } 2)
+\]
+\[
+3 = 2^+ = 2 \cup \{2\} = \{0, 1\} \cup \{2\} = \{0, 1, 2\}
+\]
+\[
+m^+ = m \cup \{m\} = \{0, 1, 2, \dots, m\}
+\]
+\textit{« Il existe un ensemble contenant l'ensemble vide et stable par l'application successeur. »}
+
+\subsection{1.2. Conséquences de la définition}
+
+\begin{remarque}
+On remarque que toute partie à 2 éléments $\{x, y\}$ de $\mathcal{N}$ possède un ppe. Donc l'ordre sur $\mathcal{N}$ est \mot{total}. Il sera noté $\le$.
+\end{remarque}
+
+\begin{theoreme}[Admis]
+Étant donnés 2 ensembles naturels $\mathcal{N}_1$ et $\mathcal{N}_2$, il existe une et une seule application $f : \mathcal{N}_1 \to \mathcal{N}_2$ telle que :
+\begin{enumerate}
+    \item $f$ soit bijective ;
+    \item $f$ soit strictement croissante.
+\end{enumerate}
+On a donc :
+\[
+\forall m, m' \in \mathcal{N}_1, \quad m < m' \iff f(m) < f(m')
+\]
+\end{theoreme}
+
+(Donc $f^{-1}$ vérifie 1) et 2) également, de $\mathcal{N}_2 \to \mathcal{N}_1$).
+
+\begin{remarque}
+En substance, le théorème dit qu'à isomorphisme d'ensemble ordonné près, il existe un seul ensemble naturel.
+\end{remarque}
+
+\begin{proposition}
+\begin{itemize}
+    \item \textbf{(B1)} $\mathcal{N}$ a un ppe, que l'on note $e$.
+    \item \textbf{(B2)} Tout $a \in \mathcal{N}$ a un successeur :
+    \[
+    \forall a \in \mathcal{N}, \quad \exists a' \in \mathcal{N}, \quad a < a' \quad \text{et} \quad ]a, a'[ = \emptyset
+    \]
+\end{itemize}
+\end{proposition}
+
+\begin{demonstration}
+Fixons $a \in \mathcal{N}$. Posons :
+\[
+X(a) = \{ m \in \mathcal{N} \mid a < m \}
+\]
+D'abord, $X(a) \neq \emptyset$, car sinon, l'ordre étant total, on aurait $\forall n \in \mathcal{N}, n \le a$. Donc $a$ serait le pge de $\mathcal{N}$, ce qui contredit (A3).
+
+D'après (A1), $X(a)$ possède un ppe, noté $a'$.
+
+Donc $a'$ vérifie $a < a'$ et $]a, a'[ = \emptyset$, car si $b \in ]a, a'[$, alors $b \in X(a)$ et $b < a' = \text{ppe}(X(a))$, ce qui est une contradiction.
+\end{demonstration}
+
+\begin{proposition}[(B3)]
+Tout $a \in \mathcal{N} \setminus \{e\}$ a un prédécesseur :
+\[
+\forall a \in \mathcal{N} \setminus \{e\}, \quad \exists a'' \in \mathcal{N}, \quad a'' < a \quad \text{et} \quad ]a'', a[ = \emptyset
+\]
+\end{proposition}
+
+\begin{demonstration}
+Fixons $a \in \mathcal{N} \setminus \{e\}$. Posons :
+\[
+Y(a) = \{ m \in \mathcal{N} \mid m < a \}
+\]
+Comme $a \neq e$ et $e = \text{ppe}(\mathcal{N})$, on a $e \in Y(a)$.
+
+Donc $Y(a)$ est une partie non vide et majorée (par $a$) de $\mathcal{N}$.
+
+Donc par (A2), $Y(a)$ possède un pge, noté $a''$. On a donc $a'' < a$ et $]a'', a[ = \emptyset$ (même preuve que pour B2).
+\end{demonstration}
+
+Il résulte de (B2) et (B3) le théorème suivant :
+
+\begin{theoreme}
+L'application successeur :
+\[
+f : \mathcal{N} \longrightarrow \mathcal{N} \setminus \{e\}, \quad m \longmapsto m'
+\]
+est une bijection strictement croissante dont la réciproque est l'application prédécesseur $g : \mathcal{N} \setminus \{e\} \to \mathcal{N}, \ m \mapsto m''$.
+\end{theoreme}
+
+\subsection{1.3. L'ensemble $\N$}
+
+L'isomorphisme du théorème admis permet d'identifier tous les ensembles naturels à l'un d'entre eux, que nous notons $\N$, appelé ensemble des entiers naturels.
+
+Ses éléments sont :
+\begin{align*}
+    0 &= \emptyset \\
+    1 &= \{\emptyset\} = \{0\} \\
+    2 &= \{\emptyset, \{\emptyset\}\} = \{0, 1\} \\
+    3 &= \{0, 1, 2\} \\
+    &\vdots \\
+    m' &= m + 1 = \{0, 1, 2, \dots, m\}
+\end{align*}
+
+\subsection{1.4. Le raisonnement par récurrence}
+
+\begin{proposition}
+Toute partie $A$ de $\N$ contenant $0$ et stable par l'application successeur $f : \N \to \N, \ m \mapsto m + 1$ est égale à $\N$.
+\end{proposition}
+
+\begin{demonstration}
+Par l'absurde, supposons que $A \neq \N$. 
+
+Posons $B = \N \setminus A$. Donc $B$ est une partie non vide de $\N$. À ce titre, elle admet un ppe $b$.
+
+Mais $b \neq 0$ car $0 \in A$ (donc $0 \notin B$).
+
+Donc $b$ admet un prédécesseur $b''$. Comme $b'' < b = \text{ppe}(B)$, on a $b'' \notin B$, donc $b'' \in A$.
+
+Or $A$ est stable par l'application successeur, donc $f(b'') \in A$, c'est-à-dire $b \in A$.
+
+On a donc à la fois $b \in \N \setminus A$ et $b \in A$. Contradiction !
+
+Donc $A = \N$.
+\end{demonstration}
+
+\begin{theoreme}[Corollaire]
+Toute partie $A$ de $\N$ telle que :
+\[
+0 \in A \quad \text{et} \quad \forall m \in \N, \quad \big( [\![0, m]\!] \subset A \implies m' = m + 1 \in A \big)
+\]
+est égale à $\N$.
+\end{theoreme}
+
+\begin{demonstration}
+On pose $B = \{ m \in \N \mid [\![0, m]\!] \subset A \}$.
+
+Alors $0 \in B$ et $\forall m \in B, \ m' = m + 1 \in B$.
+
+Donc d'après la proposition précédente, $B = \N$. A fortiori, $A = \N$.
+\end{demonstration}
+
+\begin{theoreme}[Raisonnement par récurrence]
+Soit $P(n)$ un prédicat sur l'ensemble $\N$ tel que :
+\begin{itemize}
+    \item[\textbf{a)}] $P(0)$ est vraie ;
+    \item[\textbf{b)}] $\forall n \in \N, \quad P(n) \implies P(n+1)$ ;
+    \item[\textbf{ou b')}] $\forall n \in \N, \quad \big( P(0) \land P(1) \land \dots \land P(n) \big) \implies P(n+1)$.
+\end{itemize}
+Alors $P(n)$ est vraie pour tout $n \in \N$.
+\end{theoreme}
+
+\begin{demonstration}
+On pose $A = \{ m \in \N \mid P(m) \}$, qui vérifie les hypothèses de la proposition (dans le cas b) ou du corollaire (dans le cas b').
+\end{demonstration}
+
+\begin{remarque}
+b) correspond à la récurrence simple. b') correspond à la récurrence forte. \textit{(Cf. chapitre 8 pour les exemples)}.
+\end{remarque}
+
+\subsection{1.5. Application aux suites récurrentes}
+
+\begin{definition}
+Une suite d'éléments d'un ensemble $X$ est une famille d'éléments de $X$ indexée par $\N$ (ou $\N^*$, ou $\N \setminus \{0, 1, \dots, m_0\}$, etc.), c'est-à-dire une application :
+\[
+\N \longrightarrow X, \quad m \longmapsto u_m
+\]
+\end{definition}
+
+Par définition de l'égalité de deux applications, deux suites $(u_n)_{n \in \N}$ et $(v_n)_{n \in \N}$ sont égales si et seulement si :
+\[
+\forall n \in \N, \quad u_n = v_n
+\]
+
+\begin{theoreme}
+Soit $f : X \to X$ une application d'un ensemble $X$ dans lui-même. 
+
+Pour tout $a \in X$, il existe une unique suite $(u_n)_{n \in \N}$ telle que :
+\[
+\begin{cases}
+u_0 = a \\
+\forall n \in \N, \quad u_{n+1} = f(u_n)
+\end{cases}
+\]
+\end{theoreme}
+
+\begin{demonstration}
+\textbf{Unicité :} L'unicité se prouve aisément par récurrence sur $n$.
+Soient $(u_n)_{n \in \N}$ et $(v_n)_{n \in \N}$ deux suites telles que $u_0 = v_0 = a$ et $\forall n \in \N, \ u_{n+1} = f(u_n)$ et $v_{n+1} = f(v_n)$.
+
+Notons $P(n) : \ll u_n = v_n \gg$.
+Clairement, $P(0)$ est vraie.
+\[
+\forall n \in \N, \quad P(n) \implies u_n = v_n \implies f(u_n) = f(v_n) \implies u_{n+1} = v_{n+1} \implies P(n+1)
+\]
+Donc par le principe de récurrence, $\forall n \in \N, \ u_n = v_n$.
+
+\textbf{Existence :} admise.
+\end{demonstration}
+
+\begin{remarque}
+Posons :
+\[
+f^0 = \text{id}, \quad f^1 = f, \quad f^2 = f \circ f, \quad \dots, \quad f^{n+1} = f \circ f^n
+\]
+Alors $\forall n \in \N, \ u_n = f^n(a)$.
+(En toute rigueur, il a fallu invoquer le théorème pour définir la suite $(f^n)_{n \in \N}$ par la relation de récurrence :
+\[
+\begin{cases}
+f^0 = \text{id} \\
+\forall n \in \N, \quad f^{n+1} = \varphi(f^n)
+\end{cases}
+\]
+où $\varphi : X^X \to X^X, \ g \mapsto f \circ g$).
+\end{remarque}
+
+\textbf{Terminologie :} on dit que $(u_n)_n$ est une suite \mot{d'itératrice} la fonction $f$.
+
+\subsection{1.6. Suites récurrentes d'ordre 2}
+
+\begin{proposition}
+Soit $g : X \times X \to X$. 
+
+Pour tout couple $(a, b) \in X^2$, il existe une unique suite $(u_n)_{n \in \N} \in X^{\N}$ telle que :
+\[
+\begin{cases}
+u_0 = a, \quad u_1 = b \\
+\forall n \in \N, \quad u_{n+2} = g(u_n, u_{n+1})
+\end{cases}
+\]
+\end{proposition}
+
+\begin{demonstration}
+On se ramène au théorème précédent par le procédé de \mot{vectorisation} (transformer en suite de couples pour se ramener à une récurrence d'ordre 1).
+
+On écrit que :
+\[
+\forall n \in \N, \quad u_{n+2} = g(u_n, u_{n+1}) \iff (u_{n+1}, u_{n+2}) = (u_{n+1}, g(u_n, u_{n+1}))
+\]
+
+En posant $U_n = (u_n, u_{n+1})$, on a :
+\[
+\forall n \in \N, \quad u_{n+2} = g(u_n, u_{n+1}) \iff U_{n+1} = F(U_n)
+\]
+où $F : X^2 \to X^2, \ (x, y) \mapsto (y, g(x, y))$.
+
+Les conditions portant sur $(U_n)_n$ sont équivalentes à :
+\[
+\begin{cases}
+U_0 = (a, b) \\
+\text{et } \forall n \in \N, \ U_{n+1} = F(U_n)
+\end{cases}
+\]
+
+L'existence et l'unicité de $(U_n)_n$, donc de $(u_n)_n$, découle alors du théorème précédent appliqué à $F : X^2 \to X^2$ et $(a, b) \in X^2$.
+\end{demonstration}
+
+\textbf{Interprétation :} Les suites récurrentes telles que $\forall n \in \N, \ u_{n+2} = g(u_n, u_{n+1})$ sont les éléments d'un ensemble $\mathcal{S}_g$ qui est en bijection avec $X^2$.
+\[
+X^2 \longrightarrow \mathcal{S}_g, \quad (a, b) \longmapsto \text{l'unique suite } (u_n)_n \text{ telle que } u_0=a, \ u_1=b \text{ et } \forall n \in \N, \ u_{n+2} = g(u_n, u_{n+1})
+\]
+La bijection réciproque est $\mathcal{S}_g \to X^2, \ (u_n)_{n \in \N} \mapsto (u_0, u_1)$.
+
+\begin{exemples}[Suites récurrentes linéaires d'ordre 2]
+\[
+\forall n \in \N, \quad u_{n+2} = a u_{n+1} + b u_n \quad \text{(où } (a, b) \in \C^2\text{)}
+\]
+\end{exemples}
+
+\textbf{Généralisation : suites récurrentes d'ordre $p$ ($p \in \N^*$)}
+Soit $g : X^p \to X$.
+Pour tout $(a_0, a_1, \dots, a_{p-1}) \in X^p$, il existe une unique suite $(u_n)_{n \in \N} \in X^{\N}$ telle que :
+\[
+\begin{cases}
+u_0 = a_0, \ u_1 = a_1, \dots, \ u_{p-1} = a_{p-1} \\
+\forall n \in \N, \quad u_{n+p} = g(u_n, u_{n+1}, \dots, u_{n+p-1})
+\end{cases}
+\]
+
+\section{II -- Opérations sur $\N$}
+
+On note $m+1$ le successeur de $m$, pour tout $m \in \N$ (en toute rigueur, $m+1 = m^+ = m \cup \{m\}$).
+
+\textbf{Addition :}
+On définit $n+p$ par récurrence sur $p$ (à $n$ fixé).
+\[
+\begin{cases}
+m + 0 = m \\
+\forall p \in \N, \quad m + (p+1) = (m+p) + 1
+\end{cases}
+\]
+(Ici $f : \N \to \N, \ p \mapsto p+1$. La suite $(U_p)_{p \in \N}$ est définie par $U_0 = m$ et $\forall p \in \N, \ U_{p+1} = f(U_p)$, puis on note $m+p = U_p$).
+
+On dispose alors d'une loi de composition interne :
+\[
+\N \times \N \longrightarrow \N, \quad (n, p) \longmapsto n+p
+\]
+
+\textbf{Produit :}
+On définit $m \times p$ par récurrence sur $p$ (à $m$ fixé).
+\[
+\begin{cases}
+m \times 0 = 0 \\
+\forall p \in \N, \quad m \times (p+1) = (m \times p) + m
+\end{cases}
+\]
+(Ici $f : \N \to \N, \ x \mapsto x+m$. On définit $(U_p)_p$ par $U_0 = 0$ et $\forall p \in \N, \ U_{p+1} = f(U_p)$. On note $m \times p = U_p$).
+Au fond :
+\[
+m \times p = \underbrace{m + m + \dots + m}_{p \text{ fois}}
+\]
+
+\textbf{Propriétés :}
+\begin{itemize}
+    \item \textbf{(C, +)} $\forall m, p, \quad m+p = p+m$
+    \item \textbf{(A, +)} $\forall m, n, p, \quad (m+n)+p = m+(n+p)$
+    \item \textbf{(N, +)} $\exists 0, \quad \forall m, \quad m+0 = 0+m = m$
+    \item \textbf{(R, +) régularité} $\forall m, n, p, \quad m+p = n+p \implies m=n$
+    \item $\forall m, n, \quad m+n = 0 \implies m=0 \text{ et } n=0$
+    \item \textbf{(C, $\times$)} $\forall m, p, \quad m \times p = p \times m$
+    \item \textbf{(A, $\times$)} $\forall m, n, p, \quad (m \times n) \times p = m \times (n \times p)$
+    \item \textbf{(N, $\times$)} $\exists 1, \quad \forall m, \quad m \times 1 = 1 \times m = m$
+    \item \textbf{(R, $\times$)} $\forall m, n, p, \quad (m \times p = n \times p \text{ et } p \neq 0) \implies m=n$
+    \item $\forall m, n, \quad m \times n = 0 \implies m=0 \text{ ou } n=0$
+    \item \textbf{Distributivité de $\times$ sur +} $\forall m, n, p, \quad (m+n) \times p = m \times p + n \times p$
+\end{itemize}
+
+\textbf{Compatibilité de $\le$ avec + et $\times$ :}
+\[
+\forall m, n, p, \quad m \le n \implies m+p \le n+p
+\]
+\[
+\forall m, n, p, \quad m \le n \implies m \times p \le n \times p
+\]
+Enfin, $\forall m, n, \quad m \times n = 1 \implies m = n = 1$.
+
+\section{III -- Ensembles finis}
+
+\subsection{3.1. Cardinal d'un ensemble fini}
+
+On note, pour $n \in \N^*$, $[\![1, n]\!]$ l'ensemble :
+\[
+[\![1, n]\!] = \{ k \in \N \mid 1 \le k \le n \}
+\]
+
+\begin{definition}
+Un ensemble $E$ est dit fini si $E = \emptyset$ ou s'il existe $n \in \N^*$ et une bijection $E \to [\![1, n]\!]$.
+\end{definition}
+
+\begin{theoreme}
+Soient $n, p \in \N^*$. Les assertions suivantes sont équivalentes :
+\begin{enumerate}
+    \item[(i)] $n \le p$
+    \item[(ii)] il existe une injection $[\![1, n]\!] \to [\![1, p]\!]$
+\end{enumerate}
+\end{theoreme}
+
+\begin{demonstration}
+\textbf{(i) $\implies$ (ii)} est évidente, car si $n \le p$ alors $[\![1, n]\!] \subset [\![1, p]\!]$, donc l'injection canonique $j : [\![1, n]\!] \to [\![1, p]\!]$ convient.
+
+\textbf{(ii) $\implies$ (i)} Par récurrence sur $n$.
+$HR(n)$ : $\ll$ Pour tout $p \in \N^*$, s'il existe une injection de $[\![1, n]\!]$ dans $[\![1, p]\!]$, alors $n \le p \gg$.
+
+$HR(1)$ est vraie car pour tout $p \in \N^*, \ 1 \le p$.
+
+$HR(n) \implies HR(n+1)$ :
+Supposons $HR(n)$ et montrons $HR(n+1)$.
+Soit $p \in \N^*$ et $f : [\![1, n+1]\!] \to [\![1, p]\!]$ une injection.
+
+\textbf{1er cas :} $f(n+1) = p$
+Alors $f$ induit, par restriction à $[\![1, n]\!]$, une injection de $[\![1, n]\!]$ dans $[\![1, p-1]\!]$.
+Donc, d'après $HR(n)$, $n \le p-1$, donc $n+1 \le p$.
+
+\textbf{2nd cas :} $f(n+1) = y \neq p$
+
+\begin{center}
+\begin{tikzpicture}[xscale=3, yscale=1.2]
+  % Colonne 1 : [|1, n+1|]
+  \node (A_n1) at (0, 4) {$n+1$};
+  \node (A_dot) at (0, 3.2) {$\bullet$};
+  \node (A_vdots) at (0, 2.2) {$\vdots$};
+  \node (A_2) at (0, 1) {$2$};
+  \node (A_1) at (0, 0) {$1$};
+
+  % Colonne 2 : [|1, p|]
+  \node (B_p) at (1, 4) {$p$};
+  \node (B_y) at (1, 3) {$y$};
+  \node (B_vdots) at (1, 2) {$\vdots$};
+  \node (B_2) at (1, 1) {$2$};
+  \node (B_1) at (1, 0) {$1$};
+
+  % Colonne 3 : [|1, p|]
+  \node (C_p) at (2, 4) {$p$};
+  \node (C_y) at (2, 3) {$y$};
+  \node (C_vdots) at (2, 2) {$\vdots$};
+  \node (C_2) at (2, 1) {$2$};
+  \node (C_1) at (2, 0) {$1$};
+
+  % f
+  \draw[->, >=stealth] (A_n1) -- (B_y) node[midway, above right] {$f$};
+  \draw[->, >=stealth] (A_dot) -- (B_p);
+  \draw[->, >=stealth, dashed] (A_2) -- (B_2);
+  \draw[->, >=stealth, dashed] (A_1) -- (B_1);
+
+  % phi
+  \draw[->, >=stealth] (B_p) -- (C_y);
+  \draw[->, >=stealth] (B_y) -- (C_p) node[midway, above right, xshift=-4pt, yshift=4pt] {$\varphi$};
+  \draw[->, >=stealth, dashed] (B_2) -- (C_2);
+  \draw[->, >=stealth, dashed] (B_1) -- (C_1);
+\end{tikzpicture}
+\end{center}
+
+Soit $\varphi : [\![1, p]\!] \to [\![1, p]\!]$ définie par :
+\[
+\begin{cases}
+y \mapsto p \\
+p \mapsto y \\
+x \neq p, y \mapsto x
+\end{cases}
+\]
+(c'est une involution).
+Clairement, $\varphi$ est bijective ($\varphi^2 = \text{id}_{[\![1, p]\!]}$).
+
+Donc $\tilde{f} = \varphi \circ f : [\![1, n+1]\!] \to [\![1, p]\!]$ est injective et vérifie $\tilde{f}(n+1) = p$.
+Donc d'après le 1er cas, $n+1 \le p$.
+Ce qui prouve $HR(n+1)$ dans tous les cas.
+\end{demonstration}
+
+\begin{definition}
+Soient $E, F$ deux ensembles. On dit que $E$ est équipotent à $F$ s'il existe une bijection $f : E \to F$. On note $E \sim F$.
+\end{definition}
+
+\begin{proposition}
+La relation d'équipotence est d'équivalence :
+\begin{itemize}
+    \item $\forall E, \quad E \sim E$
+    \item $\forall E, F, \quad E \sim F \implies F \sim E$
+    \item $\forall E, F, G, \quad (E \sim F \text{ et } F \sim G) \implies E \sim G$
+\end{itemize}
+\end{proposition}
+
+\begin{demonstration}
+Preuve facile.
+\end{demonstration}
+
+\begin{proposition}[Corollaire 1]
+$[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents ssi $n = p$.
+\end{proposition}
+
+\begin{demonstration}
+Si $n = p$, prendre $f = \text{id}_{[\![1, n]\!]}$.
+Si $[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents, alors on a à la fois $n \le p$ et $p \le n$, donc $n = p$.
+\end{demonstration}
+
+\begin{theoreme}[Corollaire 2]
+Si $E$ est un ensemble fini $\neq \emptyset$, il existe un unique entier naturel $n \in \N^*$ tel que $E$ soit équipotent à $[\![1, n]\!]$.
+\end{theoreme}
+
+\begin{demonstration}
+Soient $n$ et $p \in \N^*$ tels qu'il existe 2 fonctions bijectives $f : E \to [\![1, n]\!]$ et $g : E \to [\![1, p]\!]$.
+Alors $g \circ f^{-1} : [\![1, n]\!] \to [\![1, p]\!]$ est une bijection. Donc $n = p$ d'après le corollaire 1.
+\end{demonstration}
+
+\begin{definition}
+Si $E = \emptyset$, le cardinal de $E$ est $0$.
+Si $E$ est fini non vide, son cardinal est l'unique entier naturel $n \in \N^*$ tel que $E$ soit équipotent à $[\![1, n]\!]$. On le note $\text{Card}(E)$.
+\end{definition}
+
+\textbf{Conséquence :} Soient $E$ et $F$ deux ensembles finis. Ils sont équipotents ssi $\text{Card}(E) = \text{Card}(F)$.
+
+\begin{definition}
+Un ensemble qui n'est pas fini est dit infini.
+\end{definition}
+
+\subsection{3.2. Propriétés des ensembles finis}
+
+\textbf{a) Sous-ensemble d'un ensemble fini}
+
+\begin{lemme}
+Soit $E$ un ensemble fini de cardinal $n \neq 0$. Soit $a \in E$. Alors l'ensemble $E \setminus \{a\}$ est fini de cardinal $n - 1$.
+\end{lemme}
+
+\begin{demonstration}
+On choisit une bijection $f : E \to [\![1, n]\!]$.
+\begin{itemize}
+    \item Si $f(a) = n$, alors $f$ induit une bijection de $E \setminus \{a\}$ sur $[\![1, n-1]\!]$, donc $E \setminus \{a\}$ est fini de cardinal $n - 1$.
+    \item Si $f(a) = p < n$, on se ramène au cas précédent en posant $\tilde{f} = \varphi \circ f$, où $\varphi$ est la permutation de $[\![1, n]\!]$ qui échange $p$ et $n$, et laisse fixes les autres éléments. De la sorte, $\tilde{f} : E \to [\![1, n]\!]$ est une bijection qui vérifie $\tilde{f}(a) = n$.
+\end{itemize}
+\end{demonstration}
+
+\begin{theoreme}
+Soit $E$ un ensemble fini et $F$ une partie de $E$. Alors :
+\begin{enumerate}
+    \item $F$ est un ensemble fini et $\text{Card}(F) \le \text{Card}(E)$.
+    \item $\text{Card}(F) = \text{Card}(E) \iff F = E$.
+\end{enumerate}
+\end{theoreme}
+
+\begin{demonstration}
+Par récurrence sur le cardinal $n$.
+$HR(n)$ : $\ll$ Pour tout ensemble fini $E$ de cardinal $n$, et toute partie $F$ de $E$, on a 1) et 2) $\gg$.
+
+$HR(0)$ est vraie car $E = \emptyset$ et $F = \emptyset$.
+
+Supposons $HR(n)$ pour un entier $n \in \N$, et montrons $HR(n+1)$.
+Soit $E$ un ensemble fini de cardinal $n+1$, et $F$ une partie de $E$.
+\begin{itemize}
+    \item Si $F = E$, alors $F$ est fini et $\text{Card}(F) = \text{Card}(E)$.
+    \item Si $F \neq E$, alors il existe $a \in E \setminus F$ donc $F \subset E \setminus \{a\}$.
+    Or d'après le lemme, $\text{Card}(E \setminus \{a\}) = n$ et donc, d'après $HR(n)$, $F$ est fini de cardinal $\le n$.
+\end{itemize}
+A fortiori, $\text{Card}(F) < n+1 = \text{Card}(E)$.
+
+En faisant la synthèse des 2 cas, on voit que $\text{Card}(F) \le \text{Card}(E)$ et $(F = E \iff \text{Card}(F) = \text{Card}(E))$.
+Ce qui prouve $HR(n+1)$.
+\end{demonstration}
+
+\begin{remarque}
+Le théorème précédent dit qu'un ensemble fini n'est équipotent à aucune de ses parties strictes. Les ensembles infinis au contraire ne vérifient pas cette propriété.
+\end{remarque}
+
+\begin{exemples}
+L'application $n \mapsto 2n$ réalise une bijection de $\N$ sur $2\N$ (= l'ensemble des entiers naturels pairs).
+Donc $2\N$ est une partie stricte de $\N$, équipotente à $\N$.
+\end{exemples}
+
+En fait, on peut montrer qu'un ensemble est infini si et seulement s'il est équipotent à l'une de ses parties strictes (Dedekind).
+
+\begin{proposition}
+Soit $E$ un ensemble. Les assertions suivantes sont équivalentes :
+\begin{enumerate}
+    \item[(i)] $E$ est infini.
+    \item[(ii)] Il existe une application injective $f : \N \to E$, autrement dit, une suite d'éléments 2 à 2 distincts de $E$.
+    \item[(iii)] Il existe une partie de $E$ en bijection avec $\N$.
+\end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+\textbf{(i) $\implies$ (ii)}
+Supposons $E$ infini. En particulier $E \neq \emptyset$, donc on peut choisir $x_0 \in E$.
+De même, $E \neq \{x_0\}$ car $E$ est infini. Donc on peut choisir $x_1 \in E \setminus \{x_0\}$. On a donc $x_0, x_1 \in E$ distincts.
+
+Supposons "construits" $x_0, x_1, \dots, x_n \in E$ deux à deux distincts.
+Comme $E \neq \{x_0, x_1, \dots, x_n\}$ (sinon $E$ serait fini), on peut choisir $x_{n+1} \in E \setminus \{x_0, x_1, \dots, x_n\}$.
+
+Pour conclure quant à l'existence d'une suite $(x_n)_{n \in \N}$ d'éléments deux à deux distincts de $E$, on invoque l'axiome du choix dénombrable.
+L'application $f : \N \to E, \ n \mapsto x_n$ est bien une injection.
+
+\vspace{10pt}
+\textbf{(ii) $\implies$ (iii)}
+En supposant qu'il existe $f : \N \to E$ injective, elle induit une bijection de $\N$ sur $f(\N)$.
+Donc $f(\N)$ est une partie de $E$ équipotente à $\N$.
+
+\vspace{10pt}
+\textbf{(iii) $\implies$ (i)}
+Si (iii) est vérifiée, $E$ ne peut être fini car dans ce cas toutes ses parties seraient également finies.
+\end{demonstration}
+
+% ================= SUITE DES NOTES TRANSCRITES =================
+
+\begin{proposition}[Dedekind]
+    Un ensemble est infini si et seulement si il est équipotent à l'une de ses parties strictes.
+\end{proposition}
+
+\begin{exemples}
+$\N$ est équipotent à $\N^*$.
+\end{exemples}
+
+\begin{demonstration}
+    Soit $E$ un ensemble.
+    
+    $\bullet$ S'il existe $F \subset E$, $F \neq E$, tel que $E \sim F$ (lire : $\ll$ est équipotent à $\gg$), alors $E$ ne peut être fini d'après le théorème du a).
+    
+    Supposons $E$ infini.
+    
+    Alors il existe une suite $(x_n)_{n\in\N}$ d'éléments deux à deux distincts de $E$.
+    
+    Définissons :
+    \[
+    f : E \longrightarrow E \setminus \{x_0\}
+    \]
+    \[
+    x \longmapsto 
+    \begin{cases} 
+    x & \text{si } x \notin \{x_n ; n \in \N\} \\[1em]
+    x_{n+1} & \text{si } x = x_n \text{ ($n$ est alors unique)}
+    \end{cases}
+    \]
+    
+    Ainsi $f$ est bien définie et c'est une bijection de $E$ sur $E \setminus \{x_0\}$.
+\end{demonstration}
+
+\subsection*{b) Parties de $\N$}
+
+\begin{theoreme}[Caractérisation des parties finies de $\N$]
+    Les parties finies de $\N$ sont les parties majorées.
+\end{theoreme}
+
+\begin{demonstration}
+    Si $P \subset \N$, disons majorée par $m_0 \in \N$, alors $P \subset [\![0, m_0]\!]$. Donc $P$ est une partie d'un ensemble fini, donc est un ensemble fini.
+    
+    Démontrons, par récurrence sur $n$, que :
+    \begin{center}
+        $HR(n)$ : $\ll$ Toute partie $A$ de cardinal $n$ de $\N$ est majorée. $\gg$
+    \end{center}
+    
+    $HR(0)$ est vraie, car $A = \emptyset$ est majorée.
+    
+    Soit $m \in \N$. Supposons $HR(m)$.
+    
+    Soit $A \subset \N$ de cardinal $m+1$.
+    
+    Donc il existe $a \in A$.
+    
+    Alors $A \setminus \{a\}$ est une partie de cardinal $m$ de $\N$, donc, d'après $HR(m)$, elle est majorée disons par $M$.
+    
+    Alors $\max(a, M)$ majore $A$. Ce qui prouve $HR(m+1)$.
+\end{demonstration}
+
+\subsection*{c) Énumération des éléments d'une partie de $\N$}
+
+\begin{lemme}[1]
+    Si $f : [\![0, n]\!] \to \N$ est strictement croissante, alors $\forall p \in [\![0, n]\!], \; f(p) \ge p$.
+    
+    2. Si $f : \N \to \N$ est strictement croissante, alors $\forall p \in \N, \; f(p) \ge p$.
+\end{lemme}
+
+\begin{demonstration}
+    \textbf{Preuve 1 :} Par récurrence sur $n$.
+    
+    $\bullet$ $n=0$ : Évident car $f(0) \ge 0$ (puisque $f(0) \in \N$).
+    
+    $\bullet$ Supposons l'énoncé 1) vrai au rang $n$.
+    
+    Soit $f : [\![0, n+1]\!] \to \N$ strictement croissante. Alors sa restriction à $[\![0, n]\!]$ est strictement croissante donc d'après $HR(n)$ elle vérifie $\forall p \in [\![0, n]\!], \; f(p) \ge p$.
+    
+    De plus par stricte croissance de $f$, $f(n+1) > f(n) \ge n$.
+    
+    Donc $f(n+1) > n$, c'est-à-dire $f(n+1) \ge n+1$.
+    
+    Donc $HR(n+1)$ est vraie.
+    
+    \vspace{10pt}
+    \textbf{Preuve 2 :} Soit $f : \N \to \N$ strictement croissante.
+    
+    Alors pour tout $n \in \N$, la restriction $f_{| [\![0, n]\!]} : [\![0, n]\!] \to \N$ est strictement croissante. 
+    Donc d'après 1), $\forall n \in \N, \; f(n) \ge n$.
+\end{demonstration}
+
+\begin{proposition}[1]
+    Pour toute partie finie non vide $P$ de cardinal $n$ de $\N$, il existe une unique bijection strictement croissante de $[\![1, n]\!]$ dans $P$.
+\end{proposition}
+
+\begin{demonstration}
+    \cas{Existence :} par récurrence sur $n$.
+    
+    $\bullet$ $n=1$ : $P=\{x\}$. $f : \{1\} \to P$ avec $1 \mapsto x$ convient.
+    
+    $\bullet$ Supposons le résultat vrai au rang $n \ge 1$.
+    
+    Soit $P$ une partie de $\N$ de cardinal $n+1$.
+    Elle est non vide et majorée (d'après la caractérisation des parties finies de $\N$).
+    
+    Donc $P$ possède un plus grand élément (pge) $a$.
+    
+    Alors $P' = P \setminus \{a\}$ est de cardinal $n$, donc d'après $HR(n)$, il existe une bijection strictement croissante $f : [\![1, n]\!] \to P'$. 
+    
+    On prolonge $f$ à $[\![1, n+1]\!]$ en posant $f(n+1) = a$.
+    
+    On obtient alors une bijection strictement croissante de $[\![1, n+1]\!]$ sur $P$.
+    Donc $HR(n+1)$ est vérifiée. 
+    
+    \vspace{10pt}
+    \cas{Unicité :} Soient $f$ et $g$ 2 bijections strictement croissantes de $[\![1, n]\!]$ dans $P$.
+    
+    Alors $f^{-1} : P \to [\![1, n]\!]$ est également strictement croissante.
+    
+    Donc, par composition $f^{-1} \circ g : [\![1, n]\!] \to [\![1, n]\!]$ est strictement croissante.
+    
+    D'après le lemme 1), on a :
+    \[
+    \forall p \in [\![1, n]\!], \quad f^{-1}(g(p)) \ge p
+    \]
+    Donc $\forall p \in [\![1, n]\!], \quad g(p) \ge f(p)$.
+    
+    En échangeant les rôles de $f$ et $g$, on a aussi :
+    \[
+    \forall p \in [\![1, n]\!], \quad f(p) \ge g(p)
+    \]
+    Donc $f = g$. 
+\end{demonstration}
+
+\begin{proposition}[2]
+    Pour toute partie infinie $P$ de $\N$ il existe une unique bijection strictement croissante de $\N$ sur $P$.
+\end{proposition}
+
+\begin{remarque}
+    En particulier, toute partie infinie de $\N$ est équipotente à $\N$ (on dit $\ll$ dénombrable $\gg$).
+\end{remarque}
+
+\begin{demonstration}
+    Comme $P$ est infini, $P \neq \emptyset$, donc $P$ possède un plus petit élément (ppe) $a_0$. 
+    On pose $f(0) = a_0$.
+    
+    Supposons construite $f(0) < f(1) < \dots < f(n)$ telle que $P \cap [\![0, f(n)]\!] = \{f(0), f(1), \dots, f(n)\}$.
+    
+    Comme $P$ est infini, $P$ n'est pas majorée (par $f(n)$).
+    
+    Donc $P \cap \mathopen{]} f(n), \to \mathclose{[} \neq \emptyset$.
+    
+    Donc $P \cap \mathopen{]} f(n), \to \mathclose{[}$ possède un ppe. On pose $f(n+1) = \text{ppe} \left(P \cap \mathopen{]} f(n), \to \mathclose{[} \right)$.
+    
+    La formule de récurrence :
+    \[
+    \begin{cases} 
+    f(n+1) = \text{ppe} \left(P \cap \mathopen{]} f(n), \to \mathclose{[} \right) \\[1em]
+    f(0) = a_0
+    \end{cases}
+    \]
+    définit $f : \N \to P$, strictement croissante.
+    
+    (Ici, l'itératrice est $\varphi : P \to P, \; x \mapsto \text{ppe} \left(P \cap \mathopen{]} x, \to \mathclose{[} \right)$).
+    
+    \vspace{10pt}
+    En particulier $f$ est injective. Montrons que $f$ est surjective.
+    
+    Par l'absurde. Supposons $P \setminus f(\N)$ non vide.
+    
+    Il existe donc $a = \text{ppe} \left(P \setminus f(\N) \right)$.
+    
+    Considérons l'ensemble $E$ des éléments de $P$ qui sont $\le a$.
+    
+    En particulier $E \subset f(\N)$.
+    De plus $E \neq \emptyset$ car $a_0 \in E$. 
+    En effet $a_0 = \text{ppe}(P) \le a$, mais $a_0 = f(0)$, donc $a_0 \notin P \setminus f(\N)$, donc $a_0 \neq a$ donc $a_0 < a$.
+    
+    Ainsi, $E$ est une partie majorée non vide de $\N$ (par $a$).
+    
+    Donc elle possède un pge $b$. Donc il existe $m \in \N$ tel que $b = f(m)$.
+    
+    Mais alors $f(m+1) = \text{ppe} \left(P \cap \mathopen{]} b, \to \mathclose{[} \right)$.
+    Mais $\text{ppe} \left(P \cap \mathopen{]} b, \to \mathclose{[} \right)$ n'est autre que $a$.
+    
+    Donc $a = f(m+1)$, donc $a \in f(\N)$ : contradiction !
+    
+    On en conclut que $f$ est surjective. Finalement $f : \N \to P$ est une bijection strictement croissante.
+    
+    \vspace{10pt}
+    \cas{Unicité :} Découle du lemme 2).
+    
+    Si $f$ et $g$ sont 2 bijections strictement croissantes de $\N$ sur $P$ alors $g^{-1} \circ f : \N \to \N$ est strictement croissante donc :
+    \[
+    \forall m \in \N, \quad g^{-1}(f(m)) \ge m \implies f(m) \ge g(m)
+    \]
+    En échangeant les rôles de $f$ et $g$, on a aussi $\forall n \in \N, \quad g(n) \ge f(n)$.
+    
+    Donc $f = g$.
+\end{demonstration}
+
+\begin{synthese}
+    Les 2 propositions précédentes permettent de décrire :
+    
+    \begin{itemize}
+        \item \textbf{Les parties finies de $\N$} : elles sont de la forme $\{x_1, x_2, \dots, x_n\}$ avec $x_1 < x_2 < \dots < x_n$.
+        \item \textbf{Les parties infinies de $\N$} : elles sont de la forme $\{x_n ; n \in \N\}$ où $(x_n)_{n\in\N}$ est une suite d'entiers strictement croissante.
+    \end{itemize}
+    
+    On pourra également retenir que toute partie de $\N$ est finie ou équipotente à $\N$ (càd dénombrable).
+    
+    \begin{center}
+        \mot{$\ll$ Toute partie de $\N$ est finie ou dénombrable $\gg$}
+    \end{center}
+\end{synthese}
+
+\subsection*{d) Réunions d'ensembles finis / produits d'ensembles finis}
+
+\begin{proposition}
+    Si $A$ et $B$ sont deux ensembles finis disjoints, alors $A \cup B$ est un ensemble fini et :
+    \[
+    \cadre{\text{Card}(A \cup B) = \text{Card}(A) + \text{Card}(B)}
+    \]
+\end{proposition}
+
+\begin{demonstration}
+    Soit $n = \text{Card}(A)$ et $m = \text{Card}(B)$.
+    
+    Si $A = \emptyset$ ou $B = \emptyset$ le résultat est évident.
+    On peut donc supposer $n \ge 1$ et $m \ge 1$.
+    
+    Il existe donc 2 bijections :
+    \[
+    f : A \to [\![1, n]\!] \quad \text{et} \quad g : B \to [\![1, m]\!]
+    \]
+    
+    Alors l'application $h : A \cup B \to [\![1, n+m]\!]$ définie par :
+    \[
+    x \longmapsto 
+    \begin{cases}
+    f(x) & \text{si } x \in A \\[1em]
+    g(x) + n & \text{si } x \in B
+    \end{cases}
+    \]
+    est une bijection, car ses restrictions aux 2 ensembles disjoints $A$ et $B$ réalisent des bijections sur $[\![1, n]\!]$ et $[\![n+1, n+m]\!]$ respectivement.
+    
+    Donc $A \cup B$ est fini et $\text{Card}(A \cup B) = n+m = \text{Card}(A) + \text{Card}(B)$.
+\end{demonstration}
+
+\begin{corollaire}
+    Si $A$ est une partie d'un ensemble fini $E$ alors :
+    \[
+    \cadre{\text{Card}(\complement_E^A) = \text{Card}(E) - \text{Card}(A)}
+    \]
+\end{corollaire}
+
+\begin{demonstration}
+    $E = A \cup \complement_E^A$.
+\end{demonstration}
+
+Par une récurrence immédiate sur $p$ :
+
+\begin{proposition}
+    Soit $(A_k)_{1 \le k \le p}$ une famille de $p$ ensembles finis, 2 à 2 disjoints. Alors $\bigcup_{k=1}^p A_k$ est finie et :
+    \[
+    \cadre{\text{Card}\left(\bigcup_{k=1}^p A_k\right) = \sum_{k=1}^p \text{Card}(A_k)}
+    \]
+\end{proposition}
+
+\begin{proposition}
+    Si $A$ et $B$ sont 2 ensembles finis, alors $A \cup B$ est fini, et :
+    \[
+    \cadre{\text{Card}(A \cup B) = \text{Card}(A) + \text{Card}(B) - \text{Card}(A \cap B)}
+    \]
+\end{proposition}
+
+\begin{demonstration}
+    On écrit $A \cup B = A \cup (B \setminus A)$ où $A \cap (B \setminus A) = \emptyset$.
+    
+    Donc $A \cup B$ peut se décrire comme réunion de 2 ensembles finis disjoints.
+    
+    \begin{center}
+    \begin{tikzpicture}[scale=1.2, thick]
+        % Hachurage de B \ A
+        \begin{scope}
+            \clip (2,0) ellipse (1.8 and 1.2);
+            \fill[bleuclair] (2,0) ellipse (1.8 and 1.2);
+            \fill[white] (0,0) ellipse (1.8 and 1.2);
+        \end{scope}
+        
+        % Contours des ensembles
+        \draw[bleu] (0,0) ellipse (1.8 and 1.2);
+        \draw[bleu] (2,0) ellipse (1.8 and 1.2);
+        
+        % Labels
+        \node[bleu] at (-0.8, 0) {\Large $A$};
+        \node[bleu] at (2.8, 0) {\Large $B \setminus A$};
+        
+        % Flèches indicatives (optionnelles pour reproduire le style manuscrit)
+        \draw[->, gray] (-1.5, -1.5) to[bend left] (-0.8, -0.5);
+        \draw[->, gray] (3.5, -1.5) to[bend right] (2.8, -0.5);
+    \end{tikzpicture}
+    \end{center}
+    
+    Donc $A \cup B$ est fini et $\text{Card}(A \cup B) = \text{Card}(A) + \text{Card}(B \setminus A) \quad (*)$.
+    
+    De même $B = (B \setminus A) \cup (A \cap B)$ (où $(B \setminus A) \cap (A \cap B) = \emptyset$).
+    
+    Donc $\text{Card}(B) = \text{Card}(B \setminus A) + \text{Card}(A \cap B) \quad (**)$.
+    
+    En combinant $(*)$ et $(**)$ on obtient :
+    \[
+    \text{Card}(A \cup B) = \text{Card}(A) + \text{Card}(B) - \text{Card}(A \cap B)
+    \]
+    
+    \begin{center}
+    \begin{tikzpicture}[scale=1.2, thick]
+        % Remplissage de l'intersection
+        \begin{scope}
+            \clip (0,0) ellipse (1.8 and 1.2);
+            \fill[bordeaux!20] (2,0) ellipse (1.8 and 1.2);
+        \end{scope}
+        
+        % Contours
+        \draw[bordeaux] (0,0) ellipse (1.8 and 1.2);
+        \draw[bordeaux] (2,0) ellipse (1.8 and 1.2);
+        
+        % Labels
+        \node[bordeaux] at (-0.5, 0) {\Large $A$};
+        \node[bordeaux] at (2.5, 0) {\Large $B$};
+        
+        % Flèche pour A inter B
+        \draw[<-, >=stealth, bordeaux] (1, -0.4) -- (1, -1.8) node[below] {\Large $A \cap B$};
+    \end{tikzpicture}
+    \end{center}
+\end{demonstration}
+
+\begin{proposition}
+    Soient $A$ et $B$ deux ensembles finis. Alors $A \times B$ est un ensemble fini, et :
+    \[
+    \cadre{\text{Card}(A \times B) = \text{Card}(A) \times \text{Card}(B)}
+    \]
+\end{proposition}
+
+\begin{demonstration}
+    Évident si $A = \emptyset$. On suppose donc $A \neq \emptyset$.
+    
+    Décrivons $A$ en extension sous la forme $A = \{x_1, x_2, \dots, x_m\}$ où $m = \text{Card}(A)$.
+    
+    Alors :
+    \[
+    A \times B = \bigcup_{k=1}^m \{x_k\} \times B
+    \]
+    est une réunion de $m$ ensembles finis disjoints, chaque ensemble $\{x_k\} \times B$ étant équipotent à $B$ via l'application :
+    \[
+    B \longrightarrow \{x_k\} \times B, \quad b \longmapsto (x_k, b)
+    \]
+    
+    Donc :
+    \begin{align*}
+        \text{Card}(A \times B) &= \sum_{k=1}^m \text{Card}(\{x_k\} \times B) \\[1em]
+        &= \sum_{k=1}^m \text{Card}(B) \\[1em]
+        &= m \times \text{Card}(B) \\[1em]
+        &= \text{Card}(A) \times \text{Card}(B)
+    \end{align*}
+\end{demonstration}
+
+\begin{corollaire}
+    Soit $p \in \N^*$ et $A$ un ensemble fini.
+    Alors $A^p$ est un ensemble fini et :
+    \[
+    \cadre{\text{Card}(A^p) = \text{Card}(A)^p}
+    \]
+\end{corollaire}
+
+\begin{demonstration}
+    Par récurrence sur $p$ en utilisant $A^{p+1} = A^p \times A$ et la propriété précédente.
+\end{demonstration}
+
+\subsection*{e) Applications entre 2 ensembles finis}
+
+\begin{proposition}
+    Soient $E$ et $F$ deux ensembles finis, et $f : E \to F$.
+    Alors :
+    \begin{enumerate}
+        \item $\text{Card}(f(E)) \le \text{Card}(E)$
+        \item L'application $f$ est injective si et seulement si $\text{Card}(f(E)) = \text{Card}(E)$
+    \end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+    \textbf{1)} En notant $n = \text{Card}(E)$, on peut décrire $E$ en extension $E = \{x_1, x_2, \dots, x_n\}$.
+    
+    Pour tout $y \in f(E)$, choisissons un antécédent $x \in E$ de $y$, c'est-à-dire tel que $y = f(x)$. Par exemple, on choisit l'antécédent qui a le plus petit indice.
+    
+    Soit $A$ l'ensemble des éléments $x$ de $E$ ainsi sélectionnés.
+    
+    Alors l'application :
+    \[
+    \begin{array}{ccc}
+        A & \longrightarrow & f(E) \\
+        x & \longmapsto & f(x)
+    \end{array}
+    \]
+    est bijective puisque tout $y \in f(E)$ possède un unique antécédent dans $A$.
+    
+    Donc $\text{Card}(A) = \text{Card}(f(E))$.
+    
+    Comme $A \subset E$, on a $\text{Card}(A) \le \text{Card}(E)$, donc :
+    \[
+    \text{Card}(f(E)) \le \text{Card}(E)
+    \]
+    
+    \vspace{10pt}
+    \textbf{2)} Si $f$ est injective, alors $f$ réalise une bijection de $E$ sur $f(E)$, d'où :
+    \[
+    \text{Card}(f(E)) = \text{Card}(E)
+    \]
+    
+    Réciproquement, supposons $\text{Card}(f(E)) = \text{Card}(E)$.
+    
+    Donc $\text{Card}(A) = \text{Card}(E)$. Comme $E$ est fini, il vient $A = E$.
+    
+    Comme l'application :
+    \[
+    \begin{array}{ccc}
+        A & \longrightarrow & f(E) \\
+        x & \longmapsto & f(x)
+    \end{array}
+    \]
+    est bijective, elle est injective. Puisque $A = E$, $f$ est injective.
+\end{demonstration}
+
+On a aussi la proposition $\ll$ duale $\gg$ suivante :
+
+\begin{proposition}
+    Soient $E$ et $F$ deux ensembles finis et $f : E \to F$. Alors :
+    \begin{enumerate}
+        \item $\text{Card}(f(E)) \le \text{Card}(F)$
+        \item L'application $f$ est surjective si et seulement si $\text{Card}(f(E)) = \text{Card}(F)$
+    \end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+    \textbf{1)} Découle de $f(E) \subset F$.
+    
+    \textbf{2)} $f$ est surjective $\iff f(E) = F \iff \text{Card}(f(E)) = \text{Card}(F)$ car $F$ est fini.
+\end{demonstration}
+
+\begin{theoreme}
+    Soient $E$ et $F$ deux ensembles finis de même cardinal, et $f : E \to F$. Les assertions suivantes sont équivalentes :
+    \begin{enumerate}
+        \item[(i)] $f$ est injective
+        \item[(ii)] $f$ est surjective
+        \item[(iii)] $f$ est bijective
+    \end{enumerate}
+\end{theoreme}
+
+\end{document}
