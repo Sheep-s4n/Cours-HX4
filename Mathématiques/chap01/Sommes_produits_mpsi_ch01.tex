@@ -1,0 +1,974 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+
+\usepackage{stmaryrd}
+\usepackage{cancel}
+
+%==================================================================
+% COULEURS
+%==================================================================
+\definecolor{brun}{RGB}{140,90,15}        % définitions, titres de sous-sections
+\definecolor{bordeaux}{RGB}{150,30,45}    % sections, propositions, théorèmes
+\definecolor{bleu}{RGB}{40,100,170}       % démonstrations
+\definecolor{bleuclair}{RGB}{228,239,250}
+\definecolor{vert}{RGB}{30,120,80}        % remarques
+\definecolor{orange}{RGB}{205,100,20}     % exemples
+\definecolor{violet}{RGB}{110,60,150}     % méthodes
+
+%==================================================================
+% RACCOURCIS MATHÉMATIQUES
+%==================================================================
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\,\mathrm{d}}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\sgn}{signe}
+
+\newcommand{\intN}[2]{\llbracket #1, #2 \rrbracket}
+\newcommand{\intR}[2]{[#1, #2]}
+\newcommand{\ens}[1]{\{#1\}}
+\newcommand{\encadLEQ}[3]{#1 \leq #2 \leq #3}
+\newcommand{\famille}[2]{(#1)_{#2}}
+\newcommand{\equalwithtext}[1]{\underset{\underset{\text{#1}}{\downarrow}}{=}}
+
+% Formule mise en valeur (cadre arrondi, comme dans le modèle)
+\newcommand{\cadre}[1]{%
+	\tcbox[on line,enhanced,colback=white,colframe=brun,arc=3pt,boxrule=0.7pt,
+	boxsep=3pt,left=2pt,right=2pt,top=1pt,bottom=1pt]{$\displaystyle #1$}}
+
+% Mot ou expression mis en valeur dans le texte
+\newcommand{\mot}[1]{\textcolor{bordeaux}{\textbf{#1}}}
+\newcommand{\cas}[1]{\textbf{\textcolor{orange}{#1}}}
+
+%==================================================================
+% PAGE, EN-TÊTE, TITRES
+%==================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{brun}{Mathématiques}}
+\fancyhead[R]{\small\textcolor{brun}{Sommes et produits de nombres complexes}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{brun}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\labelitemi}{\textcolor{bleu}{\textbullet}}
+
+\titleformat{\section}{\Large\scshape\color{bordeaux}}{}{0pt}{}[{\color{bordeaux}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\large\scshape\color{brun}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{8pt}
+\titlespacing*{\subsection}{0pt}{14pt}{6pt}
+
+%==================================================================
+% BLOCS COLORÉS
+%==================================================================
+\newcommand{\titrebloc}[2]{\textsc{#1}\ifx\relax#2\relax\else\ \textsc{(#2)}\fi}
+\newcommand{\titreblocnum}[2]{\textsc{#1}\ifx\relax#2\relax\else~#2\fi}
+
+\tcbset{
+	bloc/.style={enhanced,breakable,arc=3pt,boxrule=0.8pt,
+		left=7pt,right=7pt,top=5pt,bottom=5pt,
+		fonttitle=\small,attach title to upper={\ \ },
+		before skip=10pt,after skip=10pt},
+	marge/.style={enhanced,breakable,frame hidden,arc=2pt,
+		left=9pt,right=6pt,top=4pt,bottom=4pt,
+		fonttitle=\small,attach title to upper={\ \ },
+		before skip=8pt,after skip=8pt}
+}
+
+% Définition : brun
+\newtcolorbox{definition}[1][]{bloc,
+	colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7,
+	title={\titrebloc{Définition}{#1}}}
+
+% Proposition : bordeaux
+\newtcolorbox{proposition}[1][]{bloc,
+	colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5,
+	title={\titrebloc{Proposition}{#1}}}
+
+% Théorème : bordeaux, trait plus épais
+\newtcolorbox{theoreme}[1][]{bloc,
+	colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt,
+	coltitle=bordeaux,colbacktitle=bordeaux!8,
+	title={\titrebloc{Théorème}{#1}}}
+
+% Démonstration : bleu clair avec filet bleu à gauche
+\newtcolorbox{demonstration}{marge,
+	colback=bleuclair,borderline west={2.5pt}{0pt}{bleu},
+	before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ },
+	after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+
+% Remarque : vert
+\newtcolorbox{remarque}[1][]{marge,
+	colback=vert!6,borderline west={2.5pt}{0pt}{vert},
+	coltitle=vert!70!black,colbacktitle=vert!6,
+	title={\titreblocnum{Remarque}{#1}}}
+
+% Exemple : orange
+\newtcolorbox{exemples}[1][Exemples]{marge,
+	colback=orange!6,borderline west={2.5pt}{0pt}{orange},
+	coltitle=orange!85!black,colbacktitle=orange!6,
+	title={\textsc{#1}}}
+
+% Méthode : violet
+\newtcolorbox{methode}[1][Méthode]{marge,
+	colback=violet!6,borderline west={2.5pt}{0pt}{violet},
+	coltitle=violet,colbacktitle=violet!6,
+	title={\textsc{#1}}}
+
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\scshape\color{bordeaux} Sommes et produits\\[2pt] de nombres complexes}\\[2pt]
+  {\color{brun}\rule{0.45\linewidth}{0.8pt}}
+\end{center}
+
+\begin{remarque}
+	\textcolor{bordeaux}{\underline{Notations :}}
+	\begin{itemize}
+		\item $\C$ désigne l'ensemble des nombres complexes.
+		\item Si $p$ et $q$ sont deux entiers naturels, on note $\intN{p}{q}$ l'ensemble des entiers entre p et q, c'est-à-dire, l'ensemble : $\ens{k\in\N \: | \: \encadLEQ{p}{k}{q}}$
+	\end{itemize}
+\end{remarque}
+
+\section*{I -- Calculer avec le symbole $\sum$}
+\subsection*{1.1. Introduction au symbole $\sum$}
+
+Si $p,\, q \in \N$ sont tels que $p \leq q$, et $\famille{u_n}{\encadLEQ{p}{n}{q}}$ est une famille de nombres complexes indexée par $\intN{p}{q}$ : $\famille{u_n}{\encadLEQ{p}{n}{q}} = (u_p, \, u_{p+1}, \, ..., \, u_{q})$.\\
+On note aussi $\famille{u_n}{n\in\intN{p}{q}}$.\\
+
+La \mot{somme} $u_p, + u_{p+1} + ... + u_q$ se note alors :\\
+$$\boxed{\sum_{n\in\intN{p}{q}}u_n \; ou \; \sum_{\encadLEQ{p}{n}{q}}u_n \; ou \; \sum_{n=p}^{q}u_n}$$
+
+\begin{definition}
+\textcolor{brun}{\underline{Définition rigoureuse par récurrence sur $q$, $p$ étant fixé}}\\
+$$\begin{cases}
+	\sum_{n=p}^{p}u_n = u_p \\
+	\forall q \geq p, \; \sum_{n=p}^{q+1}u_n = \sum_{n=p}^{q}(u_n) + u_{q+1}
+\end{cases}$$
+\end{definition}
+
+\begin{remarque}
+	\\
+	\begin{itemize}
+		\item Dans l'expression $\sum_{n=p}^{q}u_n$, l'indice est muet : il peut être remplacé par tout autre lettre :
+		$$\sum_{n=p}^{q}u_n = \sum_{k=p}^{q}u_n = \sum_{i=p}^{q}u_n = \sum_{\alpha=p}^{q}u_n$$
+		\item L'addition dans $\C$ étant associative et commutative, la sommation des termes peut s'effectuer dans n'importe quel ordre :
+		$$\text{Associativité : }\forall z_1,z_2,z_3\in\C, \: (z_1 + z_2) + z_3 = z_1 + (z_2 + z_3)$$
+		$$\text{Commutativité : } \forall z_1, z_2\in\C, \: z_1 + z_2 = z_2 + z_1$$
+		\item D'ailleurs, la notation $\sum_{n\in\intN{p}{q}}$ suggère que l'on somme les termes dans l'ordre qu'on veut.
+	\end{itemize}
+\end{remarque}
+
+\begin{exemples}
+	Cas où les termes sont égaux à 1 :
+	$$\sum_{n=p}^{q}1 = q - p + 1$$
+	Plus généralement, la somme $\sum_{k=p}^{q}u_k$ fait intervenir $q - p + 1$ termes
+\end{exemples}
+
+\newpage
+
+\begin{proposition}
+	Les règles suivantes sont élémentaires et se démontrent par récurrence sur le nombre de termes sommés
+	Soient $\famille{u_n}{\encadLEQ{p}{n}{q}}$ et $\famille{v_n}{\encadLEQ{p}{n}{q}}$ deux familles de nombres complexes, ainsi que deux réelles $\lambda$ et $\mu$ :
+	\begin{enumerate}
+		\item $\sum_{k=p}^{q}(u_k + v_k) = \sum_{k=p}^{q}u_k + \sum_{k=p}^{q}v_k$ que l'on peut écrire :
+		$$(u_p + v_p) + (u_{p+1} + v_{p+1}) + ... + (u_q + v_q) = (u_p + u_{p+1} + ... + u_q) + (v_p + v_{p+1} + ... + v_q)$$
+		\item $\sum_{k=p}^{q}\lambda u_k = \lambda \sum_{k=p}^{q}u_k$ que l'on peut écrire :
+		$$\lambda u_p + \lambda u_{p+1} + ... + \lambda u_q = \lambda (u_p + u_{p+1} + ... + u_q)$$
+		\item $\sum_{k=p}^{q}(\lambda u_k + \mu v_k) = \lambda\sum_{k=p}^{q}u_k + \mu\sum_{k=p}^{q}v_k$
+		\item $\overline{\sum_{k=p}^{q}u_k} = \sum_{k=p}^{q}\overline{u_k}$
+		\item $\Re(\sum_{k=p}^{q}u_k) = \sum_{k=p}^{q}\Re(u_k)$\\
+		$\Im(\sum_{k=p}^{q}u_k) = \sum_{k=p}^{q}\Im(u_k)$
+	\end{enumerate}
+\end{proposition}
+
+\begin{remarque}
+	\begin{enumerate}
+		\item Conséquence de l'associativité et de la commutativité de l'addition
+		\item Distributivité de la multiplication sur l'addition
+		\item Combinaison de 1 et 2
+		\item Conséquence de : $\forall z_1, z_2 \in\C, \: \overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}$
+		\item Conséquence de : $\forall z_1, z_2 \in\C, \:
+		\begin{cases}
+			\Re(z_1 + z_2) = \Re(z_1) + \Re(z_2)\\
+			\Im(z_1 + z_2) = \Im(z_1) + \Im(z_2)
+		\end{cases}$
+	\end{enumerate}
+\end{remarque}
+
+\subsection*{1.2. Changement d'indice}
+
+\subsubsection*{a) Translation de l'indice}
+
+Examinons le cas de la somme : $$S = \sum_{k=0}^{n}u_{k+1}$$
+On a $$S = u_1 + u_2 + ... + u_{n+1}$$
+soit $$S = \sum_{k=1}^{n+1}u_k$$
+
+Pour effectuer ce changement d'indice, on pose $l = k + 1 \; \text{où} \; k \in \intN{0}{n}$. Lorsque $k$ varie entre $0$ et $n$, $l$ varie entre $1$ et $n+1$.\\
+En fait, l'application $k\in\intN{0}{n} \longmapsto l = k+1 \in \intN{1}{n+1}$ est une bijection.
+
+On a donc $\sum_{k=0}^{n}u_{k+1} \equalwithtext{l=k+1} \sum_{l=1}^{n+1}u_l \equalwithtext{l'indice est muet} \sum_{k=1}^{n+1}u_k$
+
+Plus généralement, si $i\in\N$ : $$\sum_{k=p}^{q}u_{k+i} = \sum_{k=p+i}^{q+i}u_k$$
+
+\subsubsection*{b) Autres transformations}
+
+Le changement d'indice par translation fonctionne car l'application :
+\begin{tabular}{ccc}
+	$\intN{0}{n}$ & $\longrightarrow$ & $\intN{1}{n+1}$ \\
+	$k$ & $\longmapsto$ & $l = k + 1$
+\end{tabular}
+est une bijection. Tout autre changement d'indice donné par une bijection conviendrait.
+
+\begin{exemples}
+	$\sum_{k=0}^{n}u_k = \sum_{k=0}^{n}u_{n-k}$.
+	Ici, on pose $k = n - l$, c'est-à-dire, $l = n - k$ et donc : $$k\in\intN{0}{n} \longmapsto l = n - k \in\intN{0}{n}$$
+	qui est bien une bijection. D'où : $$\sum_{k=0}^{n}u_k \equalwithtext{l = n - k} \sum_{l=0}^{n}u_{n-l} \equalwithtext{l est muet} \sum_{k=0}^{n}u_{n-k}$$
+	Au fond, on a écrit : $u_0 + u_1 + ... + u_n = u_n + ... + u_1 + u_0$.
+\end{exemples}
+
+\subsubsection*{c) Télescopage}
+Soit $\famille{u_n}{n\in\N}$ une suite de nombres, et $\famille{v_n}{n\in\N}$ la suite telle que : 
+$$\forall n \in\N, v_n = u_n - u_{n+1}$$
+
+On remarque que la somme $S = \sum_{k=0}^{n}v_k = \sum_{k=0}^{n}(u_k - u_{k+1})$ se simplifie en $S = u_0 - u_{n+1}$
+
+En effet :
+$$S = u_0 - \cancel{u_1} + \cancel{u_1} - \cancel{u_2} + \cancel{u_2} - \cancel{u_3} + ... + \cancel{u_n} - u_{n+1} = u_0 - u_{n+1}$$
+
+(On peut faire une preuve facile plus rigoureuse par récurrence sur n)
+\medskip
+
+La simplification opérée s'appelle "télescopage". \\
+On dit aussi : "Après l'hécatombe, $\sum_{k=0}^{n}(u_k - u_{k+1}) = u_0 - u_{n+1}$"
+
+\medskip
+
+\textcolor{bordeaux}{\underline{Application :}} Simplification de la somme partielle d'une série.\\
+On veut simplifier l'expression : $\sum_{k=0}^{n}u_k$.\\
+Si on dispose d'une suite $\famille{v_n}{\encadLEQ{0}{k}{1}}$
+telle que : $\forall k\in\N, \: u_k = v_{k+1} - v_k$,
+alors : $\sum_{k=0}^{n}u_k = v_{n+1} - v_0$.
+
+\begin{exemples}
+	\\
+	Simplifiez $\sum_{k=0}^{n}k\times k!$.\\
+	\underline{Idée :} $k\times k! = (k + 1 - 1)\times k! = (k+1)k! - k! = (k+1)! - k!$.\\
+	On en déduit, pour tout $n\in\N$ : $$\sum_{k=0}^{n}k\times k! = \sum_{k=}^{n}((k+1)! - k!) = (n+1)! - 0! = (n+1)! - 1.$$\\
+	
+	Calculer $\sum_{k=1}^{n}k$ en utilisant $(k+1)^2 - k^2 = 2k + 1$.
+	Pour tout $n\in\N$,$$\sum_{k=1}^{n}((k+1)^2 - k^2) = 
+	\begin{cases}
+		(n+1)^2 - 1^2 = (n+1)^2 - 1\\
+		\sum_{k=1}^{n}(2k + 1)
+	\end{cases}$$
+	
+	D'où : $$2\sum_{k=1}^{n}k + \sum_{k=1}^{n}1 = (n+1)^2 - 1 = n^2 +2n$$
+	Donc : $$2\sum_{k=1}^{n}k = n^2 + n$$
+	Et donc : $$\sum_{k=1}^{n}k = \dfrac{n^2 + n}{2} = \dfrac{n(n+1)}{2}$$
+\end{exemples}
+
+\begin{proposition}
+	Savoir par coeur :
+	\begin{enumerate}
+		\item $$\sum_{k=1}^{n}1 = n$$
+		\item $$\sum_{k=1}^{n}k = \dfrac{n(n+1)}{2}$$
+		\item $$\sum_{k=1}^{n}k^2 = \dfrac{n(n+1)(2n+1)}{6}$$
+		\item $$\sum_{k=1}^{n}k^3 = \dfrac{n^2(n+1)^2}{4}$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{methode}
+	Généralisation de l'exemple précédent.\\
+	Pour $\sum_{k=1}^{n}k^2$. L'idée est de chercher un polynôme $P(X)$ de degré 3 tel que : $$X^2 = P(X+1) - P(X)$$.
+	Car alors : $$\sum_{k=1}^{n}k^2 = \sum_{k=1}^{n}(P(k+1) - P(k)) = P(n+1) - P(1)$$
+	Cherchons $P(X) = aX^3 + bX^2 +cX + d$ tel que :  $P(X+1) - P(X) = X^2$. Comme la constante d disparait, on peut lui donner la valeur que l'on veut. Imposons $d=0$ :
+	\begin{align*}
+		P(X+1) - P(X) &= a[(X+1)^3 - X^3] + b[(X+1)^2 - X^2] + c[(X+1) - X] \\
+		&= a[3X^2 + 3X + 1] + b[2X + 1] + c \\
+		&= 3aX^2 + (3a + 2b)X + a + b + c.
+	\end{align*}
+	On veut $P(X+1) - P(X) = X^2$, ce qui équivaut à :
+	$$
+	\begin{cases}
+		3a = 1 \\
+		3a + 2b = 0 \\
+		a + b + c = 0
+	\end{cases}
+	\; \text{d'où} \;
+	\begin{cases}
+		a=\dfrac{1}{3}\\
+		b=\dfrac{-1}{2}\\
+		c=\dfrac{1}{2} - \dfrac{1}{3} = \dfrac{1}{6}
+	\end{cases}	$$
+	\newpage
+	Ainsi, en prenant : 
+	\begin{align*}
+		P(X) &= \dfrac{1}{3}X^3 - \dfrac{1}{2}X^2 + \dfrac{1}{6}X \\
+		&= \dfrac{1}{6}(2X^3 - 3X^2 + X)\\
+		&= \dfrac{X}{6}(2X^2 - 3X + 1)\\
+		&= \dfrac{X(X-1)(2X-1)}{6}\\
+	\end{align*}
+	On a :
+	\begin{align*}
+		\forall n \in\N, \: \sum_{k=1}^{n}k^2 &= P(n+1) - P(1)\\
+		&= \dfrac{(n+1)n(2n+1)}{6} - 0\\
+		&= \dfrac{n(n+1)(2n+1)}{6}
+	\end{align*}
+	
+	\medskip
+	
+	Pour $\sum_{k=1}^{n}k^3$. On cherche :
+	$$\begin{cases}
+		P(X) = aX^4 + bX^3 + cX^2 + dX + e, \, \text{avec} \, a,b,c,d,e \in\R \\
+		P(X+1) - P(X) = X^3
+	\end{cases} $$
+	
+	En fixant $e=0$, on a :
+	\begin{align*}
+		P(X+1) - P(X) &= a[(X+1)^4 - X^4] + b[(X+1)^3 - X^3] + c[(X+1)^2 - X^2] + d[(X+1) - X] \\
+		&= a[4X^3 + 6X^2 + 4X + 1] + b[3X^2 + 3X + 1] + c[2X + 1] + d \\
+		&= 4aX^3 + (6a + 3b)X^2 + (4a + 3b + 2c)X + a + b + c + d
+	\end{align*}
+	On veut $P(X+1) - P(X) = X^3$, ce qui équivaut à :
+	$$
+	\begin{cases}
+		4a = 1 \\
+		6a + 3b = 0 \\
+		4a + 3b + 2c = 0 \\
+		a + b + c + d = 0
+	\end{cases}
+	\; \text{d'où} \;
+	\begin{cases}
+		a=\dfrac{1}{4}\\
+		b=\dfrac{-1}{2}\\
+		c=\dfrac{1}{4}\\
+		d=0
+	\end{cases}	$$
+	Ainsi, en prenant :
+	\begin{align*}
+		P(X) &= \dfrac{1}{4}X^4 + \dfrac{-1}{2}X^3 + \dfrac{1}{4}X^2\\
+		&=\dfrac{1}{4}(X^4 - 2X^3 + X^2)\\
+		&=\dfrac{((X-1)X)^2}{4}\\
+		&=\dfrac{(X-1)^2X^2}{4}
+	\end{align*}
+	On a :
+	$$\forall n\in\N, \sum_{k=1}^{n}k^3 = P(n+1) - \underset{\underset{=\,0}{\downarrow}}{P(1)} = \dfrac{n^2(n+1)^2}{4} $$
+	
+\end{methode}
+
+\newpage
+
+\section*{II -- Séries arithmétiques et géométriques}
+
+\subsection*{2.1. Formule de la série arithmétique}
+
+Une suite $\famille{u_n}{n\in\N}$ est arithmétique s'il existe $r\in\C$ tel que : $\forall n\in\N, u_{n+1} = u_n + r$.\\
+r est la raison de la suite arithmétique $\famille{u_n}{n\in\N}$.
+
+On a alors, par une récurrence facile sur n :
+\cadre{\forall n\in\N, \: u_n = u_0 + n.r}
+
+Soit p et q $\in\N$ tels que $p \ll q$ et $S=\sum_{k=p}^{q}u_k$. Alors :
+$$\cadre{S = (q - p + 1)\times\dfrac{u_p + u_q}{2}}$$
+$$\cadre{S = \text{(nombre de termes sommés)} \times \dfrac{\text{premier terme} + \text{dernier terme}}{2}}$$
+
+\begin{demonstration}
+	$$S=\sum_{k=p}^{q}u_k \equalwithtext{symétrisation} \sum_{k=p}^{q}u_{p+q-k}$$
+	En sommant :
+	\begin{align*}
+		2S &= \sum_{k=p}^{q}u_k + \sum_{k=p}^{q}u_{p+q-k}\\
+		&= \sum_{k=p}^{q}(u_k + u_{p+q-k})
+	\end{align*}
+	Or :
+	\begin{align*}
+		u_k + u_{p+q-k} &= u_0 + k.r + u_0 + (p+q-k).r\\
+		&= 2u_0 + (p+q).r \\
+		&= u_p + u_q \; \text{(qui est donc indépendant de k)}
+	\end{align*}
+	Donc :
+	\begin{align*}
+		2S &= \sum_{k=p}^{q}(u_p + u_q) \\
+		&= (q-p+1)\times (u_p + u_q) \\
+		S &= (q-p+1) \times \dfrac{u_p + u_q}{2}
+	\end{align*}
+\end{demonstration}
+
+\begin{exemples}
+	Cas particulier : $\sum_{k=1}^{n}k = n \times \dfrac{1 + n}{2} = \dfrac{n(n+1)}{2}$
+\end{exemples}
+
+\newpage
+
+\subsection*{2.2. Formule de la série géométrique}
+
+Une suite $\famille{u_n}{n\in\N}$ est géométrique s'il existe $r\in\C$ tel que : $\forall n\in\N, u_{n+1} = r\times u_n $.\\
+r est la raison de la suite géométrique $\famille{u_n}{n\in\N}$.
+
+On a alors, par une récurrence facile sur n :
+\cadre{\forall n\in\N, \: u_n = r^n \times u_0}
+
+Soit p et q $\in\N$ tels que $p \ll q$ et $S=\sum_{k=p}^{q}u_k = \sum_{k=p}^{q}(r^k\times u_0) = u_0\times \sum_{k=p}^{q}r^k$.\\
+Si $r=1$, alors : $$\cadre{S = (q - p + 1)\times u_0}$$
+Si $r\neq 1$, alors : 
+$$\cadre{\dfrac{r^p - r^{q+1}}{1 - r}\times u_0 = \dfrac{u_p - u_{q+1}}{1 - r}}$$
+$$\cadre{S = \dfrac{\text{(premier terme sommé)} - \text{successeur du dernier terme}}{1 - raison}}$$
+
+\begin{exemples}
+	En particulier, si $r\neq 1$, $\sum_{k=p}^{q}r^k = \dfrac{r^p - r^{q+1}}{1 - r}$
+\end{exemples}
+
+\begin{demonstration}
+	Le cas $r = 1$ est évident.
+	Supposons $r \neq 1$.
+	Calculons :
+	\begin{align*}
+		(1-r)S &= (1-r)\sum_{k=p}^{q}u_k \\
+		&= \sum_{k=p}^{q}(1-r)u_k \\
+		&= \sum_{k=p}^{q}(u_k - ru_k)
+	\end{align*}
+	C'est-à-dire :
+	\begin{align*}
+		(1-r)S &= \sum_{k=p}^{q}(u_k - u_{k+1}) \\
+		\text{(Télescopage)} &= u_p - u_{q+1}
+	\end{align*}
+	Comme $r \neq 1$, on a $1 - r \neq 0$, on peut donc diviser par $1 - r$ pour obtenir : $$S = \dfrac{u_p - u_{q+1}}{1 - r}$$
+\end{demonstration}
+
+\begin{exemples}
+	Cas fréquent : Pour $r \neq 1$ :
+	$$\forall n\in\N, \: \sum_{k=0}^{n}r^k = \dfrac{1 - r^{n+1}}{1 - r}$$
+	Inversement, pour $r \neq 1$ :
+	$$\forall n\in\N^*, \: \dfrac{1 - r^n}{1 - r} = \sum_{k=0}^{n-1}r^k$$
+	Donc : $$1 - r^n = (1 - r)\sum_{k=0}^{n - 1}r^k$$
+\end{exemples}
+
+\medskip
+
+\subsection*{2.3. Factorisation de $a^n - b^n$}
+
+\begin{proposition}
+	Pour tout $a, b \in\C$ et tout $n \in\N^*$, on a:
+	\begin{align*}
+		a^n - b^n &= (a - b)(a^{n-1} + a^{n-2}b + ... + ab^{n+2} + b^{n-1}) \\
+		&= (a - b)\sum_{k=0}^{n-1}(a^k b^{n-1-k})\\
+		&= (a - b)\sum_{k=0}^{n-1}(a^{n-1-k} b^k)
+	\end{align*}
+\end{proposition}
+
+\begin{demonstration}
+	Calculons :
+	\begin{align*}
+		S &= (a-b)\sum_{k=0}^{n-1}(a^kb^{n-1-k})\\
+		&= \sum_{k=0}^{n-1}((a-b)a^k b^{n-1-k})\\
+		&= \sum_{k=0}^{n-1}(a\times a^k b^{n-1-k} - b\times a^k b^{n-1-k})\\
+		&= \sum_{k=0}^{n-1}(a^{k+1}b^{n-(k+1)} - a^k b^{n-k})
+	\end{align*}
+	En posant $u_k = a^k b^{n-k}$ pour $k\in\intN{0}{n}$, on voit que :
+	\begin{align*}
+		\sum_{k=0}^{n-1}(a^{k+1} b^{n-(k+1)} - a^k b^{n-k}) &= \sum_{k=0}^{n-1}(u_{k+1} - u_k)
+		&= u_n - u_0
+		&= a^n - b^n
+	\end{align*}
+	Donc on a bien :
+	$$a^n - b^n = (a-b)\sum_{k=0}^{n-1}a^k b^{n-1-k}$$
+\end{demonstration}
+
+\begin{remarque}
+	\begin{itemize}
+		\item La multiplication étant commutative :
+		$$b a^k b^{n-1-k} = a^k b b^{n-1-k} = a^k b^{n-k}$$
+		\item $$\forall a,b \in\C, \: b^0 = a^0 = 1$$
+	\end{itemize}
+\end{remarque}
+
+\begin{proposition}
+	Cas particuliers à savoir par cœur :
+	$$a^2 - b^2 = (a-b)(a+b)$$
+	$$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$$
+\end{proposition}
+
+\begin{remarque}
+	Les additions de deux complexes de même puissance paire ne sont pas factorisables (ex : $a^2 + b^2$).
+	Par contre, les puissances impaires sont factorisables. Soit $n\in\N$, $a^{2n + 1} + b^{2n + 1}$ peut se factoriser par $(a+b)$.
+	En effet, comme : 
+	$$(-1)^{2n + 1}b^{2n + 1} = -b^{2n + 1}$$
+	On a :
+	\begin{align*}
+		a^{2n + 1} + b^{2n + 1} &= a^{2n + 1} - (-b)^{2n + 1} \\
+		&= (a + b)\sum_{k=0}^{2n}(a^k\times (-b)^{2n - k})
+	\end{align*}
+	Finalement :
+	\begin{align*}
+		a^{2n + 1} + b^{2n + 1} &= (a+b)\sum_{k=0}^{2n}((-1)^k a^k b^{2n - k}) \\
+		&= (a+b)\sum_{k=0}^{2n}((-1)^k a^{2n - k} b^k)
+	\end{align*}
+\end{remarque}
+
+\begin{proposition}
+	Cas particulier à savoir par cœur :
+	$$a^3 + b^3 = (a+b)(a^2 - ab + b^2)$$
+\end{proposition}
+
+\newpage
+
+\section*{III - Formule du binôme}
+
+On rappelle que :
+$$\cadre{n! =
+\begin{cases}
+	1 \; \text{si} \; n=0 \\
+	1\times 2\times 3\times ...\times (n-1)\times n \; \text{si} \; n \geq 1
+\end{cases}}$$
+
+Pour $n \in\N$ et $k \in\intN{0}{n}$, on note :
+$$\cadre{\binom{n}{k} = \dfrac{n!}{k!(n-k)!}}$$
+appelé coefficient binomial.
+
+Puisque : $n! = n(n-1)...(n-k+1)(n-k)!$, on a la simplification :
+$$\cadre{\binom{n}{k} = \dfrac{n(n-1)...(n-k+1)}{k!}}$$
+
+Cette formule est souvent à privilégier.
+
+\begin{remarque}
+	\begin{itemize}
+		\item Le numérateur est facteur de k entiers consécutifs.
+		\item $$\cadre{\binom{n}{k} = \binom{n}{n-k}}$$
+	\end{itemize}
+\end{remarque}
+
+\begin{proposition}
+	Relation de Pascal.
+	Pour tout $n\in\N$ et $k\in\intN{1}{n}$, on a :
+	$$\binom{n}{k-1} + \binom{n}{k} = \binom{n+1}{k}$$
+\end{proposition}
+
+\begin{demonstration}
+	\begin{align*}
+		\binom{n}{k-1} + \binom{n}{k} &= \dfrac{\boxed{n(n-1)...(n-k+2)}}{(k-1)!} + \dfrac{\boxed{n(n-1)...}(n-k+1)}{k!} \\
+		&= \dfrac{n(n-1)...(n-k+2)}{k!} \times (k + n - k + 1) \\
+		&= \dfrac{n(n-1)...(n-k+2)}{k!} \times (n + 1) \\
+		&= \dfrac{(n+1)n(n-1)...(n-k+2)}{k!} \\
+		&= \binom{n+1}{k}
+	\end{align*}
+	On a bien k termes consécutifs au numérateur, c'est ce qu'il faut vérifier avec cette formule.
+\end{demonstration}
+
+\newpage
+
+\begin{remarque}
+	Extension de la formule du binôme. \\
+	On convient que $\binom{n}{k} = 0$ si $k < 0$ ou $k > n$. Alors la formule est valide pour $n\in\N$ et $k\in\intN{0}{n+1}$.
+	
+	\underline{$k = 0$:} $$\binom{n}{-1} + \binom{n}{0} = 0 + 1 = \binom{n+1}{0} = 1$$
+	\underline{$k = n+1$:} $$\binom{n+1}{n+1} = 1 = \binom{n}{n + 1 - 1} + \binom{n}{n+1} = 1 + 0 = 1$$	
+\end{remarque}
+
+\medskip
+
+Cette relation permet de calculer les coefficients binomiaux par récurrence en les présentant en triangle appelé triangle de Pascal.
+\begin{center}
+	\begin{tabular}{|c|cccccccccc|}
+		\hline
+		& 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & ... & k \\
+		\hline
+		0 & 0 &&&&&&&&& \\
+		1 & 1 & 1 &&&&&&&& \\
+		2 & 1 & 2 & 1 &&&&&&& \\
+		3 & 1 & 3 & 3 & 1 &&&&&& \\
+		4 & 1 & 4 & 6 & 4 & 1 &&&&& \\
+		5 & 1 & 5 & 10 & 10 & 5 & 1 &&&& \\
+		6 & 1 & 6 & 15 & 20 & 15 & 6 & 1 &&& \\
+		7 & 1 & 7 & 21 & 35 & 35 & 21 & 7 & 1 && \\
+		... & ... & ... & ... & ... & ... & ... & ... & ... & ... & \\
+		n & 1 & ... &&&&&&& ... & 1 \\
+		\hline		
+	\end{tabular}
+\end{center}
+
+\begin{proposition}
+	Autres relations utiles :
+	$$\binom{n}{k} = \dfrac{n}{k}\binom{n-1}{k-1} \: \text{si} \: \encadLEQ{1}{k}{n}$$
+	$$k\binom{n}{k} = n\binom{n-1}{k-1} \: \text{si} \: \encadLEQ{1}{k}{n}$$
+\end{proposition}
+
+\begin{demonstration}
+	Supposons $\encadLEQ{1}{k}{n}$. \\
+	1 - Alors :
+	\begin{align*}
+		\binom{n}{k} &= \dfrac{n(n-1)...(n-k+1)}{k(k-1)...\times 2 \times 1} \\
+		&= \dfrac{n}{k} \times \dfrac{(n-1)(n-2)...(n-k+1)}{(k-1)(k-2)...\times 2 \times 1} \\
+		&= \dfrac{n}{k}\binom{n-1}{k-1}
+	\end{align*}
+	2 - En multipliant par k :
+	$$k\binom{n}{k} = n\binom{n-1}{k-1}$$
+\end{demonstration}
+
+\newpage
+
+\begin{proposition}
+	Pour tout nombres complexes $a$ et $b$ et tout $n\in\N$ :
+	$$(a+b)^n = \sum_{k=0}^{n}\binom{n}{k}a^kb^{n-k}$$
+\end{proposition}
+
+\begin{demonstration}
+	Par récurrence sur n. \\
+	On note $HR(n)$ l'hypothèse de récurrence pour $n\in\N$ :
+	$$\text{<< }\forall a,b\in\C, (a+b)^n = \sum_{k=0}^{n}\binom{n}{k}a^kb^{n-k}\text{ >>}$$
+	
+	\underline{Initialisation :} $HR(0)$ est vraie car :
+	$$\forall a,b\in\C,
+	\begin{cases}
+		(a+b)^0 = 1 \\
+		\sum_{k=0}^{0}\binom{0}{k}a^kb^{0-k} = \binom{0}{0}	a^0b^0 = 1
+	\end{cases}$$
+	
+	\underline{Hérédité :} Soit $n\in\N$. Montrons que $HR(n) \implies HR(n+1)$.\\
+	Supposons $HR(n)$ vraie et montrons qu'alors, $HR(n+1)$ est vraie. \\
+	Soit $a, b \in\C$. Calculons :
+	\begin{align*}
+		(a+b)^{n+1} & \;\:= (a+b)(a+b)^n \\
+		&\equalwithtext{HR(n)} (a+b)\sum_{k=0}^{n}\binom{n}{k}a^kb^{n-k}
+	\end{align*}
+	D'où :
+	\begin{align*}
+		(a+b)^{n+1} &= \sum_{k=0}^{n}\binom{n}{k}(a+b)a^kb^{n-k} \\
+		&= \sum_{k=0}^{n}\binom{n}{k}[a^{k+1}b^{n-k} + a^kb^{n+1-k}] \\
+		&= \sum_{k=0}^{n}\binom{n}{k}a^{k+1}b^{n-k} + \sum_{k=0}^{n}\binom{n}{k}a^kb^{n+1-k}
+	\end{align*}
+	On ré-indexe la première somme ($l = k+1$) qui devient : $$\sum_{l=1}^{n+1}\binom{n}{l-1}a^lb^{n+1-l}$$
+	D'où :
+	\begin{align*}
+		(a+b)^{n+1} &= \sum_{k=1}^{n+1}\binom{n}{k-1}a^kb^{n+1-k} + \sum_{k=0}^{n}\binom{n}{k}a^kb^{n+1-k} \\
+		&= \sum_{k=1}^{n}(\binom{n}{k-1}a^kb^{n+1-k} + \binom{n}{k}a^kb^{n+1-k}) + \binom{n+1}{n+1}a^{n+1}b^0 + \binom{n}{0}a^0b^{n+1} \\
+		&= \sum_{k=1}^{n}([\binom{n}{k-1} + \binom{n}{k}]a^kb^{n+1-k}) + a^{n+1} + b^{n+1} \\
+		&= \sum_{k=1}^{n}(\binom{n+1}{k}a^kb^{n+1-k}) + a^{n+1} + b^{n+1} \\
+		&= \sum_{k=0}^{n+1}\binom{n+1}{k}a^kb^{n+1-k}
+	\end{align*}
+	Ce qui prouve : $HR(n) \implies HR(n+1)$.
+	
+	\underline{Conclusion :} $HR(n)$ est vraie pour tout $n\in\N$.
+\end{demonstration}
+
+\begin{proposition}
+	Cas particuliers à savoir par cœur et à savoir reconnaitre. On part de l'expression :
+	$$\forall x\in\C, \: (1+x)^n = \sum_{k=0}^{n}\binom{n}{k}x^k$$
+	
+	\begin{enumerate}
+		\item Pour $x=1$, on obtient :
+		$$\cadre{2^n = \sum_{k=0}^{n}\binom{n}{k}}$$
+		\item Pour $x=-1$, on obtient :
+		\begin{align*}
+			0^n &= \sum_{k=0}^{n}\binom{n}{k}(-1)^k \\
+			&=
+			\begin{cases}
+				1 \; \text{si} \; n=0 \\
+				0 \; \text{si} \; n\geq1 
+			\end{cases}
+		\end{align*}
+		On a donc :
+		$$\cadre{\sum_{k=0}^{n}\binom{n}{k}(-1)^k = \begin{cases}
+				1 \; \text{si} \; n=0 \\
+				0 \; \text{si} \; n\geq1 
+		\end{cases}}$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{exemples}
+	Application : \underline{exercice 12} du TD
+\end{exemples}
+
+\newpage
+
+\section*{IV - Sommes doubles}
+
+\subsection*{4.1. Notation d'une somme double}
+
+Soit $n$ et $p\in\N^*$.\\
+Soit $\famille{{i,j}}{}$ où $\encadLEQ{1}{i}{n}$ et $\encadLEQ{1}{j}{p}$ une famille de nombres complexes indexée par l'ensemble des couples $(i, j)$ où $i\in\intN{1}{n}$ et $j\in\intN{1}{p}$. Cet ensemble des couples est le produit cartésien $\intN{1}{n} \times \intN{1}{p}$.
+
+Elle se note $\famille{a_{i, j}}{\encadLEQ{1}{i}{n}, \: \encadLEQ{1}{j}{p}}$ ou $\famille{a_{i, j}}{(i, j)\in \intN{1}{n} \times \intN{1}{p}}$
+
+Pour visualiser cette famille, on peut ranger les termes $(a_{i, j})$ dans un tableau à n lignes et p colonnes.
+
+\begin{center}
+	\begin{tabular}{|c|cccccc|}
+		\hline
+		& 1 & 2 & ... & j & ... & p \\
+		\hline
+		1 & $a_{1, 1}$ & $a_{1, 2}$ & ... & $a_{1, j}$ & ... & $a_{1, p}$ \\
+		2 & $a_{2, 1}$ & $a_{2, 2}$ & ... & $a_{2, j}$ & ... & $a_{2, p}$ \\
+		... & ... & ... & ... & ... & ... & ... \\
+		i & $a_{i, 1}$ & $a_{i, 2}$ & ... & $a_{i, j}$ & ... & $a_{i, p}$ \\
+		... & ... & ... & ... & ... & ... & ... \\
+		n & $a_{n, 1}$ & $a_{n, 2}$ & ... & $a_{n, j}$ & ... & $a_{n, p}$ \\
+		\hline
+		
+	\end{tabular}
+\end{center}
+
+Soit $\Delta$ une partie de $\intN{1}{n} \times \intN{1}{p}$, autrement dit, $\Delta$ est un ensemble de couples $(i, j)$ tels que $\encadLEQ{1}{i}{n}$ et $\encadLEQ{1}{j}{p}$ qui se note $\Delta \subset \intN{1}{n} \times \intN{1}{p}$.
+
+On note :
+$$\sum_{(i,j)\in\Delta}a_{i, j}$$
+la somme des termes $a_{i, j}$ dont l'indice $(i, j)$ appartient à $\Delta$.
+
+L'addition dans $\C$ étant associative et commutative, il n'est pas nécessaire de préciser dans quel ordre les termes doivent être sommés. \\
+Par exemple, $\Delta$ peut être tous les couples : $\Delta = \intN{1}{n} \times \intN{1}{p}$, et alors, on note :
+$$\sum_{(i, j)\in\Delta}a_{i, j} = \sum_{\encadLEQ{1}{i}{n}, \: \encadLEQ{1}{j}{p}}a_{i, j}$$
+
+Si de plus, $n = p$, on peut noter :
+$$\sum_{(i, j)\in\intN{1}{n}^2}a_{i, j} = \sum_{\encadLEQ{1}{i, j}{n}}a_{i, j}$$
+
+\begin{exemples}
+	Domaine triangulaire.\\
+	Ici, $n=p$, et $\Delta = \ens{(i, j)\in\intN{1}{n}^2 \: | \: i \leq j}$
+	On a :
+	\begin{center}
+		\begin{tabular}{|c|ccccc|}
+			\hline
+			& 1 & 2 & ... & $n-1$ & $n$ \\
+			\hline
+			1 & $a_{1, 1}$ & $a_{1, 2}$ & ... & $a_{1, n-1}$& $a_{1, n}$ \\
+			2 & & $a_{2, 2}$ & ... & $a_{2, n-1}$ & $a_{2, n}$ \\
+			... & & & ... & ... & ... \\
+			$n-1$ & & & & $a_{n-1, n-1}$ & $a_{n-1, n}$ \\
+			$n$ & & & & & $a_{n, n}$ \\
+			\hline 	
+		\end{tabular}
+	\end{center}
+	
+	\underline{Conseil :} Avant de calculer une telle somme, commencer par visualiser $\Delta$ dans $\R^2$
+\end{exemples}
+
+\newpage
+
+\subsection*{4.2. Sommation en lignes ou colonnes}
+
+Commençons par le cas où $\Delta = \intN{1}{n} \times \intN{1}{p}$.
+
+$$S = \sum_{(i, j)\in\Delta}a_{i, j} = \sum_{\encadLEQ{1}{i}{n}, \: \encadLEQ{1}{j}{p}}a_{i, j}$$
+
+On peut d'abord sommer les termes d'une même ligne n°i, puis sommer les n sommes ainsi calculées :
+$$S = \sum_{i=1}^{n}(\sum_{j=1}^{p}a_{i, j})$$
+
+C'est la \mot{formule de sommation par lignes}.
+
+On peut aussi commencer par sommer les termes d'une même colonne n°j, puis sommer les p sommes ainsi calculées :
+$$S = \sum_{j=1}^{p}(\sum_{i=1}^{n}a_{i, j})$$
+
+C'est la \mot{formule de sommation par colonnes}.
+
+On a donc :
+$$S =  \sum_{i=1}^{n}(\sum_{j=1}^{p}a_{i, j}) =  \sum_{j=1}^{p}(\sum_{i=1}^{n}a_{i, j})$$
+
+C'est la \mot{formule d'interversion des deux sommes $\Sigma$}.
+
+\begin{center}
+	\begin{tabular}{|c|ccccc|c|}
+		\hline
+		& 1 & ... & j & ... & p & \\
+		\hline
+		1 & $a_{1, 1}$ & ... & $a_{1, j}$ & ... & $a_{1, p}$ & $L_1 = \sum_{j=1}^{p}a_{1, j}$ \\
+		... & ... & ... & ... & ... & ... & ... \\
+		i & $a_{i, 1}$ & ... & $a_{i, j}$ & ... & $a_{i, p}$ & $L_i = \sum_{j=1}^{p}a_{i, j}$ \\
+		... & ... & ... & ... & ... & ... & ... \\
+		n & $a_{n, 1}$ & ... & $a_{n, j}$ & ... & $a_{n, p}$ & $L_n = \sum_{j=1}^{p}a_{n, j}$ \\
+		\hline
+		& $C_1 = \sum_{i=1}^{n}a_{i, 1}$ & ... & $C_j = \sum_{i=1}^{n}a_{i, j}$ & ... & $C_p = \sum_{i=1}^{n}a_{i, p}$ & \\
+		\hline
+	\end{tabular}
+\end{center}
+
+La formule d'interversion dit que :
+$$L_1 + ... + L_i + ... + L_n = C_1 + ... + C_j + ... + C_p$$
+
+On peut généraliser à d'autres ensembles d'indices.\\
+Par exemple, pour $\Delta = \ens{(i, j)\in\intN{1}{n}^2 \: | \: \encadLEQ{1}{i \leq j}{n}}$
+On a :
+$$S = \sum_{(i, j)\in\Delta}a_{i, j} = \sum_{\encadLEQ{1}{i \leq j}{n}}a_{i, j}$$
+Et :
+$$S = \sum_{i=1}^{n}(\sum_{j=i}^{n}a_{i, j}) = \sum_{j=1}^{n}(\sum_{i=1}^{j}a_{i, j})$$
+C'est encore une fois la \mot{formule d'interversion des deux sommes}.
+
+\newpage
+\begin{remarque}
+	Une expression du "genre" :
+	$$\sum_{i=1}^{n}(\sum_{j=i}^{n}a_{i, j}) = \sum_{j=i}^{n}(\sum_{i=1}^{n}a_{i, j})$$
+	n'a aucun sens. \\
+	C'est le membre de droite qui n'a pas de sens. En effet, i n'est pas défini dans la première somme.
+\end{remarque}
+
+\begin{exemples}
+	Calculer $S = \sum_{\encadLEQ{1}{i \leq j}{n}}\dfrac{i}{j}$.
+	
+	On a :
+	$$S = \sum_{i=1}^{n}(\sum_{j=i}^{n}\dfrac{i}{j}) = \sum_{i=1}^{n}i(\sum_{j=i}^{n}\dfrac{1}{j}) \quad \text{(ne se simplifie pas)}$$
+	On a aussi :
+	$$S = \sum_{j=1}^{n}(\sum_{i=1}^{j}\dfrac{i}{j}) = \sum_{j=1}^{n}\dfrac{1}{j}(\sum_{i=1}^{j}i) = \sum_{j=1}^{n}\dfrac{1}{j}\dfrac{j(j+1)}{2}$$
+	
+	D'où :
+	\begin{align*}
+		S = \sum_{j=1}^{n}\dfrac{j+1}{2} &= \dfrac{1}{2}\sum_{j=1}^{n}(j+1) \\
+		\text{(on ré indexe la somme)}&= \dfrac{1}{2}\sum_{j=2}^{n+1}j \\
+		&= \dfrac{1}{2} \times n \times \dfrac{2 + n + 1}{2} \\
+		&= \dfrac{n(n+3)}{4}.
+	\end{align*}
+\end{exemples}
+
+\medskip
+
+\subsection*{4.3. Développement d'un produit de sommes}
+
+Pour développer un produit de sommes, on utilise de façon itérée la distributivité de la multiplication sur l'addition :
+$$\forall a,b,c \in \C, \:
+\begin{cases}
+	a \times (b + c) = a\times b + a\times c \\
+	(b + c)\times a = b \times a + c \times a
+\end{cases}$$
+
+\begin{proposition}
+	Soient $n$ et $p\in\N^*$, $a_1, a_2, ... a_n, b_1, b_2, ... b_p$ des nombres complexes.
+	Alors :
+	\begin{enumerate}
+		\item $$\sum_{i=1}^{n}a_i \times \sum_{j=1}^{p}b_j = \sum_{\encadLEQ{1}{i}{n}, \: \encadLEQ{1}{j}{p}}a_i \times b_j$$
+		\item $$(\sum_{i=1}^{n}a_i)^2 = \sum_{i=1}^{n}a_i^2 + 2\sum_{\encadLEQ{1}{i \leq j}{n}}a_i \times a_j$$
+	\end{enumerate}
+\end{proposition}
+
+\newpage
+
+\begin{demonstration}
+	\\
+	1.
+	$$S = \sum_{\encadLEQ{1}{i}{n}, \: \encadLEQ{1}{j}{p}}a_i \times b_j = \sum_{i=1}^{n}(\sum_{j=1}^{p}a_i\times b_j)$$
+	En notant $c_{i, j} = a_i \times b_j$, on est ramené au formalisme des §4.1. et §4.2.
+	
+	$$S = \sum_{i=1}^{n}a_i \times \sum_{j=1}^{p}b_j$$
+	Notons $B = \sum_{j=1}^{p}$ (indépendante de i).\\
+	On a donc :
+	$$S = \sum_{i=1}^{n}a_i \times B = (\sum_{i=1}^{n})\times B = \sum_{i=1}^{n}a_i \times \sum_{j=1}^{p}b_j$$
+	D'où :
+	$$\sum_{\encadLEQ{1}{i}{n}, \: \encadLEQ{1}{j}{p}}a_i \times b_j = \sum_{i=1}^{n}a_i \times \sum_{j=1}^{p}b_j $$
+	\\
+	2. D'après 1. : 
+	$$\sum_{i=1}^{n}(a_i)^2 = \sum_{i=1}^{n}a_i \times \sum_{j=1}^{n}a_j = \sum_{\encadLEQ{1}{i, j}{n}}a_i.a_j$$
+	On partitionne l'ensemble $\Delta = \intN{1}{n}^2$:
+	$$\Delta = \ens{(i, i) \: | \: i \in \intN{1}{n}} \cup \ens{(i, j) \: | \: \encadLEQ{1}{i < j}{n}} \cup \ens{(i, j) \: | \: \encadLEQ{1}{j < i}{n}}$$
+	D'où :
+	\begin{align*}
+		S &= \sum_{\encadLEQ{1}{i, j}{n}}a_ia_j \\
+		&= \sum_{\encadLEQ{1}{i=j}{n}}a_ia_j + \sum_{\encadLEQ{1}{i < j}{n}}a_ia_j + \sum_{\encadLEQ{1}{j < i}{n}}a_ia_j \\
+		&= \sum_{i=1}^{n}(a_i)^2 + \sum_{\encadLEQ{1}{i < j}{n}}a_ia_j + \sum_{\encadLEQ{1}{j < i}{n}}a_ia_j \\
+		&= \sum_{i=1}^{n}(a_i)^2 + 2\sum_{\encadLEQ{1}{i < j}{n}}a_ia_j
+	\end{align*}
+	Dans la 3ème somme, on a échangé les noms des indices (i et j), elle est alors égale à la deuxième somme.
+\end{demonstration}
+
+\begin{remarque}
+	Attention ! 
+	$$(\sum_{i=1}^{n}a_i)^2 \neq \sum_{i=1}^{n}a_i \sum_{i=1}^{n}a_i \neq \sum_{i=1}^{n}a_i.a_i$$
+	Il faut changer le nom de l'indice de la deuxième somme pour éviter de faire cette erreur.\\
+	De la même façon :
+	$$\sum_{i=1}^{n}a_i \times \sum_{i=1}^{n}b_j \neq \sum_{i=1}^{n}a_i.b_i$$
+\end{remarque}
+
+\newpage
+
+\begin{exemples}
+	$$(x + y + z)^2 = x^2 + y^2 + z^2 + 2xy + 2xz + 2yz$$
+\end{exemples}
+
+\begin{exemples}
+	Développement de $(x + a_1)(x + a_2)...(x + a_n)$:
+	\begin{align*}
+		(x + a_1)(x + a_2) &= x(x + a_2) + a_1(x + a_2) \\
+		&= x^2 + xa_2 + a_1x + a_1a_2 \\
+		&= x^2 + x(a_1 + a_2) + a_1a_2
+	\end{align*}
+	\begin{align*}
+		(x + a_1)(x + a_2)(x + a_3) &= x^3\\
+		&+ (a_1 + a_2 + a_3)x^2 \\
+		&+ (a_1a_2 + a_1a_3 + a_2a_3)x \\
+		&+ a_1a_2a_3
+	\end{align*}
+	Plus généralement :
+	$$(x + a_1)(x + a_2)...(x + a_n) = x^n + \sigma_1 x^{n-1} + \sigma_2 x^{n-2} + ... + \sigma_k x^{n - k} + ... + \sigma_n$$
+	où :
+	\begin{align*}
+		& \sigma_1 = a_1 + a_2 + ... + a_n \\
+		& \sigma_2 = a_1a_2 + a_1a_3 + a_1a_n \: + a_2a_3 + a_2a_4 + ... + a_2a_n \: + a_3a_4 + a_3a_5 + ... + a_3a_n + \: ... \: + a_{n-1}a_n \\
+		&\text{càd} \sigma_2 = \sum_{\encadLEQ{1}{i < j}{n}}a_ia_j \\
+		&\sigma_3 = \sum_{\encadLEQ{1}{i < j < k}{n}}a_ia_ja_k \\		
+	\end{align*}
+	Plus généralement, si $k \in\intN{1}{n}$:
+	$$\sigma_k = \sum_{\encadLEQ{1}{i_1 < i_2 < ... < i_k}{n}}a_{i_1}a_{i_2}...a_{i_k}$$
+	
+	Et enfin :
+	$$\sigma_n = a_1a_2...a_n$$
+\end{exemples}
+
+\newpage
+
+\section*{V - Produits de nombres complexes}
+
+Soit $\famille{u_n}{\encadLEQ{p}{n}{q}}$ une famille de nombres complexes.\\
+Le produit $u_pu_{p+1}...u_q$ se note :
+$$\prod_{k=p}^{q}u_k$$
+
+La multiplication dans $\C$ étant associative et commutative, la plupart des propriétés concernant les sommes de nombres complexes s'appliquent aux produits.
+On a les mêmes techniques de ré-indexation, notions d'indices muets, etc....
+
+Le télescopage prend la forme suivante.\\
+Soit $\famille{u_n}{\encadLEQ{p}{n}{q+1}}$ une famille de nombres complexes tous $\neq 0$.
+Alors :
+$$\prod_{k=p}^{q}\dfrac{u_{k+1}}{u_k} = \dfrac{u_{q+1}}{u_p}$$
+En effet :
+$$\prod_{k=p}^{q}\dfrac{u_{k+1}}{u_k} = \dfrac{u_{p+1}}{u_p} \dfrac{u_{p+2}}{u_{p+1}} ... \dfrac{u_q}{u_{q-1}} \dfrac{u_{q+1}}{u_q} = \dfrac{u_{q+1}}{u_p}$$
+
+\begin{exemples}
+	$$\prod_{k=1}^{n}\dfrac{k}{k+1} = \dfrac{1}{n+1}$$
+\end{exemples}
+
+\begin{proposition}
+	Soient $\famille{u_n}{\encadLEQ{p}{n}{q}}$ et $\famille{v_n}{\encadLEQ{p}{n}{q}}$ deux familles de nombres complexes :
+	\begin{enumerate}
+		\item $$\prod_{k=p}^{q} \times \prod_{k=p}^{q}v_k = \prod_{k=p}^{q}u_kv_k$$
+		$(u_pu_{p+1}...u_q)\times(v_pv_{p+1}...v_q) = u_p\times v_p \times u_{p+1}\times v_{p+1} \times ... \times u_qv_q$
+		\item $$\forall\alpha\in\C, \: \prod_{k=p}^{q}\alpha \times u_k = \alpha^{q-p+1}\times \prod_{k=p}^{q}u_k$$
+		\item $$\overline{\prod_{k=p}^{q}u_k} = \prod_{k=p}^{q}\overline{u_k}$$
+		\item Lorsque $u_k \in\R_+^*$, on a :
+		$$ln(\prod_{k=p}^{q}) = \sum_{k=p}^{q}ln(u_k)$$
+		\item $$exp(\sum_{k=p}^{q}u_k) = \prod_{k=p}^{q}exp(u_k)$$
+	\end{enumerate}
+\end{proposition}
+
+\newpage
+
+\begin{remarque}
+	\begin{enumerate}
+		\item est la conséquence de l'associativité et de la commutativité de a multiplication dans $\C$
+		\item cas particulier de 1.
+		\item conséquence de : $\forall z_1,z_2\in\C, \: \overline{z_1z_2} = \overline{z_1}\times\overline{z_2}$
+		\item conséquence de : $\forall x,y \in\R_+^*, \: ln(xy) = ln(x) + ln(y)$
+		\item conséquence de :$\forall z_1,z_2\in\C, \: exp(z_1 + z_2) = exp(z_1)exp(z_2)$
+	\end{enumerate}
+\end{remarque}
+
+\end{document}
