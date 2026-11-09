@@ -78,13 +78,14 @@ jobs:
             texlive-latex-recommended \
             texlive-latex-extra \
             texlive-fonts-recommended \
+            texlive-fonts-extra \
             texlive-pictures \
             texlive-science \
             texlive-lang-french \
             lmodern \
             latexmk
 
-      # 4. Compiler les fichiers LaTeX en PDF (avec gestion d'erreur et fallback sur PDF GitHub)
+      # 4. Compiler les fichiers LaTeX en PDF (tolérant comme Overleaf : un PDF est publié même avec des erreurs)
       - name: Compiler les fichiers LaTeX
         if: steps.detect-latex.outputs.has_tex == 'true'
         run: |
@@ -100,89 +101,100 @@ jobs:
               print("Aucun fichier à compiler.")
               sys.exit(0)
 
-          tex_files = [Path(line.strip()) for line in list_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+          tex_files = [Path(l.strip()) for l in list_file.read_text(encoding="utf-8").splitlines() if l.strip()]
           list_file.unlink(missing_ok=True)
 
           has_latexmk = shutil.which("latexmk") is not None
           if not has_latexmk:
-              print("::warning::latexmk n'a pas pu être installé. Les PDF du dépôt GitHub seront conservés en secours.", file=sys.stderr)
+              print("::warning::latexmk n'a pas pu être installé. Les PDF du dépôt seront conservés.", file=sys.stderr)
 
           rapport = []
 
           for f in tex_files:
-              print(f"\n========================================")
-              print(f"Traitement de : {f}")
-              print(f"========================================")
+              print(f"\n========================================\nTraitement de : {f}\n========================================")
 
               pdf_path = f.with_suffix(".pdf")
               backup_bytes = pdf_path.read_bytes() if pdf_path.exists() else None
+              if backup_bytes is not None:
+                  pdf_path.unlink()  # si un PDF existe après compilation, il est forcément neuf
 
-              succes = False
-              erreur_msg = ""
+              code = None
+              erreurs = []
+              sortie = ""
 
               if has_latexmk:
-                  res = subprocess.run(
-                      ["latexmk", "-pdf", "-interaction=nonstopmode", f.name],
-                      cwd=f.parent,
-                      capture_output=True,
-                      encoding="utf-8",
-                      errors="replace",
-                  )
+                  try:
+                      res = subprocess.run(
+                          ["latexmk", "-pdf", "-f", "-interaction=nonstopmode", "-file-line-error", f.name],
+                          cwd=f.parent,
+                          capture_output=True,
+                          encoding="utf-8",
+                          errors="replace",
+                          timeout=300,
+                      )
+                      code = res.returncode
+                      sortie = (res.stdout or "") + "\n" + (res.stderr or "")
+                  except subprocess.TimeoutExpired:
+                      code = 1
+                      sortie = "Timeout : compilation interrompue après 300 s."
 
-                  # Nettoyer les fichiers auxiliaires générés (.aux, .log, .fls, etc.)
-                  subprocess.run(["latexmk", "-c", f.name], cwd=f.parent, check=False)
+                  erreurs = [l for l in sortie.splitlines() if ".tex:" in l or l.startswith("!")]
+
+                  # Nettoyage des fichiers auxiliaires (le PDF est conservé)
+                  subprocess.run(["latexmk", "-c", f.name], cwd=f.parent, check=False, capture_output=True)
                   for ext in [".aux", ".log", ".out", ".toc", ".synctex.gz", ".fls", ".fdb_latexmk"]:
                       (f.parent / f"{f.stem}{ext}").unlink(missing_ok=True)
 
-                  if res.returncode == 0 and pdf_path.exists() and pdf_path.stat().st_size > 0:
-                      succes = True
-                      print(f"✓ Compilation réussie : {pdf_path} ({pdf_path.stat().st_size} octets)")
-                      rapport.append({
-                          "source": str(f),
-                          "statut": "✅ Compilé",
-                          "pdf": f"📄 Nouveau PDF généré (`{pdf_path.name}`)"
-                      })
-                  else:
-                      erreur_msg = (res.stdout or "") + "\n" + (res.stderr or "")
+              nouveau_pdf = pdf_path.exists() and pdf_path.stat().st_size > 0
 
-              if not succes:
-                  # Afficher l'avertissement dans GitHub Actions
-                  print(f"::warning file={f}::Échec de la compilation LaTeX pour {f}. Recherche d'un PDF de secours sur GitHub...", file=sys.stderr)
-                  if erreur_msg.strip():
-                      lignes = [l for l in erreur_msg.strip().splitlines() if l.strip()]
-                      # Afficher les dernières lignes du log pour diagnostic rapide
-                      apercu = "\n".join(lignes[-20:])
-                      print(f"Extrait du journal d'erreur pour {f} :\n{apercu}\n", file=sys.stderr)
+              if nouveau_pdf and code == 0:
+                  print(f"✓ Compilation réussie : {pdf_path}")
+                  rapport.append({
+                      "source": str(f),
+                      "statut": "✅ Compilé",
+                      "pdf": f"📄 Nouveau PDF (`{pdf_path.name}`)",
+                  })
 
-                  # 1. Fallback direct : le PDF du même nom existait déjà dans le dépôt GitHub
+              elif nouveau_pdf:
+                  # Comme Overleaf : on publie le PDF même avec des erreurs
+                  print(f"::warning file={f}::Compilé avec {len(erreurs)} erreur(s), PDF publié quand même.", file=sys.stderr)
+                  print("\n".join(erreurs[:30]), file=sys.stderr)
+                  rapport.append({
+                      "source": str(f),
+                      "statut": f"⚠️ Compilé avec {len(erreurs)} erreur(s)",
+                      "pdf": f"📄 Nouveau PDF (`{pdf_path.name}`)",
+                  })
+
+              else:
+                  # Aucun PDF produit : on retombe sur les PDF du dépôt
+                  print(f"::warning file={f}::Aucun PDF produit pour {f}.", file=sys.stderr)
+                  lignes = [l for l in sortie.splitlines() if l.strip()]
+                  print("\n".join(erreurs[:30] or lignes[-20:]), file=sys.stderr)
+
                   if backup_bytes is not None:
                       pdf_path.write_bytes(backup_bytes)
                       print(f"⚠️ Fallback GitHub activé : conservation du PDF existant ({pdf_path.name})")
                       rapport.append({
                           "source": str(f),
-                          "statut": "⚠️ Échec compilation",
-                          "pdf": f"📄 PDF GitHub conservé (`{pdf_path.name}`)"
+                          "statut": "❌ Échec compilation",
+                          "pdf": f"📄 PDF GitHub conservé (`{pdf_path.name}`)",
                       })
                   else:
-                      # 2. Fallback alternatif : d'autres PDF existent dans le même dossier
-                      autres_pdfs = [p for p in f.parent.glob("*.pdf") if p.is_file() and p.stat().st_size > 0]
-                      if autres_pdfs:
-                          noms = ", ".join(f"`{p.name}`" for p in autres_pdfs)
+                      autres = [p for p in f.parent.glob("*.pdf") if p.is_file() and p.stat().st_size > 0]
+                      if autres:
+                          noms = ", ".join(f"`{p.name}`" for p in autres)
                           print(f"ℹ️ Aucun `{pdf_path.name}` préexistant, mais d'autres PDF sont disponibles : {noms}")
                           rapport.append({
                               "source": str(f),
-                              "statut": "⚠️ Échec compilation",
-                              "pdf": f"📄 PDF alternatif GitHub ({noms})"
+                              "statut": "❌ Échec compilation",
+                              "pdf": f"📄 PDF alternatif ({noms})",
                           })
                       else:
-                          # 3. Aucun PDF disponible pour ce cours
-                          if pdf_path.exists():
-                              pdf_path.unlink(missing_ok=True)
                           print(f"❌ Aucun PDF de secours pour {f}. Ce cours sera ignoré sans bloquer le site.", file=sys.stderr)
                           rapport.append({
                               "source": str(f),
                               "statut": "❌ Échec compilation",
-                              "pdf": "❌ Aucun PDF disponible (non publié)"
+                              "pdf": "❌ Aucun PDF disponible (non publié)",
                           })
 
           # Écrire un rapport clair dans le résumé d'exécution GitHub Actions
