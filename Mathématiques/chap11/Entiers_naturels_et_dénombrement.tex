@@ -132,7 +132,7 @@ De manière intuitive, on construit :
 3 = 2^+ = 2 \cup \{2\} = \{0, 1\} \cup \{2\} = \{0, 1, 2\}
 \]
 \[
-m^+ = m \cup \{m\} = \{0, 1, 2, \dots, m\}
+n^+ = n \cup \{n\} = \{0, 1, 2, \dots, n\}
 \]
 \textit{« Il existe un ensemble contenant l'ensemble vide et stable par l'application successeur. »}
 
@@ -150,7 +150,7 @@ On remarque que toute partie à 2 éléments $\{x, y\}$ de $\mathcal{N}$ possèd
 \end{enumerate}
 On a donc :
 \[
-\forall m, m' \in \mathcal{N}_1, \quad m < m' \iff f(m) < f(m')
+\forall n, n' \in \mathcal{N}_1, \quad n < n' \iff f(n) < f(n')
 \]
 \end{theoreme}
 
@@ -173,7 +173,7 @@ En substance, le théorème dit qu'à isomorphisme d'ensemble ordonné près, il
 \begin{demonstration}
 Fixons $a \in \mathcal{N}$. Posons :
 \[
-X(a) = \{ m \in \mathcal{N} \mid a < m \}
+X(a) = \{ n \in \mathcal{N} \mid a < n \}
 \]
 D'abord, $X(a) \neq \emptyset$, car sinon, l'ordre étant total, on aurait $\forall n \in \mathcal{N}, n \le a$. Donc $a$ serait le pge de $\mathcal{N}$, ce qui contredit (A3).
 
@@ -192,7 +192,7 @@ Tout $a \in \mathcal{N} \setminus \{e\}$ a un prédécesseur :
 \begin{demonstration}
 Fixons $a \in \mathcal{N} \setminus \{e\}$. Posons :
 \[
-Y(a) = \{ m \in \mathcal{N} \mid m < a \}
+Y(a) = \{ n \in \mathcal{N} \mid n < a \}
 \]
 Comme $a \neq e$ et $e = \text{ppe}(\mathcal{N})$, on a $e \in Y(a)$.
 
@@ -206,9 +206,9 @@ Il résulte de (B2) et (B3) le théorème suivant :
 \begin{theoreme}
 L'application successeur :
 \[
-f : \mathcal{N} \longrightarrow \mathcal{N} \setminus \{e\}, \quad m \longmapsto m'
+f : \mathcal{N} \longrightarrow \mathcal{N} \setminus \{e\}, \quad n \longmapsto n'
 \]
-est une bijection strictement croissante dont la réciproque est l'application prédécesseur $g : \mathcal{N} \setminus \{e\} \to \mathcal{N}, \ m \mapsto m''$.
+est une bijection strictement croissante dont la réciproque est l'application prédécesseur $g : \mathcal{N} \setminus \{e\} \to \mathcal{N}, \ n \mapsto n''$.
 \end{theoreme}
 
 \subsection{1.3. L'ensemble $\N$}
@@ -222,13 +222,13 @@ Ses éléments sont :
     2 &= \{\emptyset, \{\emptyset\}\} = \{0, 1\} \\
     3 &= \{0, 1, 2\} \\
     &\vdots \\
-    m' &= m + 1 = \{0, 1, 2, \dots, m\}
+    n' &= n + 1 = \{0, 1, 2, \dots, n\}
 \end{align*}
 
 \subsection{1.4. Le raisonnement par récurrence}
 
 \begin{proposition}
-Toute partie $A$ de $\N$ contenant $0$ et stable par l'application successeur $f : \N \to \N, \ m \mapsto m + 1$ est égale à $\N$.
+Toute partie $A$ de $\N$ contenant $0$ et stable par l'application successeur $f : \N \to \N, \ n \mapsto n + 1$ est égale à $\N$.
 \end{proposition}
 
 \begin{demonstration}
@@ -250,15 +250,15 @@ Donc $A = \N$.
 \begin{theoreme}[Corollaire]
 Toute partie $A$ de $\N$ telle que :
 \[
-0 \in A \quad \text{et} \quad \forall m \in \N, \quad \big( [\![0, m]\!] \subset A \implies m' = m + 1 \in A \big)
+0 \in A \quad \text{et} \quad \forall n \in \N, \quad \big( [\![0, n]\!] \subset A \implies n' = n + 1 \in A \big)
 \]
 est égale à $\N$.
 \end{theoreme}
 
 \begin{demonstration}
-On pose $B = \{ m \in \N \mid [\![0, m]\!] \subset A \}$.
+On pose $B = \{ n \in \N \mid [\![0, n]\!] \subset A \}$.
 
-Alors $0 \in B$ et $\forall m \in B, \ m' = m + 1 \in B$.
+Alors $0 \in B$ et $\forall n \in B, \ n' = n + 1 \in B$.
 
 Donc d'après la proposition précédente, $B = \N$. A fortiori, $A = \N$.
 \end{demonstration}
@@ -274,7 +274,7 @@ Alors $P(n)$ est vraie pour tout $n \in \N$.
 \end{theoreme}
 
 \begin{demonstration}
-On pose $A = \{ m \in \N \mid P(m) \}$, qui vérifie les hypothèses de la proposition (dans le cas b) ou du corollaire (dans le cas b').
+On pose $A = \{ n \in \N \mid P(n) \}$, qui vérifie les hypothèses de la proposition (dans le cas b) ou du corollaire (dans le cas b').
 \end{demonstration}
 
 \begin{remarque}
@@ -284,9 +284,9 @@ b) correspond à la récurrence simple. b') correspond à la récurrence forte. 
 \subsection{1.5. Application aux suites récurrentes}
 
 \begin{definition}
-Une suite d'éléments d'un ensemble $X$ est une famille d'éléments de $X$ indexée par $\N$ (ou $\N^*$, ou $\N \setminus \{0, 1, \dots, m_0\}$, etc.), c'est-à-dire une application :
+Une suite d'éléments d'un ensemble $X$ est une famille d'éléments de $X$ indexée par $\N$ (ou $\N^*$, ou $\N \setminus \{0, 1, \dots, n_0\}$, etc.), c'est-à-dire une application :
 \[
-\N \longrightarrow X, \quad m \longmapsto u_m
+\N \longrightarrow X, \quad n \longmapsto u_n
 \]
 \end{definition}
 
@@ -402,17 +402,17 @@ u_0 = a_0, \ u_1 = a_1, \dots, \ u_{p-1} = a_{p-1} \\
 
 \section{II -- Opérations sur $\N$}
 
-On note $m+1$ le successeur de $m$, pour tout $m \in \N$ (en toute rigueur, $m+1 = m^+ = m \cup \{m\}$).
+On note $n+1$ le successeur de $n$, pour tout $n \in \N$ (en toute rigueur, $n+1 = n^+ = n \cup \{n\}$).
 
 \textbf{Addition :}
 On définit $n+p$ par récurrence sur $p$ (à $n$ fixé).
 \[
 \begin{cases}
-m + 0 = m \\
-\forall p \in \N, \quad m + (p+1) = (m+p) + 1
+n + 0 = n \\
+\forall p \in \N, \quad n + (p+1) = (n+p) + 1
 \end{cases}
 \]
-(Ici $f : \N \to \N, \ p \mapsto p+1$. La suite $(U_p)_{p \in \N}$ est définie par $U_0 = m$ et $\forall p \in \N, \ U_{p+1} = f(U_p)$, puis on note $m+p = U_p$).
+(Ici $f : \N \to \N, \ p \mapsto p+1$. La suite $(U_p)_{p \in \N}$ est définie par $U_0 = n$ et $\forall p \in \N, \ U_{p+1} = f(U_p)$, puis on note $n+p = U_p$).
 
 On dispose alors d'une loi de composition interne :
 \[
@@ -420,17 +420,17 @@ On dispose alors d'une loi de composition interne :
 \]
 
 \textbf{Produit :}
-On définit $m \times p$ par récurrence sur $p$ (à $m$ fixé).
+On définit $n \times p$ par récurrence sur $p$ (à $n$ fixé).
 \[
 \begin{cases}
-m \times 0 = 0 \\
-\forall p \in \N, \quad m \times (p+1) = (m \times p) + m
+n \times 0 = 0 \\
+\forall p \in \N, \quad n \times (p+1) = (n \times p) + n
 \end{cases}
 \]
-(Ici $f : \N \to \N, \ x \mapsto x+m$. On définit $(U_p)_p$ par $U_0 = 0$ et $\forall p \in \N, \ U_{p+1} = f(U_p)$. On note $m \times p = U_p$).
+(Ici $f : \N \to \N, \ x \mapsto x+n$. On définit $(U_p)_p$ par $U_0 = 0$ et $\forall p \in \N, \ U_{p+1} = f(U_p)$. On note $n \times p = U_p$).
 Au fond :
 \[
-m \times p = \underbrace{m + m + \dots + m}_{p \text{ fois}}
+n \times p = \underbrace{n + n + \dots + n}_{p \text{ fois}}
 \]
 
 \textbf{Propriétés :}
@@ -574,8 +574,9 @@ $[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents ssi $n = p$.
 Si $n = p$, prendre $f = \text{id}_{[\![1, n]\!]}$.
 Si $[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents, alors on a à la fois $n \le p$ et $p \le n$, donc $n = p$.
 
+\textbf{Détails:} 
 \textbf{Sens «\,$\Leftarrow$\,» : $n=p \Rightarrow$ équipotents.}
-Détails: C'est la première phrase : si $n=p$, alors $\llbracket 1,n\rrbracket$ et
+ C'est la première phrase : si $n=p$, alors $\llbracket 1,n\rrbracket$ et
 $\llbracket 1,p\rrbracket$ sont le même ensemble, et l'identité en est une
 bijection. Celui-là est évident.
 
@@ -740,7 +741,7 @@ $\N$ est équipotent à $\N^*$.
 \end{theoreme}
 
 \begin{demonstration}
-    Si $P \subset \N$, disons majorée par $m_0 \in \N$, alors $P \subset [\![0, m_0]\!]$. Donc $P$ est une partie d'un ensemble fini, donc est un ensemble fini.
+    Si $P \subset \N$, disons majorée par $n_0 \in \N$, alors $P \subset [\![0, n_0]\!]$. Donc $P$ est une partie d'un ensemble fini, donc est un ensemble fini.
     
     Démontrons, par récurrence sur $n$, que :
     \begin{center}
@@ -749,15 +750,15 @@ $\N$ est équipotent à $\N^*$.
     
     $HR(0)$ est vraie, car $A = \emptyset$ est majorée.
     
-    Soit $m \in \N$. Supposons $HR(m)$.
+    Soit $n \in \N$. Supposons $HR(n)$.
     
-    Soit $A \subset \N$ de cardinal $m+1$.
+    Soit $A \subset \N$ de cardinal $n+1$.
     
     Donc il existe $a \in A$.
     
-    Alors $A \setminus \{a\}$ est une partie de cardinal $m$ de $\N$, donc, d'après $HR(m)$, elle est majorée disons par $M$.
+    Alors $A \setminus \{a\}$ est une partie de cardinal $n$ de $\N$, donc, d'après $HR(n)$, elle est majorée disons par $M$.
     
-    Alors $\max(a, M)$ majore $A$. Ce qui prouve $HR(m+1)$.
+    Alors $\max(a, M)$ majore $A$. Ce qui prouve $HR(n+1)$.
 \end{demonstration}
 
 \subsection*{c) Énumération des éléments d'une partie de $\N$}
@@ -879,12 +880,12 @@ $\N$ est équipotent à $\N^*$.
     
     Ainsi, $E$ est une partie majorée non vide de $\N$ (par $a$).
     
-    Donc elle possède un pge $b$. Donc il existe $m \in \N$ tel que $b = f(m)$.
+    Donc elle possède un pge $b$. Donc il existe $n \in \N$ tel que $b = f(n)$.
     
-    Mais alors $f(m+1) = \text{ppe} \left(P \cap \mathopen{]} b, \to \mathclose{[} \right)$.
+    Mais alors $f(n+1) = \text{ppe} \left(P \cap \mathopen{]} b, \to \mathclose{[} \right)$.
     Mais $\text{ppe} \left(P \cap \mathopen{]} b, \to \mathclose{[} \right)$ n'est autre que $a$.
     
-    Donc $a = f(m+1)$, donc $a \in f(\N)$ : contradiction !
+    Donc $a = f(n+1)$, donc $a \in f(\N)$ : contradiction !
     
     On en conclut que $f$ est surjective. Finalement $f : \N \to P$ est une bijection strictement croissante.
     
@@ -893,7 +894,7 @@ $\N$ est équipotent à $\N^*$.
     
     Si $f$ et $g$ sont 2 bijections strictement croissantes de $\N$ sur $P$ alors $g^{-1} \circ f : \N \to \N$ est strictement croissante donc :
     \[
-    \forall m \in \N, \quad g^{-1}(f(m)) \ge m \implies f(m) \ge g(m)
+    \forall n \in \N, \quad g^{-1}(f(n)) \ge n \implies f(n) \ge g(n)
     \]
     En échangeant les rôles de $f$ et $g$, on a aussi $\forall n \in \N, \quad g(n) \ge f(n)$.
     
@@ -1046,22 +1047,22 @@ Par une récurrence immédiate sur $p$ :
 \begin{demonstration}
     Évident si $A = \emptyset$. On suppose donc $A \neq \emptyset$.
     
-    Décrivons $A$ en extension sous la forme $A = \{x_1, x_2, \dots, x_m\}$ où $m = \text{Card}(A)$.
+    Décrivons $A$ en extension sous la forme $A = \{x_1, x_2, \dots, x_n\}$ où $n = \text{Card}(A)$.
     
     Alors :
     \[
-    A \times B = \bigcup_{k=1}^m \{x_k\} \times B
+    A \times B = \bigcup_{k=1}^n \{x_k\} \times B
     \]
-    est une réunion de $m$ ensembles finis disjoints, chaque ensemble $\{x_k\} \times B$ étant équipotent à $B$ via l'application :
+    est une réunion de $n$ ensembles finis disjoints, chaque ensemble $\{x_k\} \times B$ étant équipotent à $B$ via l'application :
     \[
     B \longrightarrow \{x_k\} \times B, \quad b \longmapsto (x_k, b)
     \]
     
     Donc :
     \begin{align*}
-        \text{Card}(A \times B) &= \sum_{k=1}^m \text{Card}(\{x_k\} \times B) \\[1em]
-        &= \sum_{k=1}^m \text{Card}(B) \\[1em]
-        &= m \times \text{Card}(B) \\[1em]
+        \text{Card}(A \times B) &= \sum_{k=1}^n \text{Card}(\{x_k\} \times B) \\[1em]
+        &= \sum_{k=1}^n \text{Card}(B) \\[1em]
+        &= n \times \text{Card}(B) \\[1em]
         &= \text{Card}(A) \times \text{Card}(B)
     \end{align*}
 \end{demonstration}
@@ -1156,5 +1157,333 @@ On a aussi la proposition $\ll$ duale $\gg$ suivante :
         \item[(iii)] $f$ est bijective
     \end{enumerate}
 \end{theoreme}
+
+% ==========================================
+% DÉBUT DE LA PARTIE AJOUTÉE (PAGES C11-30 À C11-42)
+% ==========================================
+
+\begin{demonstration}
+  % (Suite de la démonstration de la page 29)
+  D'après les 2 propositions précédentes :
+  $$ f \text{ est injective} \iff \text{Card}(f(E)) = \text{Card}(E) $$
+  $$ f \text{ est surjective} \iff \text{Card}(f(E)) = \text{Card}(F) $$
+  
+  Ici, $\text{Card}(E) = \text{Card}(F)$. Donc $f$ est injective $\iff f$ est surjective.
+  
+  Par suite :
+  $$ f \text{ injective} \iff f \text{ surjective} \iff f \text{ bijective} $$
+\end{demonstration}
+
+
+\newpage
+\section{IV - Dénombrement}
+
+Dans ce \S, $n$ et $p$ désignent deux entiers naturels $\ge 0$.
+
+\subsection{4.1. Ensembles des applications d'un ensemble fini dans un autre}
+
+\begin{proposition}
+  Soit $E$ un ensemble fini de cardinal $p$, décrit en extension par $E = \{a_1, a_2, \dots, a_p\}$, et $F$ un ensemble.
+  Alors l'application :
+  \begin{align*}
+    \Phi : F^E &\longrightarrow F^p \\
+    u &\longmapsto (u(a_1), \dots, u(a_p))
+  \end{align*}
+  est une bijection.
+\end{proposition}
+
+\begin{demonstration}
+  On rappelle que $F^E$ désigne $\mathcal{F}(E, F)$.
+  
+  Clairement, pour tout $(b_1, \dots, b_p) \in F^p$, il existe une et une unique application $u : E \to F$ telle que :
+  $$ \forall i \in \llbracket 1, p \rrbracket, \quad u(a_i) = b_i $$
+  
+  Autrement dit :
+  $$ \forall b \in F^p, \quad \exists! u \in F^E, \quad \Phi(u) = b $$
+  
+  Donc $\Phi$ est bijective.
+\end{demonstration}
+
+\begin{corollaire}
+  Si $\text{Card}(E) = p$ et $\text{Card}(F) = n$, alors :
+  $$ \text{Card}(F^E) = n^p = \text{Card}(F)^{\text{Card}(E)} $$
+\end{corollaire}
+
+\begin{demonstration}
+  Conséquence de l'équipotence $F^E \simeq F^p$.
+\end{demonstration}
+
+\begin{remarque}
+  Cette formule est valide si $E = \emptyset$ (i.e $p=0$, et $n$ quelconque) avec la convention que $n^0 = 1$.
+  
+  En effet, si $E = \emptyset$, et $F$ quelconque, il existe une et une seule application de $\emptyset$ dans $F$ : c'est le triplet $(\emptyset, F, \emptyset)$ (c'est bien un graphe fonctionnel).
+  
+  Si $F = \emptyset$ et $E \neq \emptyset$, alors il n'existe pas d'application de $E$ dans $\emptyset$.
+  ($(E, \emptyset, \emptyset) \to$ c'est faux : pour tout $x \in E$, il n'existe pas de $y$ dans $\emptyset$).
+  
+  La formule est encore vraie car $n^p = 0^p = 0$ si $p \ge 1$.
+\end{remarque}
+
+
+\newpage
+\subsection*{Nombre d'injections}
+
+Étant donné $2$ ensembles $E$ et $F$, $E$ étant fini de cardinal $p$, la bijection 
+\begin{align*}
+  \Phi : F^E &\longrightarrow F^p \\
+  u &\longmapsto (u(a_1), \dots, u(a_p))
+\end{align*}
+induit une bijection de l'ensemble $\mathcal{I}(E, F)$ des injections de $E$ vers $F$ dans l'ensemble des $p$-uplets d'éléments 2 à 2 distincts de $F$.
+
+Ainsi, dénombrer les $p$-uplets d'éléments 2 à 2 distincts de $F$, c'est dénombrer les applications injectives de $\llbracket 1, p \rrbracket$ dans $F$.
+
+\begin{proposition}
+  Soient $n$ et $p$ deux entiers $\ge 1$, ainsi qu'un ensemble $F$ de cardinal $n$. 
+  Le nombre de $p$-uplets d'éléments 2 à 2 distincts de $F$ est égal à :
+  $$ n(n-1)\dots(n-p+1) $$
+  Il est nul si $p > n$.
+  On note $A_n^p$ ce nombre.
+\end{proposition}
+
+\begin{demonstration}[Heuristique]
+  Pour définir un élément de $F^p$ à composantes 2 à 2 distinctes, il y a $n$ choix pour la $1^{\text{ère}}$ composante, $n-1$ choix pour la $2^{\text{ème}}$ composante, $\dots$, $n-p+1$ pour la $p^{\text{ème}}$ composante. Au total, cela fait $n(n-1)\dots(n-p+1)$ choix possibles.
+\end{demonstration}
+
+\begin{demonstration}[Rigoureuse]
+  Par récurrence sur $p$.
+  On note $HR(p)$ l'hypothèse au rang $p$ : $\ll$ Pour tout $n \ge 1$ et tout ensemble fini de cardinal $n$, le nombre de $p$-uplets d'éléments 2 à 2 distincts de $F$ est $n(n-1)\dots(n-p+1)$ $\gg$.
+  
+  \begin{itemize}
+    \item $HR(1)$ est vraie car le nombre de $1$-uplets d'éléments de $F$ est $\text{Card}(F) = n$.
+    \item Supposons $HR(p)$ vraie pour un entier $p \ge 1$ et prouvons $HR(p+1)$.
+    Soit $n \ge 1$ et $F$ un ensemble de cardinal $n$.
+    Un $(p+1)$-uplet d'éléments 2 à 2 distincts de $F$ est de la forme $(a_0, a_1, \dots, a_p)$ où $a_0 \in F$ et $(a_1, \dots, a_p)$ est un $p$-uplet d'éléments 2 à 2 distincts de $F \setminus \{a_0\}$.
+    
+    En notant $\mathcal{E}_p(F)$ l'ensemble des $p$-uplets d'éléments 2 à 2 distincts de $F$, on a donc :
+    $$ \mathcal{E}_{p+1}(F) = \bigsqcup_{a_0 \in F} \{a_0\} \times \mathcal{E}_p(F \setminus \{a_0\}) $$
+    
+    Donc :
+    $$ \text{Card}(\mathcal{E}_{p+1}(F)) = \sum_{a_0 \in F} \text{Card}(\{a_0\} \times \mathcal{E}_p(F \setminus \{a_0\})) = \sum_{a_0 \in F} \text{Card}(\mathcal{E}_p(F \setminus \{a_0\})) $$
+    
+    Or d'après $HR(p)$ :
+    $$ \text{Card}(\mathcal{E}_p(F \setminus \{a_0\})) = A_{n-1}^p = (n-1)(n-2)\dots(n-1-p+1) $$
+    
+    D'où :
+    \begin{align*}
+      \text{Card}(\mathcal{E}_{p+1}(F)) &= n \times A_{n-1}^p \\
+                                        &= n(n-1)\dots(n-1-p+1) \\
+                                        &= A_n^{p+1}
+    \end{align*}
+    Donc $HR(p+1)$ est vérifiée.
+  \end{itemize}
+\end{demonstration}
+
+
+\newpage
+\subsection*{Nombre de permutations}
+
+\begin{definition}
+  Si $E$ est un ensemble, on appelle \mot{permutation} de $E$ toute bijection de $E$ dans lui-même.
+  On note $\mathfrak{S}_E$ l'ensemble des permutations de $E$.
+\end{definition}
+
+\begin{proposition}
+  Soit $E$ un ensemble fini de cardinal $n$. Le nombre de permutations de $E$ est égal à $n!$.
+\end{proposition}
+
+\begin{demonstration}
+  Comme $E$ est fini, une application $\sigma : E \to E$ est bijective si et seulement si elle est injective.
+  Le nombre de permutations de $E$ est donc égal au nombre d'injections de $E$ dans $E$, soit :
+  $$ A_n^n = n(n-1)\dots \times 1 = n! $$
+\end{demonstration}
+
+\begin{remarque}
+  $0! = 1$ car il existe une unique bijection de $\emptyset$ dans $\emptyset$, c'est le triplet $(\emptyset, \emptyset, \emptyset)$.
+  
+  Plus généralement, le nombre de bijections entre deux ensembles finis de même cardinal $n$ est $n!$.
+\end{remarque}
+
+
+\newpage
+\subsection{4.2. Nombre de parties à $p$ éléments}
+
+Soit $E$ un ensemble fini de cardinal $n$. Pour tout $p \in \llbracket 0, n \rrbracket$, on note $\mathcal{P}_p(E)$ l'ensemble des parties à $p$ éléments de $E$.
+On a donc $\mathcal{P}_p(E) \subset \mathcal{P}(E)$.
+
+Une bijection $f : E \to E'$ induit une bijection :
+\begin{align*}
+  f_* : \mathcal{P}_p(E) &\longrightarrow \mathcal{P}_p(E') \\
+  A &\longmapsto f(A)
+\end{align*}
+Donc le cardinal de $\mathcal{P}_p(E)$ ne dépend que de $p$ et de $\text{Card}(E)$.
+
+\begin{theoreme}
+  Le nombre de parties à $p$ éléments de $E$ est :
+  $$ \binom{n}{p} = \frac{n(n-1)\dots(n-p+1)}{p!} $$
+  où $n = \text{Card}(E)$.
+\end{theoreme}
+
+Par convention, le numérateur vaut $1$ si $p=0$ (donc $\binom{n}{0} = 1$).
+
+\begin{lemme}[Principe des bergers]
+  Soit $u : S \to T$ une application surjective entre 2 ensembles finis.
+  On suppose que pour tout $t \in T$, $u^{-1}(\{t\})$ possède $q$ éléments où $q \in \N^*$ est indépendant de $t$. Alors on a la relation :
+  $$ \text{Card}(S) = q \text{Card}(T) $$
+\end{lemme}
+
+\begin{demonstration}
+  L'ensemble $\{u^{-1}(\{t\}), t \in T\}$ est une partition de $S$.
+  Donc :
+  $$ S = \bigsqcup_{t \in T} u^{-1}(\{t\}) \quad \text{(union disjointe)} $$
+  Donc :
+  $$ \text{Card}(S) = \sum_{t \in T} \underbrace{\text{Card}(u^{-1}(\{t\}))}_{q} = q \text{Card}(T) $$
+\end{demonstration}
+
+\begin{demonstration}[Preuve du théorème]
+  Introduisons l'ensemble $\mathcal{I}(\llbracket 1, p \rrbracket, E)$ des injections de $\llbracket 1, p \rrbracket$ dans $E$ (qui est l'ensemble des $p$-uplets d'éléments 2 à 2 distincts de $E$).
+  
+  Considérons l'application :
+  \begin{align*}
+    \Psi : \mathcal{I}(\llbracket 1, p \rrbracket, E) &\longrightarrow \mathcal{P}_p(E) \\
+    f &\longmapsto f(\llbracket 1, p \rrbracket) = \{f(1), f(2), \dots, f(p)\}
+  \end{align*}
+  
+  Elle est surjective car toute partie $P$ de $E$ de cardinal $p$ est l'image d'une bijection de $\llbracket 1, p \rrbracket$ dans $P$, donc d'une injection de $\llbracket 1, p \rrbracket$ dans $E$.
+  
+  De plus, pour tout $P \in \mathcal{P}_p(E)$, l'ensemble :
+  $$ \Psi^{-1}(\{P\}) = \{ f \in \mathcal{I}(\llbracket 1, p \rrbracket, E) \mid f(\llbracket 1, p \rrbracket) = P \} $$
+  est équipotent à $\text{Bij}(\llbracket 1, p \rrbracket, P)$ par l'application de corestriction à $P$ :
+  \begin{align*}
+    \Psi^{-1}(\{P\}) &\longrightarrow \text{Bij}(\llbracket 1, p \rrbracket, P) \\
+    f &\longmapsto f|^{P}
+  \end{align*}
+  
+  (Pour toute $g \in \text{Bij}(\llbracket 1, p \rrbracket, P)$, il existe une unique $f \in \Psi^{-1}(\{P\})$ telle que $f|^{P} = g$, c'est $f = j \circ g$ où $j : P \to E$ est l'injection canonique).
+  
+  Donc pour tout $P \in \mathcal{P}_p(E)$ :
+  $$ \text{Card}(\Psi^{-1}(\{P\})) = \text{Card}(\text{Bij}(\llbracket 1, p \rrbracket, P)) = p! $$
+  
+  Par le principe des bergers :
+  $$ \underbrace{\text{Card}(\mathcal{I}(\llbracket 1, p \rrbracket, E))}_{A_n^p} = p! \text{Card}(\mathcal{P}_p(E)) $$
+  
+  Donc :
+  $$ \text{Card}(\mathcal{P}_p(E)) = \frac{A_n^p}{p!} = \frac{n(n-1)\dots(n-p+1)}{p!} $$
+\end{demonstration}
+
+\begin{proposition}
+  Soit $E$ un ensemble fini de cardinal $n$. Alors $\mathcal{P}(E)$ est de cardinal $2^n$.
+\end{proposition}
+
+On introduit d'abord la :
+\begin{definition}
+  Soit $E$ un ensemble et $A \in \mathcal{P}(E)$. On appelle \mot{fonction caractéristique} de $A$ l'application notée $\mathbb{I}_A$ (ou $\chi_A$) de $E$ dans $\{0, 1\}$ telle que :
+  $$ \mathbb{I}_A(x) = \begin{cases} 1 & \text{si } x \in A \\ 0 & \text{si } x \in E \setminus A \end{cases} $$
+\end{definition}
+
+\begin{lemme}
+  L'application $\chi : \mathcal{P}(E) \to \{0, 1\}^E = \mathcal{F}(E, \{0, 1\})$, $A \mapsto \mathbb{I}_A$ est une bijection.
+\end{lemme}
+
+\begin{demonstration}
+  Pour toute $f \in \mathcal{F}(E, \{0, 1\})$, il existe une unique $A \in \mathcal{P}(E)$ telle que $f = \mathbb{I}_A$, c'est $A = f^{-1}(\{1\})$.
+\end{demonstration}
+
+\begin{demonstration}[Preuve de la proposition]
+  D'après le lemme, $\mathcal{P}(E) \simeq \{0, 1\}^E$ (équipotents).
+  Donc :
+  $$ \text{Card}(\mathcal{P}(E)) = \text{Card}(\{0, 1\}^E) = 2^n $$
+\end{demonstration}
+
+\begin{remarque}[Seconde preuve, par récurrence sur $n$]
+  \begin{itemize}
+    \item $n=0 : \mathcal{P}(\emptyset) = \{\emptyset\}$ donc $\text{Card}(\mathcal{P}(\emptyset)) = 1 = 2^0$.
+    \item Supposons $\text{Card}(\mathcal{P}(E)) = 2^n$ pour tout ensemble fini de cardinal $n$.
+    Soit $E$ un ensemble fini de cardinal $n+1$. Fixons $a \in E$.
+    Posons $E' = E \setminus \{a\}$.
+    Soit $P$ une partie de $E$.
+    \begin{itemize}
+      \item ou bien $a \notin P$, et alors $P \in \mathcal{P}(E')$. Il y a $2^n$ parties de ce genre d'après $HR(n)$.
+      \item ou bien $a \in P$, et alors $P = \{a\} \cup P'$ où $P' \in \mathcal{P}(E')$. Il y a autant de $P$ que de $P' \in \mathcal{P}(E')$, soit $2^n$.
+    \end{itemize}
+    Donc au total, cela fait $2^n + 2^n = 2^{n+1}$ parties de $E$.
+  \end{itemize}
+\end{remarque}
+
+\begin{corollaire}
+  Pour tout $n \in \N$, 
+  $$ \sum_{p=0}^n \binom{n}{p} = 2^n $$
+\end{corollaire}
+
+\begin{demonstration}
+  Conséquence de la partition :
+  $$ \mathcal{P}(E) = \bigsqcup_{p=0}^n \mathcal{P}_p(E) $$
+  Donc :
+  $$ \text{Card}(\mathcal{P}(E)) = \sum_{p=0}^n \text{Card}(\mathcal{P}_p(E)) $$
+  Soit :
+  $$ \cadre{ 2^n = \sum_{p=0}^n \binom{n}{p} } $$
+\end{demonstration}
+
+\begin{proposition}[Formules fondamentales]
+  $$ \forall p \in \llbracket 0, n \rrbracket, \quad \binom{n}{p} = \binom{n}{n-p} $$
+\end{proposition}
+
+\begin{demonstration}
+  C'est la conséquence de la bijection :
+  \begin{align*}
+    \mathcal{P}_p(E) &\longrightarrow \mathcal{P}_{n-p}(E) \\
+    A &\longmapsto C_E^A
+  \end{align*}
+\end{demonstration}
+
+\begin{proposition}[Formule de Pascal]
+  $$ \forall n \ge 1, \quad \forall p \in \llbracket 1, n-1 \rrbracket, $$
+  $$ \binom{n-1}{p-1} + \binom{n-1}{p} = \binom{n}{p} $$
+  
+  Cette formule est valide pour $p=n$ avec la convention $\binom{n}{k}=0$ si $k>n$, ainsi que pour $p=0$ avec la convention $\binom{n}{k}=0$ si $k<0$.
+\end{proposition}
+
+
+\begin{demonstration}[Combinatoire]
+  Soit $E$ de cardinal $n \ge 1$. Choisissons $a \in E$. 
+  
+  Les $\binom{n}{p}$ parties de $E$ de cardinal $p$ se répartissent en 2 types :
+  \begin{itemize}
+    \item celles qui contiennent $a$. Elles sont de la forme $\{a\} \cup P$ où $P$ est une partie à $p-1$ éléments de $E \setminus \{a\}$. Il y en a $\binom{n-1}{p-1}$.
+    \item celles qui ne contiennent pas $a$. Ce sont des parties à $p$ éléments de $E \setminus \{a\}$. Il y en a $\binom{n-1}{p}$.
+  \end{itemize}
+  
+  Au total :
+  $$ \binom{n}{p} = \binom{n-1}{p-1} + \binom{n-1}{p} $$
+  (cf. Triangle de Pascal).
+\end{demonstration}
+
+\begin{proposition}[Retour sur la formule du binôme de Newton]
+  $$ \forall n \in \N, \quad \forall (a,b) \in \C^2, \quad (a+b)^n = \sum_{k=0}^n \binom{n}{k} a^k b^{n-k} $$
+\end{proposition}
+
+\begin{demonstration}[Combinatoire]
+  Soient $a_1, \dots, a_n$ et $b_1, \dots, b_n \in \C$. Alors le produit :
+  $$ (a_1+b_1)(a_2+b_2)\dots(a_n+b_n) $$
+  se développe en une somme de termes $a_{i_1} a_{i_2} \dots a_{i_k} b_{j_1} \dots b_{j_{n-k}}$ où les ensembles $\{i_1, \dots, i_k\}$ et $\{j_1, \dots, j_{n-k}\}$ (qui sont complémentaires) forment une partition de $\llbracket 1, n \rrbracket$.
+  
+  Plus formellement, pour toute partie $I$ de $\llbracket 1, n \rrbracket$ (éventuellement vide), décrite sous la forme :
+  $$ I = \{i_1, i_2, \dots, i_k\} \quad \text{où } k = \text{Card}(I) \text{ et } i_1 < i_2 < \dots < i_k $$
+  Posons $a_I = a_{i_1} a_{i_2} \dots a_{i_k}$. 
+
+  Notons également $\bar{I} = \llbracket 1, n \rrbracket \setminus I$.
+  
+  Alors :
+  $$ (a_1+b_1)(a_2+b_2)\dots(a_n+b_n) = \sum_{I \in \mathcal{P}(\llbracket 1, n \rrbracket)} a_I b_{\bar{I}} $$
+  
+  Supposons que $\forall i \in \llbracket 1, n \rrbracket, a_i = a$ et $b_i = b$. 
+  Alors $a_I b_{\bar{I}} = a^k b^{n-k}$ si $k = \text{Card}(I)$.
+  
+  Donc :
+  \begin{align*}
+    (a+b)^n &= \sum_{I \in \mathcal{P}(\llbracket 1, n \rrbracket)} a_I b_{\bar{I}} \\
+            &= \sum_{k=0}^n \sum_{I \in \mathcal{P}_k(\llbracket 1, n \rrbracket)} a_I b_{\bar{I}} \\
+            &= \sum_{k=0}^n \underbrace{\text{Card}(\mathcal{P}_k(\llbracket 1, n \rrbracket))}_{\binom{n}{k}} a^k b^{n-k}
+  \end{align*}
+\end{demonstration}
 
 \end{document}
