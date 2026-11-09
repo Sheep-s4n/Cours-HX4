@@ -125,7 +125,8 @@ jobs:
                       ["latexmk", "-pdf", "-interaction=nonstopmode", f.name],
                       cwd=f.parent,
                       capture_output=True,
-                      text=True,
+                      encoding="utf-8",
+                      errors="replace",
                   )
 
                   # Nettoyer les fichiers auxiliaires générés (.aux, .log, .fls, etc.)
