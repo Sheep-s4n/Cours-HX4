@@ -1486,4 +1486,267 @@ On introduit d'abord la :
   \end{align*}
 \end{demonstration}
 
+\begin{proposition}
+Soit $E$ un ensemble dénombrable, $F$ un ensemble, et $f : E \to F$ une surjection. Alors $F$ est au plus dénombrable.
+\end{proposition}
+
+\begin{demonstration}
+Construisons une section $s : F \to E$ de $f$ (en utilisant l'axiome du choix). Comme $E$ est dénombrable, il existe une bijection $\N \to E$, notée $m \mapsto x_m$. 
+
+Soit $y \in F$, alors :
+$$ \{m \in \N \mid f(x_m) = y\} \neq \emptyset $$
+puisque $f$ est surjective. Cette partie non vide de $\N$ possède donc un plus petit élément (p.p.e.), noté $n_y$.
+
+On pose alors $s : F \to E$, $y \mapsto x_{n_y}$ où $n_y = \min \{m \in \N \mid f(x_m) = y\}$.
+
+Par construction, on a $f \circ s = \text{id}_F$. En particulier, $s$ est injective, donc $s$ induit une bijection de $F$ sur $s(F) \subset E$. Comme $E$ est dénombrable, $s(F)$ est au plus dénombrable. Donc $F$ aussi.
+\end{demonstration}
+
+\begin{corollaire}
+Si $E$ et $F$ sont dénombrables, alors $E \cup F$ est aussi dénombrable.
+\end{corollaire}
+
+\begin{demonstration}
+On dispose de deux bijections $f : \N \to E$ et $g : \N \to F$. Construisons $h : \N \to E \cup F$ telle que :
+$$
+\forall m \in \N, \quad \begin{cases} h(2m) = f(m) \\ h(2m+1) = g(m) \end{cases}
+$$
+
+Alors :
+$$ h(\N) = h(2\N \cup (2\N+1)) = h(2\N) \cup h(2\N+1) = E \cup F $$
+Donc $h$ est surjective. D'après la proposition précédente, $E \cup F$ est au plus dénombrable, or ce n'est pas un ensemble fini (car $E$ ou $F$ sont infinis), donc $E \cup F$ est dénombrable.
+\end{demonstration}
+
+\begin{theoreme}
+Si $E$ et $F$ sont dénombrables, alors $E \times F$ est dénombrable.
+\end{theoreme}
+
+\begin{demonstration}
+Quitte à composer avec une bijection, on peut supposer $E = \N$ et $F = \N$. Il s'agit donc de montrer que $\N^2$ est dénombrable.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    % Axes
+    \draw[->] (-0.5,0) -- (6,0) node[right] {$x$};
+    \draw[->] (0,-0.5) -- (0,6) node[above] {$y$};
+    
+    % Grid points
+    \foreach \x in {0,1,2,3,4} {
+        \foreach \y in {0,1,2,3,4} {
+            \fill (\x,\y) circle (2pt);
+        }
+    }
+    
+    % Diagonals
+    \draw[bleu, thick] (0,0) -- (0,0);
+    \draw[bleu, thick] (0,1) -- (1,0);
+    \draw[bleu, thick] (0,2) -- (2,0);
+    \draw[bleu, thick] (0,3) -- (3,0);
+    \draw[bleu, thick] (0,4) -- (4,0);
+    
+    % Labels
+    \node at (0,0) [below left] {$0$};
+    \node at (1,0) [below] {$1$};
+    \node at (2,0) [below] {$2$};
+    \node at (3,0) [below] {$3$};
+    \node at (0,1) [left] {$1$};
+    \node at (0,2) [left] {$2$};
+    \node at (0,3) [left] {$3$};
+    
+    \node at (2.5,2.5) {$(x,y)$};
+    \draw[->] (2,2) -- (2.3,2.3);
+    
+    \node at (4.5, 4.5) {$x+y$};
+\end{tikzpicture}
+\end{center}
+
+On numérote les points de $\N^2$ en suivant les diagonales (\mot{énumération diagonale}). Elle est donnée par la formule :
+$$ \N^2 \to \N, \quad (x,y) \mapsto [1 + 2 + \dots + x + y] + y $$
+qui est une bijection (on ne le prouve pas ici).
+\end{demonstration}
+
+\textbf{Généralisation :} Par une récurrence sur $n$, en utilisant l'associativité du produit cartésien $E_1 \times \dots \times E_n \times E = (E_1 \times \dots \times E_n) \times E$, on montre que le produit cartésien de $n$ ensembles dénombrables est dénombrable (pour tout $n \ge 1$).
+
+\begin{corollaire}
+Toute réunion d'une famille dénombrable d'ensembles dénombrables est dénombrable. (C'est-à-dire : si $\forall m \in \N, E_m$ est dénombrable, alors $\bigcup_{m \in \N} E_m$ est dénombrable).
+\end{corollaire}
+
+\begin{demonstration}
+Soit $(E_m)_{m \in \N}$ une famille d'ensembles dénombrables indexée par $\N$. Pour tout $m \in \N$, il existe une bijection $\varphi_m : \N \to E_m$. 
+
+Posons alors :
+$$ \psi : \N^2 \to \bigcup_{m \in \N} E_m, \quad (m,p) \mapsto \varphi_m(p) $$
+
+$\psi$ est surjective, car :
+\begin{align*}
+    \psi(\N^2) &= \psi\left(\bigcup_{m \in \N} \{m\} \times \N\right) \\
+    &= \bigcup_{m \in \N} \psi(\{m\} \times \N) \\
+    &= \bigcup_{m \in \N} \varphi_m(\N) \\
+    &= \bigcup_{m \in \N} E_m
+\end{align*}
+
+Comme $\N^2$ est dénombrable, on en déduit que $\bigcup_{m \in \N} E_m$ est dénombrable.
+\end{demonstration}
+
+\begin{remarque}
+\textbf{⚠️ Un produit infini d'ensembles dénombrables n'est pas dénombrable.}
+\end{remarque}
+
+\textbf{Exercice :} Montrer que $\mathbb{Z}$ et $\mathbb{Q}$ sont dénombrables.
+
+\begin{itemize}
+    \item L'application $f : \N \to \mathbb{Z}$ définie par :
+    $$ \begin{cases} 2n \mapsto n \\ 2n+1 \mapsto -n-1 \end{cases} $$
+    est bijective, donc $\mathbb{Z}$ est dénombrable.
+    
+    \item L'application $g : \mathbb{Z} \times \N^* \to \mathbb{Q}$ définie par :
+    $$ (p,q) \mapsto \frac{p}{q} $$
+    est surjective. Or $\mathbb{Z} \times \N^*$ est dénombrable comme produit de deux ensembles dénombrables. Donc $\mathbb{Q}$ est dénombrable d'après la proposition préliminaire.
+\end{itemize}
+
+\subsection*{Exemple d'ensemble infini non dénombrable}
+
+\begin{theoreme}[Cantor]
+Pour tout ensemble $E$, il n'existe aucune surjection (donc aucune bijection) de $E$ sur $\mathcal{P}(E)$.
+\end{theoreme}
+
+\begin{remarque}
+C'est évident si $E$ est fini de cardinal $n$, car alors $2^n > n$. D'après le théorème, il n'existe pas d'injection $f : \mathcal{P}(E) \to E$ (car alors $f$ posséderait une rétraction $r : E \to \mathcal{P}(E)$, c'est-à-dire telle que $r \circ f = \text{id}_{\mathcal{P}(E)}$, alors $r$ serait une surjection de $E$ dans $\mathcal{P}(E)$).
+\end{remarque}
+
+\begin{demonstration}
+Par l'absurde. Supposons qu'il existe une surjection $f : E \to \mathcal{P}(E)$. 
+
+Posons $A = \{x \in E \mid x \notin f(x)\}$. 
+Alors $A \in \mathcal{P}(E)$. Mais alors, par surjectivité de $f$, il existe $x_0 \in E$ tel que $A = f(x_0)$. 
+
+On obtient alors l'équivalence :
+$$ x_0 \in A \iff x_0 \in f(x_0) \iff x_0 \notin A \quad \text{(par définition de } A \text{)} $$
+On obtient une contradiction. Donc il n'existe pas de surjection de $E$ sur $\mathcal{P}(E)$.
+\end{demonstration}
+
+\begin{remarque}
+En revanche, il existe une injection de $E$ dans $\mathcal{P}(E)$, par exemple $x \in E \mapsto \{x\} \in \mathcal{P}(E)$. En substance, le théorème montre que $E$ est strictement \mot{moins puissant} que $\mathcal{P}(E)$ (il existe une injection de $E$ dans $\mathcal{P}(E)$, mais pas de $\mathcal{P}(E)$ dans $E$).
+\end{remarque}
+
+\textbf{Conséquence :} $\mathcal{P}(\N)$ n'est pas dénombrable (puisqu'il n'existe pas de bijection de $\N$ sur $\mathcal{P}(\N)$).
+
+Or $\mathcal{P}(\N)$ est équipotent à $\{0,1\}^{\N}$ via l'application caractéristique :
+$$ \chi : \mathcal{P}(\N) \to \{0,1\}^{\N}, \quad A \mapsto \mathbb{I}_A $$
+où 
+$$ \mathbb{I}_A(n) = \begin{cases} 1 & \text{si } n \in A \\ 0 & \text{si } n \notin A \end{cases} \quad \text{(en base 2)} $$
+
+On démontrera (à l'aide du développement dyadique d'un nombre réel) que $\R$ et $\{0,1\}^{\N}$ sont équipotents ($2^{\aleph_0} = \aleph_1$ : hypothèse du continu). Donc $\R$ n'est pas dénombrable.
+
+\newpage
+\section{V -- Division euclidienne -- Système de numération}
+
+\subsection{5.1. Division euclidienne}
+
+\begin{lemme}
+Soit $(u_n)_{n \in \N}$ une suite strictement croissante d'entiers naturels telle que $u_0 = 0$. Alors :
+$$ \forall m \in \N, \; \exists ! k \in \N, \; u_k \le m < u_{k+1} $$
+\end{lemme}
+
+\begin{demonstration}
+Soit $m \in \N$. Posons $P = \{k \in \N \mid u_k \le m\}$. 
+On note que $0 \in P$ car $u_0 = 0 \le m$. Donc $P \neq \emptyset$. 
+
+De plus, par stricte croissance de $(u_n)_{n \in \N}$, on a $\forall k \in \N, \; k \le u_k$. Donc :
+$$ \forall k \in P, \; k \le u_k \le m $$
+Donc $P$ est majoré par $m$. Par suite, $P$ est une partie non vide majorée de $\N$, qui possède à ce titre un plus grand élément, noté $k$.
+
+Comme $k \in P$ et $k+1 \notin P$, on a :
+$$ u_k \le m \quad \text{et} \quad m < u_{k+1} $$
+L'unicité découle de la formule $k = \max(P)$ (pge).
+\end{demonstration}
+
+\begin{theoreme}
+Pour tout $(a,b) \in \N \times \N^*$, il existe un unique couple $(q,r) \in \N^2$ tel que :
+$$ a = bq + r \quad \text{et} \quad 0 \le r < b $$
+$q$ est le \mot{quotient} de la division euclidienne de $a$ par $b$ et $r$ le \mot{reste}.
+\end{theoreme}
+
+\begin{demonstration}
+On applique le lemme à la suite $(bq)_{q \in \N}$. Comme $b \in \N^*$, cette suite est strictement croissante. 
+
+Donc pour tout $a \in \N$, il existe un unique $q \in \N$ tel que :
+$$ bq \le a < b(q+1) $$
+C'est-à-dire :
+$$ 0 \le a - bq < b $$
+
+En posant $r = a - bq$, on a bien $a = bq + r$ et $0 \le r < b$.
+\end{demonstration}
+
+\subsection{5.2. Développement en base $b$ d'un entier naturel}
+
+\begin{theoreme}
+Soit $b \in \N \setminus \{0,1\}$. Tout entier naturel $m$ s'écrit de façon unique :
+$$ m = \sum_{p=0}^{\infty} a_p b^p $$
+où $(a_p)_{p \in \N}$ est une suite d'entiers naturels nulle à partir d'un certain rang et telle que $\forall p \in \N, \; 0 \le a_p < b$.
+\end{theoreme}
+
+\begin{remarque}
+\textbf{N.B. :} Si $m \neq 0$, on note $N = \max \{p \in \N \mid a_p \neq 0\}$. Alors par définition du symbole $\sum$, on a :
+$$ \sum_{p=0}^{\infty} a_p b^p = \sum_{p=0}^N a_p b^p = a_0 + a_1 b + a_2 b^2 + \dots + a_N b^N \quad \text{(c'est une somme finie)} $$
+\end{remarque}
+
+\begin{demonstration}
+Soit $H(m)$ l'hypothèse au rang $m$ : « Il existe une unique suite $(a_p)_{p \in \N}$ d'entiers naturels nulle à partir d'un certain rang telle que $\forall p \in \N, 0 \le a_p < b$ et $m = \sum_{p=0}^{\infty} a_p b^p$ ».
+
+$H(0)$ est vraie car $0 = \sum_{p=0}^{\infty} a_p b^p$ où $\forall p \in \N, a_p = 0$. Il n'existe pas d'autre développement possible.
+
+Supposons $H(k)$ pour tout $k < m$, et montrons $H(m)$. On raisonne par analyse-synthèse.
+
+\begin{itemize}
+    \item \textbf{Analyse :} Supposons que :
+    \begin{align*}
+        m &= \sum_{p=0}^{\infty} a_p b^p \\
+        &= a_0 + a_1 b + \dots + a_N b^N \\
+        &= a_0 + b(a_1 + a_2 b + \dots + a_N b^{N-1}) \\
+        &= a_0 + b \sum_{p=1}^{\infty} a_p b^{p-1}
+    \end{align*}
+
+Comme $0 \le a_0 < b$ (par hypothèse), on voit que $a_0$ est le reste de la division euclidienne de $m$ par $b$, et $q = \sum_{p=1}^{\infty} a_p b^{p-1}$ est le quotient.
+
+Or, comme $b \ge 2$, on a $q < m$, donc pour $H(q)$, $q$ se développe de façon unique :
+$$ q = \sum_{p=0}^{\infty} a'_p b^p \quad \text{où } 0 \le a'_p < b \text{ et } a'_p = 0 \text{ à partir de ce rang.} $$
+
+Or $q$ s'écrit également :
+$$ q = \sum_{p=1}^{\infty} a_p b^{p-1} = \sum_{p=0}^{\infty} a_{p+1} b^p $$
+
+L'unicité du développement de $q$ (supposée dans $H(q)$) prouve alors que :
+$$ \forall p \in \N, \quad a_{p+1} = a'_p $$
+ou encore :
+$$ \forall p \in \N^*, \quad a_p = a'_{p-1} $$
+Ce qui prouve l'unicité de la suite $(a_p)_{p \in \N}$.
+
+    \item \textbf{Synthèse :} Posons $a_0$ le reste de la division euclidienne de $m$ par $b$ et $q$ le quotient. 
+    On a donc $m = a_0 + bq$. Comme $q < m$, $H(q)$ assure l'existence d'un unique $q = \sum_{p=0}^{\infty} a'_p b^p$ où $0 \le a'_p < b$. 
+    
+    Alors :
+    $$ m = a_0 + \sum_{p=0}^{\infty} a'_p b^{p+1} = \sum_{p=0}^{\infty} a_p b^p $$
+    en posant $a_0$ comme reste et $a_p = a'_{p-1}$ pour tout $p \ge 1$.
+\end{itemize}
+
+Donc $H(m)$ est vraie.
+\end{demonstration}
+
+\subsection*{Algorithme du développement en base $b$}
+
+\begin{align*}
+    q_0 &= m \\
+    q_0 &= q_1 b + a_0 \quad (0 \le a_0 < b) \\
+    q_1 &= q_2 b + a_1 \quad (0 \le a_1 < b) \\
+    q_2 &= q_3 b + a_2 \quad (0 \le a_2 < b) \\
+    &\vdots \\
+    q_i &= q_{i+1} b + a_i \quad (0 \le a_i < b)
+\end{align*}
+
+La condition de boucle est $q_i > 0$. Tant que cette condition est satisfaite, on a :
+$$ q_0 > q_1 > \dots > q_i $$
+
+Donc d'après le lemme, il existe un plus petit entier $i \in \N$ tel que $q_{i+1} = 0$. En notant $i = N$, on a :
+$$ m = a_0 + a_1 b + a_2 b^2 + \dots + a_N b^N $$
+
 \end{document}
