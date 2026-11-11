@@ -731,6 +731,21 @@ Si (iii) est vérifiée, $E$ ne peut être fini car dans ce cas toutes ses parti
   \]
   On choisit un élément dans chaque $A_i$ simultanément, l'ensemble d'indices $I$ étant \emph{quelconque} (par exemple $I = \mathbb{R}$).
 
+  Ce que veut l'axiome, c'est un représentant de \emph{chaque} $A_i$,
+c'est-à-dire un élément pris dans $A_1$, un dans $A_2$, un dans $A_3$, etc.
+La condition
+\[
+  \forall i \in I,\ c(i) \in A_i
+\]
+est donc le cœur de l'énoncé. L'union ne sert qu'à avoir un ensemble
+d'arrivée pour écrire « $c : I \to \dots$ ».
+
+\textbf{Pourquoi l'union plutôt qu'un plus gros ensemble ?}
+On pourrait prendre n'importe quel ensemble contenant tous les $A_i$,
+et l'énoncé resterait équivalent. L'union est simplement le plus petit
+ensemble qui convient, et il existe toujours : l'axiome de la réunion de ZF
+garantit que $\bigcup_{i \in I} A_i$ est un ensemble.
+
   \medskip
   \textbf{Axiome du choix dénombrable (ACD).} Même énoncé, mais uniquement pour $I = \mathbb{N}$ : pour toute suite $(A_n)_{n \in \mathbb{N}}$ d'ensembles non vides, il existe une suite $(a_n)_{n \in \mathbb{N}}$ telle que $\forall n \in \mathbb{N},\ a_n \in A_n$. On ne fait donc qu'une infinité \emph{dénombrable} de choix.
 
