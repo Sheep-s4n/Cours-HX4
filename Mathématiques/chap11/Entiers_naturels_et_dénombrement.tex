@@ -367,11 +367,18 @@ En posant $U_n = (u_n, u_{n+1})$, on a :
 \]
 où $F : X^2 \to X^2, \ (x, y) \mapsto (y, g(x, y))$.
 
-Les conditions portant sur $(U_n)_n$ sont équivalentes à :
+Les conditions portant sur $(u_n)_n$, à savoir
+\[
+\begin{cases}
+u_0 = a, \ u_1 = b \\
+\text{et } \forall n \in \mathbb{N}, \ u_{n+2} = g(u_n, u_{n+1}),
+\end{cases}
+\]
+sont équivalentes aux conditions portant sur $(U_n)_n$, où $U_n = (u_n, u_{n+1})$ :
 \[
 \begin{cases}
 U_0 = (a, b) \\
-\text{et } \forall n \in \N, \ U_{n+1} = F(U_n)
+\text{et } \forall n \in \mathbb{N}, \ U_{n+1} = F(U_n).
 \end{cases}
 \]
 
