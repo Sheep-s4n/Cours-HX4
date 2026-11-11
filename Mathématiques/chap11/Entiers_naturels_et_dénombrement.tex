@@ -722,6 +722,36 @@ Donc $f(\N)$ est une partie de $E$ équipotente à $\N$.
 Si (iii) est vérifiée, $E$ ne peut être fini car dans ce cas toutes ses parties seraient également finies.
 \end{demonstration}
 
+\begin{remarque}
+  \textbf{Axiome du choix (AC).} Pour toute famille $(A_i)_{i \in I}$ d'ensembles non vides, il existe une application
+  \[
+    c : I \to \bigcup_{i \in I} A_i
+    \quad\text{telle que}\quad
+    \forall i \in I,\ c(i) \in A_i .
+  \]
+  On choisit un élément dans chaque $A_i$ simultanément, l'ensemble d'indices $I$ étant \emph{quelconque} (par exemple $I = \mathbb{R}$).
+
+  \medskip
+  \textbf{Axiome du choix dénombrable (ACD).} Même énoncé, mais uniquement pour $I = \mathbb{N}$ : pour toute suite $(A_n)_{n \in \mathbb{N}}$ d'ensembles non vides, il existe une suite $(a_n)_{n \in \mathbb{N}}$ telle que $\forall n \in \mathbb{N},\ a_n \in A_n$. On ne fait donc qu'une infinité \emph{dénombrable} de choix.
+
+  \medskip
+  \textbf{Différence.} L'AC autorise un ensemble d'indices quelconque, l'ACD seulement $\mathbb{N}$. On a $\mathrm{AC} \Rightarrow \mathrm{ACD}$ (cas particulier $I = \mathbb{N}$), mais pas la réciproque : l'ACD est strictement plus faible.
+
+  \medskip
+  \textbf{Pourquoi un axiome ?} Pour un nombre fini de choix, aucun axiome n'est nécessaire : on enchaîne les choix par récurrence. Le problème n'apparaît qu'avec une infinité de choix, lorsqu'aucune règle explicite ne désigne un élément plutôt qu'un autre. Dans une infinité de paires de chaussures, on choisit la chaussure gauche de chaque paire ; dans une infinité de paires de chaussettes identiques, rien ne distingue les deux, et il faut l'axiome du choix.
+
+  \medskip
+  \textbf{Dans la preuve de (i) $\Rightarrow$ (ii).} Une récurrence rigoureuse ne donne que
+  \[
+    \forall n \in \mathbb{N},\ \exists\, (x_0,\dots,x_n) \text{ deux à deux distincts,}
+  \]
+  alors qu'on veut
+  \[
+    \exists\, (x_n)_{n \in \mathbb{N}},\ \forall n,\ x_n \notin \{x_0,\dots,x_{n-1}\}.
+  \]
+  Rien ne garantit que les listes finies s'emboîtent en une unique suite infinie : c'est ce que permet l'axiome du choix dénombrable (plus précisément, du choix dépendant, où chaque choix peut dépendre des précédents).
+\end{remarque}
+
 % ================= SUITE DES NOTES TRANSCRITES =================
 
 \begin{proposition}[Dedekind]
