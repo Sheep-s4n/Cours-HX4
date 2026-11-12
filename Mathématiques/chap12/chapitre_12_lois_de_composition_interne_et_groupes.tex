@@ -1,0 +1,264 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+
+%==================================================================
+% COULEURS
+%==================================================================
+\definecolor{brun}{RGB}{140,90,15}
+\definecolor{bordeaux}{RGB}{150,30,45}
+\definecolor{bleu}{RGB}{40,100,170}
+\definecolor{bleuclair}{RGB}{228,239,250}
+\definecolor{vert}{RGB}{30,120,80}
+\definecolor{orange}{RGB}{205,100,20}
+\definecolor{violet}{RGB}{110,60,150}
+
+%==================================================================
+% RACCOURCIS MATHÉMATIQUES
+%==================================================================
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\,\mathrm{d}}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\sgn}{signe}
+
+% Formule mise en valeur
+\newcommand{\cadre}[1]{%
+  \tcbox[on line,enhanced,colback=white,colframe=brun,arc=3pt,boxrule=0.7pt,
+         boxsep=3pt,left=2pt,right=2pt,top=1pt,bottom=1pt]{$\displaystyle #1$}}
+
+% Mot ou expression mis en valeur dans le texte
+\newcommand{\mot}[1]{\textcolor{bordeaux}{\textbf{#1}}}
+\newcommand{\cas}[1]{\textbf{\textcolor{orange}{#1}}}
+
+%==================================================================
+% PAGE, EN-TÊTE, TITRES
+%==================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{brun}{Mathématiques}}
+\fancyhead[R]{\small\textcolor{brun}{Chapitre 12 -- Lois de composition interne et groupes}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{brun}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\renewcommand{\labelitemi}{\textcolor{bleu}{\textbullet}}
+
+\titleformat{\section}{\Large\scshape\color{bordeaux}}{}{0pt}{}[{\color{bordeaux}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\large\scshape\color{brun}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{20pt}{10pt}
+\titlespacing*{\subsection}{0pt}{16pt}{8pt}
+
+%==================================================================
+% BLOCS COLORÉS
+%==================================================================
+\newcommand{\titrebloc}[2]{\textsc{#1}\ifx\relax#2\relax\else\ \textsc{(#2)}\fi}
+\newcommand{\titreblocnum}[2]{\textsc{#1}\ifx\relax#2\relax\else~#2\fi}
+
+\tcbset{
+  bloc/.style={enhanced,breakable,arc=3pt,boxrule=0.8pt,
+    left=8pt,right=8pt,top=7pt,bottom=7pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=14pt,after skip=14pt},
+  marge/.style={enhanced,breakable,frame hidden,arc=2pt,
+    left=10pt,right=6pt,top=6pt,bottom=6pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=12pt,after skip=12pt}
+}
+
+\newtcolorbox{definition}[1][]{bloc, colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7, title={\titrebloc{Définition}{#1}}}
+\newtcolorbox{proposition}[1][]{bloc, colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5, title={\titrebloc{Proposition}{#1}}}
+\newtcolorbox{theoreme}[1][]{bloc, colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt, coltitle=bordeaux,colbacktitle=bordeaux!8, title={\titrebloc{Théorème}{#1}}}
+\newtcolorbox{demonstration}{marge, colback=bleuclair,borderline west={2.5pt}{0pt}{bleu}, before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ }, after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+\newtcolorbox{remarque}[1][]{marge, colback=vert!6,borderline west={2.5pt}{0pt}{vert}, coltitle=vert!70!black,colbacktitle=vert!6, title={\titreblocnum{Remarque}{#1}}}
+\newtcolorbox{exemples}[1][Exemples]{marge, colback=orange!6,borderline west={2.5pt}{0pt}{orange}, coltitle=orange!85!black,colbacktitle=orange!6, title={\textsc{#1}}}
+\newtcolorbox{lemme}[1][]{bloc, colback=bleu!5,colframe=bleu,coltitle=bleu,colbacktitle=bleu!5, title={\titrebloc{Lemme}{#1}}}
+\newtcolorbox{corollaire}[1][]{bloc, colback=orange!5,colframe=orange,coltitle=orange,colbacktitle=orange!5, title={\titrebloc{Corollaire}{#1}}}
+\newtcolorbox{synthese}[1][]{bloc, colback=violet!5,colframe=violet,coltitle=violet,colbacktitle=violet!5, title={\titrebloc{Synthèse}{#1}}}
+
+%==================================================================
+% DÉBUT DU DOCUMENT
+%==================================================================
+\begin{document}
+
+\begin{center}
+  {\Huge \scshape \color{bordeaux} Chapitre 12 -- Lois de composition interne et groupes}
+\end{center}
+\vspace{10pt}
+
+\section{I -- Loi de composition interne}
+
+\subsection{1.1. Définitions}
+
+\begin{definition}
+On appelle \mot{loi de composition interne} sur un ensemble $E$ toute application $T : E \times E \to E$. ($T$ se lit loi). 
+Le couple $(E, T)$ s'appelle un \mot{magma}.
+\end{definition}
+
+\begin{remarque}
+Soit $T : E \times E \to E$ une loi de composition interne sur $E$. Il est d'usage de noter l'image d'un couple $(x,y) \in E^2$ par $x \top y$ de préférence à $T(x,y)$. 
+Souvent la loi de composition $T$ est notée par un point $x \cdot y$, voire sans symbole $xy$.
+Dans ce cas, si $(x,y,z) \in E^3$, $x(yz)$ désigne $x \top (y \top z)$.
+\end{remarque}
+
+\begin{definition}
+Soient $x_1, \dots, x_n$ $n$ éléments d'un magma $(E, T)$. Pour donner un sens à $x_1 \top x_2 \dots \top x_n$, il faut préciser le \mot{parenthésage}.
+\end{definition}
+
+\begin{exemples}
+Pour $n=3$, les parenthésages possibles sont : $x_1 \top (x_2 \top x_3)$ et $(x_1 \top x_2) \top x_3$.
+Pour $n=4$, on a : $(x_1 \top x_2) \top (x_3 \top x_4)$, $x_1 \top (x_2 \top (x_3 \top x_4))$, $((x_1 \top x_2) \top x_3) \top x_4$, etc.
+\end{exemples}
+
+Il est commode d'encoder un parenthésage sur $n$ symboles par des \mot{arbres binaires planaires enracinés à $n$ feuilles}.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9, every node/.style={circle, fill=bleu!30, inner sep=1.5pt}]
+  % Tree 1: (x1 T x2) T x3
+  \node (root1) at (0,2.2) {} 
+    child { node {} 
+      child { node[fill=none, below=2pt] {$x_1$} }
+      child { node[fill=none, below=2pt] {$x_2$} }
+    }
+    child { node[fill=none, below=2pt] {$x_3$} };
+  \node[fill=none, above=2pt] at (root1) {$\text{racine}$};
+  \node[fill=none, below=22pt] at (0,0) {$(x_1 \top x_2) \top x_3$};
+
+  % Tree 2: x1 T (x2 T x3)
+  \begin{scope}[xshift=6cm]
+    \node (root2) at (0,2.2) {}
+      child { node[fill=none, below=2pt] {$x_1$} }
+      child { node {} 
+        child { node[fill=none, below=2pt] {$x_2$} }
+        child { node[fill=none, below=2pt] {$x_3$} }
+      };
+    \node[fill=none, above=2pt] at (root2) {$\text{racine}$};
+    \node[fill=none, below=22pt] at (0,0) {$x_1 \top (x_2 \top x_3)$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+On peut montrer que le nombre de parenthésages différents sur $n+1$ éléments est le \mot{nombre de Catalan} :
+\[
+C_n = \frac{1}{n+1}\binom{2n}{n}
+\]
+
+On peut passer d'un parenthésage à un autre sur $x_1, \dots, x_n$ en appliquant une succession finie de \mot{transformations élémentaires} :
+\[
+(xy)z \longleftrightarrow x(yz)
+\]
+
+\begin{proposition}
+À tout magma $(E, T)$, on peut associer le magma $(\mathcal{P}(E), \ast)$ en définissant $\ast$ par :
+\[
+\forall (A, B) \in \mathcal{P}(E)^2, \quad A \ast B = \{ z \in E \mid \exists (x,y) \in A \times B, \; z = x \top y \}
+\]
+\end{proposition}
+
+\begin{remarque}
+Par abus de notation, on note $A \top B$ pour $A \ast B$, et même $x \top B$ pour $\{x\} \ast B$ et $A \top y$ pour $A \ast \{y\}$.
+\end{remarque}
+
+\begin{definition}
+Soit $(E, T)$ un magma et $a \in E$. On appelle \mot{translation à gauche} (resp. à droite) par $a$ l'application $\gamma_a : E \to E, \; x \mapsto a \top x$ (resp. $\delta_a : E \to E, \; x \mapsto x \top a$).
+\end{definition}
+
+\begin{definition}[Partie stable -- Loi induite]
+Soit $(E, T)$ un magma et $A$ une partie de $E$. On dit que $A$ est \mot{stable} pour $T$ si $\forall (x,y) \in A^2, \; x \top y \in A$.
+L'application $T_A : A \times A \to A, \; (x,y) \mapsto x \top y$ est alors une loi de composition interne sur $A$, appelée \mot{loi induite} par $T$ sur $A$.
+\end{definition}
+
+\subsection{1.2. Lois associatives}
+
+\begin{definition}
+Soit $(E, T)$ un magma. La loi $T$ est dite \mot{associative} si :
+\[
+\forall (x, y, z) \in E^3, \quad x \top (y \top z) = (x \top y) \top z
+\]
+On dit alors que $(E, T)$ est un \mot{magma associatif}.
+\end{definition}
+
+\begin{proposition}
+Soit $(E, T)$ un magma associatif et $x_1, \dots, x_n$ des éléments de $E$. Si $P$ et $P'$ sont 2 parenthésages sur $n$ symboles, alors :
+\[
+P(x_1, \dots, x_n) = P'(x_1, \dots, x_n)
+\]
+\end{proposition}
+
+En d'autres termes, on peut noter $x_1 \top x_2 \dots \top x_n$ sans préciser le parenthésage.
+
+\begin{notation}
+Lorsque $x_1 = \dots = x_n = x$ dans un magma associatif, on note $\prod_{i=1}^n^\top x$ ou $x^n$ (en notation multiplicative) le composé de $n$ éléments égaux à $x$.
+\end{notation}
+
+\subsection{1.3. Lois commutatives}
+
+\begin{definition}
+Soit $(E, T)$ un magma. On dit que 2 éléments $a$ et $b$ de $E$ sont \mot{permutables} (ou \mot{commutant}) si $a \top b = b \top a$.
+La loi $T$ est dite \mot{commutative} si 2 éléments quelconques de $E$ sont permutables, c'est-à-dire :
+\[
+\forall (a, b) \in E^2, \quad a \top b = b \top a
+\]
+\end{definition}
+
+\begin{proposition}
+Soit $(E, T)$ un magma associatif et $x_1, \dots, x_n$ des éléments de $E$ deux à deux permutables. Le composé de ces éléments ne dépend pas de l'ordre dans lequel on les compose.
+\end{proposition}
+
+\subsection{1.4. Élément neutre}
+
+\begin{definition}
+Soit $(E, T)$ un magma. On appelle \mot{élément neutre} pour la loi $T$ tout élément $e$ de $E$ tel que :
+\[
+\forall x \in E, \quad e \top x = x \top e = x
+\]
+\end{definition}
+
+\begin{proposition}
+S'il existe, un tel élément est unique.
+\end{proposition}
+
+\begin{demonstration}
+Soient $e$ et $e'$ deux éléments neutres. Alors $e \top e' = e'$ (car $e$ est neutre) et $e \top e' = e$ (car $e'$ est neutre). Donc $e = e'$.
+\end{demonstration}
+
+\begin{definition}
+Un magma $(E, T)$ qui possède un élément neutre est dit \mot{unifère}.
+On appelle \mot{monoïde} tout magma associatif et unifère $(E, T)$. 
+Lorsque de plus $T$ est commutative, le monoïde est dit \mot{commutatif} (ou \mot{abélien}).
+\end{definition}
+
+\begin{exemples}
+1) $(\N, +)$ est un monoïde commutatif dont l'élément neutre est $0$.
+2) $(\N, \times)$ est un monoïde commutatif dont l'élément neutre est $1$.
+3) Soit $X$ un ensemble. Le magma $(X^X, \circ)$ est un monoïde dont l'élément neutre est $\text{id}_X$.
+\end{exemples}
+
+\subsection{1.5. Éléments réguliers -- Éléments symétrisables}
+
+\begin{definition}
+Soit $(E, T)$ un magma. On appelle élément \mot{régulier (ou simplifiable) à droite} (resp. à gauche) tout élément $a \in E$ tel que :
+\[
+\forall (x,y) \in E^2, \quad x \top a = y \top a \implies x = y \quad (\text{resp. } a \top x = a \top y \implies x = y)
+\]
+C'est-à-dire tel que $\delta_a$ (resp. $\gamma_a$) soit injective.
+\end{definition}
+
+\end{document}

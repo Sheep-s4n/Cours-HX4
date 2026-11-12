@@ -1820,4 +1820,109 @@ $$ q_0 > q_1 > \dots > q_i $$
 Donc d'après le lemme, il existe un plus petit entier $i \in \N$ tel que $q_{i+1} = 0$. En notant $i = N$, on a :
 $$ m = a_0 + a_1 b + a_2 b^2 + \dots + a_N b^N $$
 
+\begin{exemples}[Conversion de base par divisions successives]
+
+\textbf{Exemple : $62$ en base $3$}
+$$
+\begin{array}{r|l}
+62 & 3 \\
+\cline{2-2}
+\cadre{2} \quad 20 & 3 \\
+\cline{2-2}
+\cadre{2} \quad 6 & 3 \\
+\cline{2-2}
+\cadre{0} \quad 2 & 3 \\
+\cline{2-2}
+\cadre{2} \quad 0 &
+\end{array}
+$$
+On obtient donc, en lisant les restes de bas en haut :
+$$ 62 = 2022_3 = a_0 + a_1 \times 3 + a_2 \times 3^2 + a_3 \times 3^3 = 2 + 2\cdot 3 + 0\cdot 3^2 + 2\cdot 3^3 $$
+
+\vspace{1em}
+\textbf{Exemple : $47$ en base $2$}
+$$
+\begin{array}{r|l}
+47 & 2 \\
+\cline{2-2}
+\cadre{1} \quad 23 & 2 \\
+\cline{2-2}
+\cadre{1} \quad 11 & 2 \\
+\cline{2-2}
+\cadre{1} \quad 5 & 2 \\
+\cline{2-2}
+\cadre{1} \quad 2 & 2 \\
+\cline{2-2}
+\cadre{0} \quad 1 & 2 \\
+\cline{2-2}
+\cadre{1} \quad 0 &
+\end{array}
+$$
+On obtient donc :
+$$ 47 = 101111_2 = 1 + 2 + 2^2 + 2^3 + 0\times 2^4 + 2^5 $$
+\end{exemples}
+
+Notons $[\![0, b-1]\!]^{(\N)}$ l'ensemble des suites d'entiers appartenant à $[\![0, b-1]\!]$ et nulles à partir d'un certain rang.
+
+\begin{proposition}
+On a montré que l'application :
+$$
+\begin{array}{rccl}
+\varphi : & [\![0, b-1]\!]^{(\N)} & \longrightarrow & \N \\
+& (a_p)_{p\in \N} & \longmapsto & \displaystyle \sum_{p=0}^\infty a_p b^p
+\end{array}
+$$
+est une \mot{bijection}.
+\end{proposition}
+
+\begin{definition}[Ordre lexicographique]
+Munissons $[\![0, b-1]\!]^{(\N)}$ de l'\mot{ordre lexicographique} :
+$$ (a_p)_{p\in \N} \preceq (a'_p)_{p\in \N} \iff
+\begin{cases}
+(a_p)_{p\in\N} = (a'_p)_{p\in\N} \\
+\text{ou} \\
+\exists i_0 \in \N, \ \forall i > i_0, \ a_i = a'_i \text{ et } a_{i_0} < a'_{i_0}
+\end{cases}
+$$
+\end{definition}
+
+On vérifie aisément que c'est un ordre total sur $[\![0, b-1]\!]^{(\N)}$.
+
+\begin{theoreme}
+Via la bijection $\varphi$, l'ordre lexicographique correspond à l'ordre naturel sur $\N$, c'est-à-dire :
+$$ n = \sum_{p=0}^\infty a_p b^p < n' = \sum_{p=0}^\infty a'_p b^p \iff (a_p)_{p\in \N} \prec (a'_p)_{p\in \N} $$
+\end{theoreme}
+
+\begin{demonstration}
+\textit{Preuve :} (Il n'y a pas besoin de faire la réciproque car l'ordre est total, donc la réciproque d'une bijection croissante est croissante).
+
+Comme l'ordre est total sur $[\![0, b-1]\!]^{(\N)}$, il suffit de montrer que :
+$$ (a_p)_{p\in \N} \prec (a'_p)_{p\in \N} \implies n < n' $$
+
+Supposons $(a_p)_{p\in \N} \prec (a'_p)_{p\in \N}$. Notons $i_0$ tel que :
+$$ \forall i > i_0, \quad a_i = a'_i \quad \text{et} \quad a_{i_0} < a'_{i_0} $$
+
+Alors on peut développer $n$ et $n'$ :
+\begin{align*}
+n &= a_0 + a_1 b + \dots + a_{i_0-1} b^{i_0-1} + a_{i_0} b^{i_0} + a_{i_0+1} b^{i_0+1} + \dots \\
+n' &= a'_0 + a'_1 b + \dots + a'_{i_0-1} b^{i_0-1} + a'_{i_0} b^{i_0} + a_{i_0+1} b^{i_0+1} + \dots
+\end{align*}
+
+Donc, en effectuant la différence $n' - n$ (les termes d'indice strictement supérieur à $i_0$ s'annulent) :
+$$ n' - n = a'_0 - a_0 + (a'_1 - a_1)b + \dots + (a'_{i_0-1} - a_{i_0-1})b^{i_0-1} + (a'_{i_0} - a_{i_0})b^{i_0} $$
+
+Or, $\forall i, \ a'_i - a_i \ge -(b-1)$ (car les coefficients appartiennent à $[\![0, b-1]\!]$), et $a'_{i_0} - a_{i_0} \ge 1$. On a donc :
+\begin{align*}
+n' - n &\ge \underbrace{-(b-1) \left[ 1 + b + b^2 + \dots + b^{i_0-1} \right]}_{= -(b^{i_0} - 1)} + b^{i_0} \\
+&\ge -(b^{i_0} - 1) + b^{i_0} = 1
+\end{align*}
+
+Donc $n' > n$.
+\end{demonstration}
+
+\begin{remarque}
+En base 10, ce principe se retrouve naturellement : l'ordre lexicographique correspond à la comparaison des entiers en lisant les chiffres de poids fort :
+$$ 31\cadre{7}26 > 31\cadre{6}99 $$
+\end{remarque}
+
 \end{document}
