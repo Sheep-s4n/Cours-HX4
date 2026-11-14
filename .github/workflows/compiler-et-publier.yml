@@ -243,8 +243,8 @@ jobs:
                   parties.pop()  # chap10/chap10.pdf -> chap10
               return " › ".join(x.replace("_", " ").replace("-", " ") for x in parties)
 
-          pdfs = [p for p in Path(".").rglob("*.pdf") if not (set(p.parts) & IGNORER) and p.is_file() and p.stat().st_size > 0]
-          pdfs.sort(key=lambda p: tri_naturel(p.as_posix()))
+          fichiers_cours = [p for ext in ("*.pdf", "*.html") for p in Path(".").rglob(ext)]
+          pdfs = [p for p in fichiers_cours if not (set(p.parts) & IGNORER) and p.is_file() and p.stat().st_size > 0 and p.as_posix() != "index.html"]
 
           groupes = {}
           for p in pdfs:
