@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modéliser un système asservi, en jouant</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&display=swap">
+<style>
+:root{--bg:#eef3f8;--grid:#d6e0ec;--card:#fff;--ink:#14213d;--mut:#55627a;--p:#e5197a;--t:#0b8f8a;--y:#ffd23f;--line:#c4d1e2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1626;--grid:#1a2540;--card:#18213a;--ink:#eef2fb;--mut:#9fadc8;--p:#ff5fa8;--t:#3ed6cf;--line:#2d3a5c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1626;--grid:#1a2540;--card:#18213a;--ink:#eef2fb;--mut:#9fadc8;--p:#ff5fa8;--t:#3ed6cf;--line:#2d3a5c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.55 "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink);background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
+main{max-width:760px;margin:0 auto;padding:20px 14px 60px}
+h1{font-size:clamp(30px,7vw,46px);line-height:1.05;font-weight:800;margin:24px 0 8px}
+h2{font-size:24px;margin:0 0 4px}
+.lead{color:var(--mut);margin:0 0 20px}
+section{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:16px;margin:18px 0;box-shadow:5px 5px 0 var(--ink)}
+section>p,.m{margin:4px 0 12px;color:var(--mut)}
+.box{border:2px dashed var(--line);border-radius:10px;padding:12px;margin:10px 0}
+.box h3{font-size:16px;margin:0 0 8px}
+button,select{font:inherit;font-weight:700;background:var(--y);color:#14213d;border:2px solid var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;margin:2px 4px 2px 0}
+button:active{transform:translateY(2px)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--p);outline-offset:2px}
+label{display:inline-flex;align-items:center;gap:8px;margin:2px 14px 2px 0;font-weight:700}
+input[type=range]{accent-color:var(--p);width:130px}
+input[type=number]{font:inherit;width:70px;padding:4px;border:2px solid var(--ink);border-radius:6px;background:var(--card);color:var(--ink)}
+.chip{display:inline-block;padding:2px 9px;margin:2px;border:2px solid var(--ink);border-radius:999px;background:var(--card);font-weight:700}
+.chip.hot{background:var(--p);color:#fff}.chip.on{background:var(--t);color:#04211f}
+.out{font-weight:700;margin:8px 0 0}
+.f{font:700 17px/1.4 ui-monospace,Menlo,Consolas,monospace;background:var(--grid);border-radius:8px;padding:8px 10px;margin:8px 0;overflow-x:auto}
+.ok{color:var(--t)}.bad{color:var(--p)}
+svg{max-width:100%;height:auto}
+.note{border-left:6px solid var(--p);padding:6px 10px;margin:10px 0;background:var(--grid);border-radius:0 8px 8px 0}
+table{border-collapse:collapse;margin:6px 0}td,th{border:1px solid var(--line);padding:3px 8px;text-align:left}
+.scroll{overflow-x:auto}
+</style></head><body><main>
+<h1>Modéliser un système asservi, en jouant</h1>
+<p class="lead">Chapitre 3 de SI : du système réel à la fonction de transfert. Chaque carte donne l’idée, explique les formules, puis te laisse tourner les boutons.</p>
+
+<section><h2>1. SDLCI : cinq lettres, cinq hypothèses</h2>
+<p><b>S</b>ystème <b>D</b>ynamique <b>L</b>inéaire <b>C</b>ontinu <b>I</b>nvariant. Dynamique : la sortie dépend du passé (elle a une « mémoire »). Linéaire : proportionnalité et superposition. Continu : signaux définis à chaque instant. Invariant : le système ne vieillit pas.</p>
+<div class="box"><h3>Instantané ou dynamique ?</h3><svg id="dy" width="340" height="150" viewBox="0 0 340 150"></svg><p class="m" style="margin:0">Un système instantané recopie l’entrée à chaque instant. Un système dynamique a de l’inertie : sa sortie met du temps à monter, peut dépasser, et continue d’évoluer après la fin de l’entrée. Il est <b>causal</b> (l’avenir ne dépend que du passé et du présent) et <b>déterministe</b> (une condition initiale donne un seul futur). <b>Invariant</b> : décaler l’entrée dans le temps décale la sortie de la même durée, car le système ne vieillit pas.</p></div>
+<div class="box"><h3>Continu ou échantillonné ? Joue sur la période T</h3>
+<label>T = <span id="vT">1</span> s<input type="range" id="T" min="0.2" max="3" step="0.1" value="1"></label>
+<svg id="sm" width="340" height="150" viewBox="0 0 340 150"></svg>
+<p class="m" style="margin:0">Courbe : signal réel. Points : échantillons (CAN). Marches : bloqueur d’ordre zéro (CNA), qui garde la dernière valeur. Quand T est très petit devant le temps de réponse, on le traite comme un système continu.</p></div>
+<div class="box"><h3>Linéaire ? Teste la superposition</h3>
+<select id="sy"><option value="0">linéaire : S = 1,5·E</option><option value="1">saturation</option><option value="2">seuil (frottement)</option></select>
+<label>x₁ <input type="range" id="x1" min="-2" max="2" step="0.1" value="0.8"></label><label>x₂ <input type="range" id="x2" min="-2" max="2" step="0.1" value="1.2"></label>
+<svg id="ln" width="300" height="140" viewBox="0 0 300 140"></svg><div id="lo" class="out"></div>
+<p class="m" style="margin:0">Linéaire veut dire : f(x₁) + f(x₂) = f(x₁ + x₂) et f(λx) = λf(x). Une saturation ou un seuil casse cette égalité. On linéarise alors autour du point de fonctionnement.</p></div></section>
+
+<section><h2>2. Pourquoi modéliser ?</h2>
+<p>Modéliser sert à prédire le comportement d’un système : on modélise les entrées (consignes, perturbations) et le système, on simule (à la main ou par ordinateur), puis on compare avec des mesures réelles et avec le cahier des charges.</p>
+<div id="dm" class="box scroll"></div>
+<div class="box"><h3>Deux sortes de modèles</h3><p class="m" style="margin:0"><b>Modèle de connaissance</b> : on écrit les lois de la physique. Parfois complexe (on simplifie, on linéarise), mais précieux pour concevoir et dimensionner car il montre l’influence de chaque paramètre. <b>Modèle de comportement</b> : on suppose une forme d’équation (pour un SDLCI, une équation différentielle linéaire à coefficients constants) et on ajuste ses coefficients sur des mesures : c’est l’identification. Dans les deux cas c’est une représentation externe (entrée → sortie), avec n ≥ m : l’ordre de dérivation de la sortie est au moins celui de l’entrée, sinon le système réagirait avant la cause.</p></div></section>
+
+<section><h2>3. Les systèmes asservis</h2>
+<p>Un système <b>automatisé</b> combine chaîne d’information et chaîne de puissance. Il est <b>asservi</b> quand il tend à annuler l’écart entre la grandeur commandée (sortie) et la consigne. Des capteurs mesurent en permanence l’état : ce retour d’information en fait un système <b>bouclé</b>. Selon le but : <b>poursuite</b> (suivre une loi, comme un radar ou un bras de robot) ou <b>régulation</b> (tenir une valeur malgré les perturbations, comme un four, la vitesse d’une voiture ou le niveau du château d’eau). Traité par calculateur : asservi numérique ; sinon analogique.</p>
+<div id="dg3"></div>
+<p class="m">Trois fonctions se succèdent : <b>observer</b> (le capteur, dont la précision fixe celle du système), <b>comparer et réfléchir</b> (le régulateur = comparateur + correcteur, l’organe « intelligent »), <b>agir</b> (l’actionneur apporte la puissance : moteur, vanne). Notations : C consigne, E entrée, Eᵣ retour, ε écart, U commande, S sortie.</p>
+<div class="box"><h3>À quoi sert le bouclage ? Essaie</h3>
+<label>gain du correcteur Kc = <span id="vk">10</span><input type="range" id="kc" min="1" max="40" step="1" value="10"></label>
+<svg id="oc" width="340" height="160" viewBox="0 0 340 160"></svg>
+<p class="m" style="margin:0">Consigne 1, perturbation de 0,5 à t = 6. Sans boucle (rose), la perturbation passe entière. Avec la boucle (vert), elle est atténuée environ (1 + Kc) fois. Il reste un petit écart statique : pour l’annuler il faut un intégrateur dans la chaîne (classe 1). Le bouclage est utile quand la précision compte, quand il y a des perturbations, quand le système est mal connu ou quand sa dynamique n’est pas satisfaisante.</p></div></section>
+
+<section><h2>4. De l’équation différentielle à H(p)</h2>
+<p>Un SDLCI obéit à une équation différentielle à coefficients constants :</p>
+<div class="f">aₙ·sⁿ(t)+…+a₁·s′(t)+a₀·s(t) = bₘ·eᵐ(t)+…+b₀·e(t)</div>
+<p>La transformée de Laplace F(p) = ∫ f(t)·e^(−pt) dt « pèse » f avec une exponentielle qui s’écrase. Son pouvoir : dériver devient multiplier par p. Preuve en une ligne (intégration par parties) :</p>
+<div class="f">L[f′] = [f·e^(−pt)] + p·∫f·e^(−pt)dt = p·F(p) − f(0⁻)</div>
+<p>Avec le système au repos (conditions initiales nulles, condition d’Heaviside) tout s’aligne : s′ → p·S, s″ → p²·S. L’équation devient un polynôme, et on divise :</p>
+<div class="f">H(p) = S(p)/E(p) = (bₘpᵐ+…+b₀)/(aₙpⁿ+…+a₀)</div>
+<table><tr><th>Dans le temps</th><th>Dans Laplace</th><th>Idée</th></tr><tr><td>f′(t)</td><td>p·F(p)</td><td>dériver = × p</td></tr><tr><td>∫f</td><td>F(p)/p</td><td>intégrer = ÷ p</td></tr><tr><td>f(t−T)</td><td>F(p)·e^(−pT)</td><td>retard pur</td></tr><tr><td>f″(t)</td><td>p²F − p·f(0⁻) − f′(0⁻)</td><td>dériver deux fois</td></tr><tr><td>f(t)·e^(−at)</td><td>F(p+a)</td><td>amortissement</td></tr><tr><td>lim f(t), t→∞</td><td>lim p·F(p), p→0</td><td>valeur finale</td></tr><tr><td>lim f(t), t→0⁺</td><td>lim p·F(p), p→∞</td><td>valeur initiale</td></tr></table>
+<p class="m">Avec des conditions initiales non nulles, S(p) = [polynôme en E]/[polynôme en p]·E(p) + (s₀(p) − e₀(p))/[polynôme en p]. Le premier terme est la <b>réponse forcée</b> (due à l’entrée), le second la <b>réponse libre</b> (due à l’état initial). La condition d’Heaviside (système au repos) annule la réponse libre, d’où H(p) = S/E. On l’appelle transmittance si le rapport est sans dimension. Zéros : racines du numérateur. Pôles : racines du dénominateur.
+<div class="box"><h3>Banc d’essai : a₂·s″ + a₁·s′ + a₀·s = b₀·e, avec un échelon e = 1</h3>
+<label>a₂ <input type="range" id="a2" min="0" max="2" step="0.05" value="0.25"></label><label>a₁ <input type="range" id="a1" min="0.1" max="3" step="0.05" value="1"></label><label>a₀ <input type="range" id="a0" min="0.2" max="3" step="0.05" value="1"></label><label>b₀ <input type="range" id="b0" min="0.2" max="3" step="0.05" value="1"></label>
+<svg id="st" width="340" height="170" viewBox="0 0 340 170"></svg><div id="so"></div></div>
+<p class="m">Forme canonique : H(p) = K/pᵅ · (1+…)/(1+…). K = gain, α = classe (nombre d’intégrateurs, c’est-à-dire de p en facteur au dénominateur), ordre = degré du dénominateur. Les racines du dénominateur sont les pôles : si elles sont à partie réelle négative, la réponse se stabilise.</p></section>
+
+<section><h2>5. Boucler : pourquoi H/(1+GH) ?</h2>
+<p>Un système asservi compare la sortie mesurée à la consigne : ε = E − Er avec Er = G·S, et S = H·ε. Remplace ε :</p>
+<div class="f">S = H(E − G·S) ⇒ S(1 + G·H) = H·E ⇒ S/E = H/(1 + G·H)</div>
+<p>C’est la formule de Black : FTBF = FTCD/(1 + FTBO), avec FTBO = G·H. Pour la sentir, on laisse la boucle « tourner » : on part de S = 0, puis on réinjecte S dans H(E − G·S) à chaque tour.</p>
+<div class="box"><label>H <input type="range" id="bh" min="0.2" max="4" step="0.1" value="2"></label><label>G <input type="range" id="bg" min="0.1" max="1" step="0.05" value="0.5"></label><br>
+<button id="bt">Un tour de boucle</button><button id="br">Repartir de zéro</button>
+<div id="bo" class="out"></div></div>
+<div id="dg5"></div>
+<div class="box"><h3>Cascade, parallèle, boucles concentriques</h3>
+<div class="f">cascade : H₁·H₂ &nbsp; parallèle (S = X₁ − X₂) : H₁ − H₂</div>
+<p class="m" style="margin:0 0 8px">Concentriques : FTBF = H₁H₂H₃ / (1 + H₂G₁ + H₁H₂H₃G₂), soit FTCD/(1 + Σ FTBO). Vérifie que la formule directe et le calcul « boucle interne d’abord » donnent la même chose :</p>
+<label>H₁<input type="number" id="c1" value="2" step="0.5"></label><label>H₂<input type="number" id="c2" value="3" step="0.5"></label><label>H₃<input type="number" id="c3" value="1" step="0.5"></label><label>G₁<input type="number" id="c4" value="0.5" step="0.1"></label><label>G₂<input type="number" id="c5" value="0.2" step="0.1"></label>
+<div id="co" class="out"></div></div>
+<p class="m">Deux entrées (consigne E, perturbation Q) : par superposition, S = H₂/(1+G·H₁·H₂)·(H₁·E − Q). La perturbation traverse moins de blocs que la consigne.</p></section>
+
+<section><h2>6. Fil rouge : le château d’eau</h2>
+<p>Le moteur (constante de temps τ) tourne la vanne, de θ = −π/4 à +π/4, et le débit passe de 2,125 à 3,375 m³/s. Donc Q = Q₀ + α·θ avec α = (3,375 − 2,125)/(π/2) = 2,5/π. En éliminant ω, ωₘ, v, uₘ, on obtient l’équation du second ordre en θ, puis en q = αθ. Chaque équation a son bloc : H₁ = A, H₂ = Kᵥ/(1+τp), H₃ = N, H₄ = 1/p (θ est l’intégrale de ω), H₅ = α, H₆ = Kₚ.</p>
+<div id="dg6"></div>
+<div class="box"><label>A <input type="number" id="pA" value="5" step="0.5"></label><label>τ (s) <input type="number" id="pt" value="0.25" step="0.05"></label>
+<div id="wo"></div><svg id="ws" width="340" height="150" viewBox="0 0 340 150"></svg>
+<p class="m" style="margin:0">Courbe : réponse de q/u à un échelon, via FTBF₁ = (α/Kₚ)/(1 + p/(A·Kᵥ·N·Kₚ) + τp²/(A·Kᵥ·N·Kₚ)). Avec A = 5, le gain de boucle A·Kᵥ·N·Kₚ vaut presque 1 : on retrouve FTBF₁ ≈ 0,125/(1 + p + 0,25p²). Son amortissement ζ vaut 1 (régime critique, pas de dépassement). Augmente A : la boucle devient plus rapide mais finit par osciller.</p></div>
+<div class="note"><b>Deux coquilles repérées dans le cours.</b> (1) À la question 1, le terme en q doit être A·Kᵥ·N·Kₚ·q et non A·Kₚ·q : c’est bien ce produit qui apparaît dans FTBO₁ ensuite. (2) Pour H(p), le terme en Q′ est 0,8·(1 + p + 0,25p²)·Q′ au numérateur, le cours l’écrit simplifié. Kₚ s’exprime en V/rad, pas en rad/s.</div>
+<p class="m">Pour la boucle de niveau : FTBO₂ = FTBF₁·Kₕ/(S·p), de classe 1 (l’intégrateur 1/(S·p) est la cuve qui se remplit) et d’ordre 3. Classe 1 veut dire écart statique nul en poursuite.</p></section>
+<section><h2>7. Bilan : coche ce que tu maîtrises</h2><div id="bil"></div><div id="bc" class="out"></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),R=(a,b)=>[...Array(b-a+1).keys()].map(i=>i+a),n2=x=>(+x).toLocaleString('fr',{maximumFractionDigits:3});
+// 1 sampling
+function smp(){const T=+$('#T').value;$('#vT').textContent=T;const X=t=>20+t*30,Y=v=>75-v*55,sg=t=>Math.sin(t*1.1)*0.6+0.4*Math.sin(t*0.3);
+let c='',st='',pt='';for(let t=0;t<=10;t+=0.05)c+=(t?'L':'M')+X(t)+' '+Y(sg(t));
+let last=0;for(let k=0;k*T<=10;k++){const t=k*T,v=sg(t),t2=Math.min(10,t+T);st+=(k?'L':'M')+X(t)+' '+Y(v)+'L'+X(t2)+' '+Y(v);pt+=`<circle cx="${X(t)}" cy="${Y(v)}" r="4" fill="var(--p)"/>`}
+$('#sm').innerHTML=`<line x1="20" y1="75" x2="330" y2="75" stroke="var(--line)"/><path d="${c}" fill="none" stroke="var(--t)" stroke-width="2"/><path d="${st}" fill="none" stroke="var(--ink)" stroke-width="2"/>${pt}`}
+$('#T').oninput=smp;smp();
+// 1 linearity
+const F=[x=>1.5*x,x=>Math.max(-1.5,Math.min(1.5,1.5*x)),x=>Math.abs(x)<.5?0:1.5*(x-.5*Math.sign(x))];
+function lin(){const f=F[+$('#sy').value],a=+$('#x1').value,b=+$('#x2').value;let d='';for(let x=-2;x<=2.001;x+=.05)d+=(x<-1.99?'M':'L')+(150+x*60)+' '+(70-f(x)*20);
+const dot=(x,c)=>`<circle cx="${150+x*60}" cy="${70-f(x)*20}" r="5" fill="${c}"/>`;
+$('#ln').innerHTML=`<line x1="10" y1="70" x2="290" y2="70" stroke="var(--line)"/><line x1="150" y1="5" x2="150" y2="135" stroke="var(--line)"/><path d="${d}" fill="none" stroke="var(--ink)" stroke-width="2.5"/>${dot(a,'var(--t)')}${dot(b,'var(--t)')}${dot(a+b,'var(--p)')}`;
+const u=f(a)+f(b),v=f(a+b),ok=Math.abs(u-v)<1e-9;$('#lo').innerHTML=`f(x₁) + f(x₂) = ${n2(u)} ; f(x₁+x₂) = ${n2(v)} → `+(ok?'<span class="ok">égaux : la superposition tient</span>':'<span class="bad">différents : non linéaire ici</span>')}
+$('#sy').onchange=$('#x1').oninput=$('#x2').oninput=lin;lin();
+// step response
+function sim(a2,a1,a0,b0,Tm){const dt=.005,N=Math.round(Tm/dt),o=[];let s=0,v=0;for(let i=0;i<=N;i++){if(i%8==0)o.push(s);if(a2>0.001){const ac=(b0-a1*v-a0*s)/a2;v+=ac*dt;s+=v*dt}else s+=(b0-a0*s)/a1*dt}return o}
+function plot(id,y,Tm,fin,col){const mx=Math.max(...y,fin)*1.15||1,X=i=>25+i/(y.length-1)*300,Y=v=>140-v/mx*125;let d=y.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join('');
+$(id).innerHTML=`<line x1="25" y1="140" x2="330" y2="140" stroke="var(--line)"/><line x1="25" y1="10" x2="25" y2="140" stroke="var(--line)"/><line x1="25" y1="${Y(fin)}" x2="330" y2="${Y(fin)}" stroke="var(--p)" stroke-dasharray="5 4"/><path d="${d}" fill="none" stroke="${col||'var(--t)'}" stroke-width="3"/><text x="28" y="${Y(fin)-4}" font-size="11" fill="var(--p)">valeur finale ${n2(fin)}</text><text x="300" y="158" font-size="11" fill="currentColor">${Tm} s</text>`}
+function st(){const a2=+$('#a2').value,a1=+$('#a1').value,a0=+$('#a0').value,b0=+$('#b0').value,K=b0/a0;
+const Tm=a2>0.001?Math.max(8,a1/a0*6):Math.max(6,a1/a0*6);plot('#st',sim(a2,a1,a0,b0,Tm),Math.round(Tm),K);
+let pol='premier ordre : pôle −'+n2(a0/a1);if(a2>0.001){const D=a1*a1-4*a2*a0;pol=D>=0?`pôles réels : ${n2((-a1+Math.sqrt(D))/(2*a2))} et ${n2((-a1-Math.sqrt(D))/(2*a2))}`:`pôles complexes : ${n2(-a1/(2*a2))} ± ${n2(Math.sqrt(-D)/(2*a2))}·j (oscillations)`}
+const z=a2>0.001?a1/(2*Math.sqrt(a2*a0)):null;
+$('#so').innerHTML=`<div class="f">H(p) = ${n2(b0)} / (${n2(a0)} + ${n2(a1)}p${a2>0.001?' + '+n2(a2)+'p²':''}) = ${n2(K)} / (1 + ${n2(a1/a0)}p${a2>0.001?' + '+n2(a2/a0)+'p²':''})</div><span class="chip on">gain statique K = ${n2(K)}</span><span class="chip on">classe 0</span><span class="chip on">ordre ${a2>0.001?2:1}</span>${z?`<span class="chip hot">ζ = ${n2(z)}</span>`:''}<div class="out">${pol}. Valeur finale : lim p·S(p) = K = ${n2(K)} (flèche rose).</div>`}
+['a2','a1','a0','b0'].forEach(i=>$('#'+i).oninput=st);st();
+// Black
+let sk=[0];function bk(){const H=+$('#bh').value,G=+$('#bg').value,th=H/(1+G*H),gh=G*H;
+$('#bo').innerHTML=sk.map((v,i)=>`<span class="chip ${i==sk.length-1?'hot':''}">${i?'tour '+i+' : ':'départ : '}${n2(v)}</span>`).join('')+`<div class="out">Formule : H/(1+GH) = ${n2(th)} (E = 1). Gain de boucle GH = ${n2(gh)}. ${gh<1?'<span class="ok">GH &lt; 1 : les tours convergent vers la formule.</span>':'<span class="bad">GH ≥ 1 : les tours oscillent ou divergent (cette boucle simple, sans retard, est quand même bien résolue algébriquement par la formule ; l’expérience illustre pourquoi un fort gain de boucle demande de la prudence).</span>'}</div>`}
+$('#bt').onclick=()=>{const H=+$('#bh').value,G=+$('#bg').value;if(sk.length<12)sk.push(H*(1-G*sk[sk.length-1]));bk()};$('#br').onclick=()=>{sk=[0];bk()};$('#bh').oninput=$('#bg').oninput=()=>{sk=[0];bk()};bk();
+function cc(){const[h1,h2,h3,g1,g2]=['c1','c2','c3','c4','c5'].map(i=>+$('#'+i).value);const d=h1*h2*h3/(1+h2*g1+h1*h2*h3*g2),F=h2/(1+h2*g1),e=h1*F*h3/(1+h1*F*h3*g2);
+$('#co').innerHTML=`Formule directe : ${n2(d)} ; boucle interne d’abord : ${n2(e)} → <span class="${Math.abs(d-e)<1e-9?'ok':'bad'}">${Math.abs(d-e)<1e-9?'identiques':'différentes'}</span>`}
+R(1,5).forEach(i=>$('#c'+i).oninput=cc);cc();
+// water tower
+function wt(){const A=+$('#pA').value,tau=+$('#pt').value,Kv=31.4,N=1e-3,Kp=20/Math.PI,al=(3.375-2.125)/(Math.PI/2),g=A*Kv*N*Kp;
+$('#wo').innerHTML=`<span class="chip on">α = ${n2(al)} m³/s/rad</span><span class="chip on">A·Kᵥ·N·Kₚ = ${n2(g)}</span><span class="chip hot">FTBF₁ = ${n2(al/Kp)} / (1 + ${n2(1/g)}p + ${n2(tau/g)}p²)</span><span class="chip">ζ = ${n2((1/g)/(2*Math.sqrt(tau/g)))}</span>`;
+plot('#ws',sim(tau/g,1/g,1,al/Kp,Math.max(6,8/g)),Math.round(Math.max(6,8/g)),al/Kp,'var(--p)')}
+$('#pA').oninput=$('#pt').oninput=wt;wt();
+// diagrams
+const D='<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>';
+const K=(x,y,w,h,t,s)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="var(--card)" stroke="currentColor" stroke-width="2"/><text x="${x+w/2}" y="${y+h/2+4}" text-anchor="middle" font-size="${s||13}" font-weight="700" fill="currentColor">${t}</text>`;
+const P=d=>`<path d="${d}" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/>`,L=d=>`<path d="${d}" fill="none" stroke="currentColor" stroke-width="2"/>`;
+const T=(x,y,t,c)=>`<text x="${x}" y="${y}" font-size="11" fill="${c||'var(--mut)'}">${t}</text>`,Dt=(x,y)=>`<circle cx="${x}" cy="${y}" r="3" fill="currentColor"/>`;
+const Z=(x,y,l,v,up)=>`<circle cx="${x}" cy="${y}" r="11" fill="var(--card)" stroke="currentColor" stroke-width="2"/><path d="M${x-6} ${y-6}L${x+6} ${y+6}M${x+6} ${y-6}L${x-6} ${y+6}" stroke="currentColor" stroke-width="1.5"/>`+T(x-20,y-4,l,'var(--p)')+T(x+5,up?y-14:y+25,v,'var(--p)');
+const S=(w,h,b)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" style="color:var(--ink)">${D}${b}</svg>`;
+const Fg=(c,s)=>`<div class="box scroll"><h3>${c}</h3>${s}</div>`;
+$('#dm').innerHTML=S(340,185,`<ellipse cx="170" cy="34" rx="150" ry="30" fill="var(--grid)" stroke="currentColor" stroke-width="2"/><text x="170" y="30" text-anchor="middle" font-weight="700" font-size="13" fill="currentColor">Le réel</text><text x="170" y="46" text-anchor="middle" font-size="11" fill="currentColor">produit → capteur → réponse mesurée</text><ellipse cx="170" cy="150" rx="150" ry="30" fill="var(--grid)" stroke="currentColor" stroke-width="2"/><text x="170" y="146" text-anchor="middle" font-weight="700" font-size="13" fill="currentColor">La simulation</text><text x="170" y="162" text-anchor="middle" font-size="11" fill="currentColor">modèle → solveur → résultat simulé</text>`+P('M45 62V122')+T(52,98,'Modéliser','var(--p)')+P('M300 122V62')+P('M300 62V122')+T(196,98,'Écart : comparer, valider, diagnostiquer','var(--p)'));
+function dyn(){let y=0,v=0,o='',u=t=>t>=1&&t<4?1:0,d='';for(let t=0;t<=6;t+=.02){v+=(6.25*(u(t)-y)-v)*.02;y+=v*.02;d+=(t?'L':'M')+t*25+' '+(120-y*30)}
+const col=(x,ti,out)=>`<g transform="translate(${x} 0)">${T(0,10,ti,'currentColor')}<path d="M0 45H25V15H100V45H150" fill="none" stroke="var(--p)" stroke-width="2.5"/><path d="${out}" fill="none" stroke="var(--t)" stroke-width="2.5"/>${T(2,60,'entrée','var(--p)')}${T(2,142,'sortie','var(--t)')}</g>`;
+$('#dy').innerHTML=col(10,'système instantané','M0 120H25V90H100V120H150')+col(180,'système dynamique',d)}dyn();
+function oc(){const Kc=+$('#kc').value;$('#vk').textContent=Kc;let x=0,xo=0,a=[],b=[],i=0;for(let t=0;t<=12;t+=.01,i++){const d=t>=6?.5:0;xo+=(1-xo)*.01;x+=(-x+Kc*(1-(x-d)))*.01;if(i%8==0){a.push(xo-d);b.push(x-d)}}
+const X=i=>25+i/(a.length-1)*300,Y=v=>140-v*110,p=(z,c)=>`<path d="${z.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join('')}" fill="none" stroke="${c}" stroke-width="3"/>`;
+$('#oc').innerHTML=`<line x1="25" y1="140" x2="330" y2="140" stroke="var(--line)"/><line x1="25" y1="${Y(1)}" x2="330" y2="${Y(1)}" stroke="var(--ink)" stroke-dasharray="5 4"/><line x1="${X(a.length/2)}" y1="10" x2="${X(a.length/2)}" y2="140" stroke="var(--line)"/>`+T(28,Y(1)-4,'consigne','currentColor')+p(a,'var(--p)')+p(b,'var(--t)')+T(X(a.length/2)+4,18,'perturbation')}
+$('#kc').oninput=oc;oc();
+const sys=S(340,100,K(130,30,100,40,'Système physique')+P('M10 40H130')+P('M10 60H130')+T(10,34,'entrées')+P('M230 50H335')+T(280,44,'sorties')+P('M180 4V30')+T(188,16,'perturbations'));
+const real=S(560,140,P('M5 58H30')+K(30,40,70,36,'Transformation',10)+P('M100 58H129')+`<rect x="126" y="28" width="124" height="60" fill="none" stroke="var(--p)" stroke-dasharray="4 3"/>`+T(130,24,'Régulateur','var(--p)')+Z(140,58,'+','−')+P('M151 58H175')+K(175,40,70,36,'Correcteur',12)+P('M245 58H275')+K(275,40,70,36,'Actionneur',12)+P('M345 58H375')+K(375,40,70,36,'Système',12)+P('M445 58H550')+Dt(490,58)+P('M410 6V40')+T(418,16,'Perturbations')+P('M490 58V118H445')+K(375,103,70,30,'Capteur',12)+P('M375 118H140V69')+T(8,52,'C(p)')+T(104,52,'E(p)')+T(156,52,'ε')+T(250,52,'U')+T(520,52,'S(p)')+T(300,112,'Eᵣ(p)'));
+$('#dg3').innerHTML=Fg('Le système physique',sys)+Fg('Le schéma réaliste d’un système asservi',real);
+const cas=S(340,60,P('M5 30H45')+K(45,10,60,40,'H₁')+P('M105 30H165')+T(120,24,'X')+K(165,10,60,40,'H₂')+P('M225 30H330')+T(8,22,'E')+T(300,22,'S')),par=S(340,120,P('M5 35H60')+Dt(30,35)+P('M30 35V85H60')+K(60,15,60,40,'H₁')+K(60,65,60,40,'H₂')+P('M120 35H229')+L('M120 85H240')+P('M240 85V46')+Z(240,35,'+','−')+P('M251 35H330')+T(8,28,'E')+T(300,28,'S')+T(150,28,'X₁')+T(150,78,'X₂')),bo=S(340,120,P('M5 40H49')+Z(60,40,'+','−')+P('M71 40H120')+T(88,34,'ε')+K(120,20,60,40,'H')+P('M180 40H330')+Dt(250,40)+P('M250 40V95H200')+K(140,80,60,30,'G')+P('M140 95H60V51')+T(90,89,'Eᵣ')+T(8,34,'E')+T(300,34,'S'));
+const conc=(imb)=>S(390,135,P('M5 60H34')+Z(45,60,'+','−',1)+P('M56 60H75')+K(75,40,50,40,'H₁')+P('M125 60H149')+Z(160,60,'+','−')+P('M171 60H185')+K(185,40,50,40,'H₂')+P('M235 60H275')+K(275,40,50,40,'H₃')+P('M325 60H385')+Dt(255,60)+Dt(345,60)+(imb?P('M255 60V18H235')+K(185,3,50,30,'G₂')+P('M185 18H45V49')+P('M345 60V112H325')+K(275,97,50,30,'G₁')+P('M275 112H160V71'):P('M255 60V112H235')+K(185,97,50,30,'G₁')+P('M185 112H160V71')+P('M345 60V18H325')+K(275,3,50,30,'G₂')+P('M275 18H45V49'))+T(8,54,'E')+T(360,54,'S')),two=S(380,130,P('M5 60H34')+Z(45,60,'+','−')+P('M56 60H85')+K(85,40,60,40,'H₁')+P('M145 60H189')+Z(200,60,'+','−',1)+P('M200 12V49')+T(206,16,'Q')+P('M211 60H245')+K(245,40,60,40,'H₂')+P('M305 60H375')+Dt(335,60)+P('M335 60V110H220')+K(160,95,60,30,'G')+P('M160 110H45V71')+T(8,54,'E')+T(350,54,'S'));
+$('#dg5').innerHTML=Fg('Cascade : S/E = H₁·H₂ (chaque bloc multiplie)',cas)+Fg('Parallèle : S/E = H₁ − H₂ (on soustrait les deux branches)',par)+Fg('Structure bouclée : S/E = H/(1+G·H). H est la chaîne directe, G la chaîne de retour ; G·H est la boucle ouverte (FTBO).',bo)+Fg('Boucles concentriques : le retour G₁ ne fait que la boucle interne, G₂ entoure tout',conc(0))+Fg('Boucles imbriquées : les boucles se croisent. On déplace un point de piquage (ou un sommateur) en compensant : ramener G₂ après H₃ revient à le diviser par H₃, puis on se retrouve en concentriques. Résultat : S/E = H₁H₂H₃/(1 + H₁H₂G₂ + H₂H₃G₁).',conc(1))+Fg('Deux entrées : on applique la superposition. S = H₂/(1+G·H₁·H₂)·(H₁·E − Q). On annule une entrée à la fois, puis on additionne.',two);
+const niv=S(560,130,P('M5 50H49')+Z(60,50,'+','−')+P('M71 50H120')+T(88,44,'ε')+K(120,32,60,36,'C(p)')+P('M180 50H215')+T(190,44,'U')+K(215,32,90,36,'électrovanne')+P('M305 50H369')+T(325,44,'Q')+Z(380,50,'+','−',1)+P('M380 8V39')+T(388,16,'Q′(p)')+P('M391 50H430')+K(430,32,60,36,'1/(S·p)')+P('M490 50H550')+Dt(515,50)+T(520,44,'H(p)')+P('M515 50V108H260')+K(200,93,60,30,'Kₕ')+P('M200 108H60V61')+T(8,44,'E(p)')),ev=S(580,110,P('M5 40H29')+Z(40,40,'+','−')+P('M51 40H70')+K(70,22,40,36,'H₁')+P('M110 40H125')+K(125,22,70,36,'H₂')+P('M195 40H210')+K(210,22,40,36,'H₃')+P('M250 40H265')+K(265,22,40,36,'H₄')+P('M305 40H335')+Dt(320,40)+K(335,22,40,36,'H₅')+P('M375 40H430')+P('M320 40V92H300')+K(240,77,60,30,'H₆')+P('M240 92H40V51')+T(8,32,'U')+T(112,32,'Um')+T(200,32,'Ωm')+T(255,32,'Ω')+T(322,32,'θ')+T(405,32,'Q'));
+$('#dg6').innerHTML=Fg('Schéma-bloc de la régulation de niveau (la cuve est l’intégrateur 1/(S·p))',niv)+Fg('Schéma-bloc de l’électrovanne (retour H₆ = Kₚ sur θ)',ev);
+(function(){const A=['la signification de S.D.L.C.I.','système instantané ou dynamique','système continu ou discret','la définition d’un système linéaire','la définition d’un système asservi','poursuite ou régulation','le type d’équation qui modélise un SDLCI','les transformées de Laplace usuelles','la forme canonique de H(p)','les règles de réduction des schémas-blocs'],B=['utiliser la table de Laplace','trouver H(p) à partir de l’équation temporelle','lire un schéma-bloc','réduire cascade et parallèle','réduire boucles concentriques et imbriquées','exprimer S avec plusieurs entrées'];
+const row=(t,i)=>`<label style="display:flex;margin:2px 0"><input type="checkbox" class="ck" style="accent-color:var(--t)"> ${t}</label>`;
+$('#bil').innerHTML='<h3 style="margin:4px 0">Je connais</h3>'+A.map(row).join('')+'<h3 style="margin:10px 0 4px">Je sais</h3>'+B.map(row).join('');
+const u=()=>{const c=document.querySelectorAll('.ck:checked').length;$('#bc').textContent=c+' / '+(A.length+B.length)+(c==A.length+B.length?' : bravo, chapitre maîtrisé !':'')};document.querySelectorAll('.ck').forEach(e=>e.onchange=u);u()})();
+</script></body></html>
