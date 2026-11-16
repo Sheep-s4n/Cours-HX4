@@ -1,0 +1,1092 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{stmaryrd} % Indispensable pour \llbracket et \rrbracket
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+
+%==================================================================
+% COULEURS
+%==================================================================
+\definecolor{brun}{RGB}{140,90,15}
+\definecolor{bordeaux}{RGB}{150,30,45}
+\definecolor{bleu}{RGB}{40,100,170}
+\definecolor{bleuclair}{RGB}{228,239,250}
+\definecolor{vert}{RGB}{30,120,80}
+\definecolor{orange}{RGB}{205,100,20}
+\definecolor{violet}{RGB}{110,60,150}
+
+%==================================================================
+% RACCOURCIS MATHÉMATIQUES
+%==================================================================
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\intEnt}[2]{\llbracket #1, #2 \rrbracket}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\sgn}{signe}
+
+% Formule mise en valeur
+\newcommand{\cadre}[1]{%
+  \tcbox[on line,enhanced,colback=white,colframe=brun,arc=3pt,boxrule=0.7pt,
+         boxsep=3pt,left=2pt,right=2pt,top=1pt,bottom=1pt]{$\displaystyle #1$}}
+
+% Mot ou expression mis en valeur dans le texte
+\newcommand{\mot}[1]{\textcolor{bordeaux}{\textbf{#1}}}
+\newcommand{\cas}[1]{\textbf{\textcolor{orange}{#1}}}
+
+%==================================================================
+% PAGE, EN-TÊTE, TITRES (Aéré et espacé)
+%==================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{brun}{Mathématiques}}
+\fancyhead[R]{\small\textcolor{brun}{Chapitre 12 -- Lois de composition internes / Groupes}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{brun}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\renewcommand{\labelitemi}{\textcolor{bleu}{\textbullet}}
+
+\titleformat{\section}{\Large\scshape\color{bordeaux}}{}{0pt}{}[{\color{bordeaux}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\large\scshape\color{brun}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{20pt}{10pt}
+\titlespacing*{\subsection}{0pt}{16pt}{8pt}
+
+%==================================================================
+% BLOCS COLORÉS
+%==================================================================
+\newcommand{\titrebloc}[2]{\textsc{#1}\ifx\relax#2\relax\else\ \textsc{(#2)}\fi}
+\newcommand{\titreblocnum}[2]{\textsc{#1}\ifx\relax#2\relax\else~#2\fi}
+
+\tcbset{
+  bloc/.style={enhanced,breakable,arc=3pt,boxrule=0.8pt,
+    left=8pt,right=8pt,top=7pt,bottom=7pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=14pt,after skip=14pt},
+  marge/.style={enhanced,breakable,frame hidden,arc=2pt,
+    left=10pt,right=6pt,top=6pt,bottom=6pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=12pt,after skip=12pt}
+}
+
+% Environnements de base
+\newtcolorbox{definition}[1][]{bloc, colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7, title={\titrebloc{Définition}{#1}}}
+\newtcolorbox{proposition}[1][]{bloc, colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5, title={\titrebloc{Proposition}{#1}}}
+\newtcolorbox{theoreme}[1][]{bloc, colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt, coltitle=bordeaux,colbacktitle=bordeaux!8, title={\titrebloc{Théorème}{#1}}}
+\newtcolorbox{demonstration}{marge, colback=bleuclair,borderline west={2.5pt}{0pt}{bleu}, before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ }, after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+\newtcolorbox{remarque}[1][]{marge, colback=vert!6,borderline west={2.5pt}{0pt}{vert}, coltitle=vert!70!black,colbacktitle=vert!6, title={\titreblocnum{Remarque}{#1}}}
+\newtcolorbox{exemples}[1][Exemples]{marge, colback=orange!6,borderline west={2.5pt}{0pt}{orange}, coltitle=orange!85!black,colbacktitle=orange!6, title={\textsc{#1}}}
+\newtcolorbox{methode}[1][Méthode]{marge, colback=violet!6,borderline west={2.5pt}{0pt}{violet}, coltitle=violet,colbacktitle=violet!6, title={\textsc{#1}}}
+
+% Nouveaux environnements
+\newtcolorbox{lemme}[1][]{bloc, colback=bleu!5,colframe=bleu,coltitle=bleu,colbacktitle=bleu!5, title={\titrebloc{Lemme}{#1}}}
+\newtcolorbox{corollaire}[1][]{bloc, colback=orange!5,colframe=orange,coltitle=orange,colbacktitle=orange!5, title={\titrebloc{Corollaire}{#1}}}
+\newtcolorbox{synthese}[1][]{bloc, colback=violet!5,colframe=violet,coltitle=violet,colbacktitle=violet!5, title={\titrebloc{Synthèse}{#1}}}
+
+%==================================================================
+% DEBUT DU DOCUMENT
+%==================================================================
+\begin{document}
+
+\begin{center}
+  {\Huge \scshape \color{bordeaux} Chapitre 12 -- Lois de composition internes / Groupes}
+\end{center}
+\vspace{10pt}
+
+\section{I -- Loi de composition interne}
+
+\subsection{1.1. Définitions}
+
+\textbf{a)}
+\begin{definition}
+On appelle \mot{loi de composition interne} sur un ensemble $E$ toute application
+\[
+T : E \times E \longrightarrow E
+\]
+de $E \times E$ dans $E$. ($T$ se lit \textit{« truc »}).
+
+Le couple $(E, T)$ s'appelle un \mot{magma}.
+\end{definition}
+
+\begin{remarque}
+Soit $T : E \times E \to E$ une loi de composition interne sur $E$. Il est d'usage de noter l'image d'un couple $(x, y) \in E^2$ par $x \, T \, y$ de préférence à $T(x, y)$.
+
+Souvent, la loi de composition $T$ est notée par un point $x \cdot y$, voire sans symbole $xy$ (\mot{notation multiplicative}).
+
+Dans ce cas, si $(x, y, z) \in E^3$, $x(yz)$ désigne $x \, T \, (y \, T \, z)$.
+\end{remarque}
+
+\textbf{b)} Soient $x_1, \dots, x_n$ $n$ éléments d'un magma $(E, T)$. Pour donner un sens à $x_1 \, T \, x_2 \, T \dots T \, x_n$, il faut préciser le \mot{parenthésage}.
+
+\begin{exemples}[Exemples]
+\begin{itemize}
+    \item Pour $n = 3$ :
+    \[
+    x_1 \, T \, (x_2 \, T \, x_3), \qquad (x_1 \, T \, x_2) \, T \, x_3
+    \]
+    \item Pour $n = 4$ :
+    \[
+    (x_1 \, T \, x_2) \, T \, (x_3 \, T \, x_4), \qquad x_1 \, T \, (x_2 \, T \, (x_3 \, T \, x_4)), \qquad ((x_1 \, T \, x_2) \, T \, x_3) \, T \, x_4,
+    \]
+    \[
+    (x_1 \, T \, (x_2 \, T \, x_3)) \, T \, x_4, \qquad x_1 \, T \, ((x_2 \, T \, x_3) \, T \, x_4)
+    \]
+\end{itemize}
+\end{exemples}
+
+Il est commode d'encoder un parenthésage sur $n$ symboles par des \mot{arbres binaires planaires enracinés à $n$ feuilles} (chaque nœud interne possède exactement $2$ fils, avec un seul sommet sans parent dit la \mot{racine}, et les nœuds sans fils appelés \mot{feuilles} numérotés de gauche à droite).
+
+\begin{exemples}[Représentation par arbres binaires planaires]
+\textbf{Pour $n = 3$ :}
+\begin{center}
+\begin{tikzpicture}[
+  level 1/.style={sibling distance=16mm, level distance=10mm},
+  level 2/.style={sibling distance=11mm, level distance=10mm},
+  noeud/.style={circle, fill=bleu, inner sep=1.6pt},
+  feuille/.style={font=\small}
+]
+  % Arbre 1 : (x1 T x2) T x3
+  \begin{scope}[xshift=-3.2cm]
+    \node[noeud] (r1) {}
+      child { node[noeud] {}
+        child { node[feuille] {$x_1$} }
+        child { node[feuille] {$x_2$} }
+      }
+      child { node[feuille] {$x_3$} };
+    \node[above=2pt of r1, font=\scriptsize\color{brun}] {racine};
+    \node at (0, -2.6) {$(x_1 \, T \, x_2) \, T \, x_3$};
+  \end{scope}
+
+  \node at (0, -1.0) {\Large $\neq$};
+
+  % Arbre 2 : x1 T (x2 T x3)
+  \begin{scope}[xshift=3.2cm]
+    \node[noeud] (r2) {}
+      child { node[feuille] {$x_1$} }
+      child { node[noeud] {}
+        child { node[feuille] {$x_2$} }
+        child { node[feuille] {$x_3$} }
+      };
+    \node at (0, -2.6) {$x_1 \, T \, (x_2 \, T \, x_3)$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+\textit{(Les deux arbres sont distincts en tant qu'arbres planaires, alors que dans l'espace ils seraient isomorphes).}
+
+\vspace{12pt}
+\textbf{Pour $n = 4$ (Graphe des transformations élémentaires) :}
+\begin{center}
+\begin{tikzpicture}[
+  level 1/.style={sibling distance=16mm, level distance=9mm},
+  level 2/.style={sibling distance=10mm, level distance=9mm},
+  level 3/.style={sibling distance=9mm, level distance=9mm},
+  noeud/.style={circle, fill=bleu, inner sep=1.4pt},
+  feuille/.style={font=\scriptsize}
+]
+  % Sommet haut : (x1 T x2) T (x3 T x4)
+  \begin{scope}[yshift=3.8cm]
+    \node[noeud] {}
+      child { node[noeud] {}
+        child { node[feuille] {$x_1$} }
+        child { node[feuille] {$x_2$} }
+      }
+      child { node[noeud] {}
+        child { node[feuille] {$x_3$} }
+        child { node[feuille] {$x_4$} }
+      };
+    \node at (0, -2.3) {$(x_1 \, T \, x_2) \, T \, (x_3 \, T \, x_4)$};
+  \end{scope}
+
+  % Sommet gauche : x1 T (x2 T (x3 T x4))
+  \begin{scope}[xshift=-4.8cm, yshift=0.5cm]
+    \node[noeud] {}
+      child { node[feuille] {$x_1$} }
+      child { node[noeud] {}
+        child { node[feuille] {$x_2$} }
+        child { node[noeud] {}
+          child { node[feuille] {$x_3$} }
+          child { node[feuille] {$x_4$} }
+        }
+      };
+    \node at (0, -3.1) {$x_1 \, T \, (x_2 \, T \, (x_3 \, T \, x_4))$};
+  \end{scope}
+
+  % Sommet droite : ((x1 T x2) T x3) T x4
+  \begin{scope}[xshift=4.8cm, yshift=0.5cm]
+    \node[noeud] {}
+      child { node[noeud] {}
+        child { node[noeud] {}
+          child { node[feuille] {$x_1$} }
+          child { node[feuille] {$x_2$} }
+        }
+        child { node[feuille] {$x_3$} }
+      }
+      child { node[feuille] {$x_4$} };
+    \node at (0, -3.1) {$((x_1 \, T \, x_2) \, T \, x_3) \, T \, x_4$};
+  \end{scope}
+
+  % Sommet bas : (x1 T (x2 T x3)) T x4
+  \begin{scope}[yshift=-2.8cm]
+    \node[noeud] {}
+      child { node[noeud] {}
+        child { node[feuille] {$x_1$} }
+        child { node[noeud] {}
+          child { node[feuille] {$x_2$} }
+          child { node[feuille] {$x_3$} }
+        }
+      }
+      child { node[feuille] {$x_4$} };
+    \node at (0, -3.1) {$(x_1 \, T \, (x_2 \, T \, x_3)) \, T \, x_4$};
+  \end{scope}
+
+  % Arêtes des transformations élémentaires
+  \draw[<->, >=stealth, thick, bordeaux] (-1.5, 2.7) -- (-3.6, 0.9);
+  \draw[<->, >=stealth, thick, bordeaux] (1.5, 2.7) -- (3.6, 0.9);
+  \draw[<->, >=stealth, thick, bordeaux] (-3.2, -2.9) -- (-1.3, -4.1);
+  \draw[<->, >=stealth, thick, bordeaux] (3.2, -2.9) -- (1.3, -4.1);
+\end{tikzpicture}
+\end{center}
+\end{exemples}
+
+On peut montrer que le nombre de parenthésages différents sur $n+1$ éléments $x_1, \dots, x_{n+1}$ de $E$ est :
+\[
+\cadre{C_n = \frac{1}{n+1} \binom{2n}{n}}
+\]
+appelé \mot{nombre de Catalan}.
+
+On peut démontrer que l'on peut passer d'un parenthésage à un autre sur $x_1, \dots, x_n$ (dans cet ordre) en appliquant une succession finie de \mot{transformations élémentaires} :
+\[
+(xy)z \longrightarrow x(yz) \quad \text{ou} \quad x(yz) \longrightarrow (xy)z
+\]
+comme on peut le vérifier pour $n = 4$, où les transformations élémentaires sont représentées par les arêtes du graphe ci-dessus.
+
+\vspace{8pt}
+\textbf{c)} À tout magma $(E, T)$, on peut associer le magma $(\mathcal{P}(E), *)$ en définissant $*$ par :
+\[
+\forall (A, B) \in \mathcal{P}(E)^2, \quad A * B = \{ z \in E \mid \exists (x, y) \in A \times B, \ z = x \, T \, y \}
+\]
+
+Par abus de notation, on note $A \, T \, B$ pour $A * B$, et même $x \, T \, B$ pour $\{x\} * B$ et $A \, T \, y$ pour $A * \{y\}$.
+
+\begin{exemples}
+Dans $\R$, somme de deux parties $A$ et $B$ :
+\[
+A + B = \{ z \in \R \mid \exists (x, y) \in A \times B, \ z = x + y \}
+\]
+En particulier, pour $x \in \R$ :
+\[
+x + 2\pi\Z = \{ z \in \R \mid \exists k \in \Z, \ z = x + 2k\pi \}
+\]
+\end{exemples}
+
+\textbf{d)}
+\begin{definition}
+Soit $(E, T)$ un magma et $a \in E$. On appelle \mot{translation à gauche} (resp. \mot{à droite}) par $a$ l'application :
+\[
+\gamma_a : E \longrightarrow E, \quad x \longmapsto a \, T \, x \qquad \text{(resp. } \delta_a : E \longrightarrow E, \quad x \longmapsto x \, T \, a \text{)}
+\]
+\end{definition}
+
+\begin{definition}[Partie stable -- Loi induite]
+Soit $(E, T)$ un magma et $A$ une partie de $E$. On dit que $A$ est \mot{stable} pour $T$ si :
+\[
+\forall (x, y) \in A^2, \quad x \, T \, y \in A
+\]
+L'application
+\[
+T_A : A \times A \longrightarrow A, \quad (x, y) \longmapsto x \, T \, y
+\]
+est alors une loi de composition interne sur $A$, appelée \mot{loi induite} par $T$ sur $A$.
+
+S'il n'y a pas d'ambiguïté, on note encore $T$ pour $T_A$.
+\end{definition}
+
+\newpage
+\subsection{1.2. Lois associatives}
+
+\begin{definition}
+Soit $(E, T)$ un magma. La loi $T$ est dite \mot{associative} si :
+\[
+\forall (x, y, z) \in E^3, \quad x \, T \, (y \, T \, z) = (x \, T \, y) \, T \, z
+\]
+On dit alors que $(E, T)$ est un \mot{magma associatif}.
+\end{definition}
+
+Si $P$ désigne un parenthésage sur $n$ symboles, et $x_1, \dots, x_n$ sont $n$ éléments de $E$, on note $P(x_1, \dots, x_n)$ l'élément de $E$ obtenu en composant $x_1, \dots, x_n$ par la loi $T$ en suivant le parenthésage $P$.
+
+\begin{exemples}
+\begin{itemize}
+    \item Pour $n = 3$ :
+    \begin{align*}
+        P = ((\bullet, \bullet), \bullet) &\implies P(x, y, z) = (x \, T \, y) \, T \, z \\
+        P = (\bullet, (\bullet, \bullet)) &\implies P(x, y, z) = x \, T \, (y \, T \, z)
+    \end{align*}
+    \item Pour $n = 4$ :
+    \begin{align*}
+        P = ((\bullet, \bullet), (\bullet, \bullet)) &\implies P(x, y, z, t) = (x \, T \, y) \, T \, (z \, T \, t) \\
+        P = (\bullet, (\bullet, (\bullet, \bullet))) &\implies P(x, y, z, t) = x \, T \, (y \, T \, (z \, T \, t))
+    \end{align*}
+\end{itemize}
+\end{exemples}
+
+\begin{proposition}
+Soit $(E, T)$ un magma associatif et $x_1, \dots, x_n$ $n$ éléments de $E$. Si $P$ et $P'$ sont deux parenthésages sur $n$ symboles, on a :
+\[
+P(x_1, \dots, x_n) = P'(x_1, \dots, x_n)
+\]
+En d'autres termes, on peut noter $x_1 \, T \, x_2 \, T \dots T \, x_n$ sans préciser le parenthésage.
+\end{proposition}
+
+\begin{demonstration}
+\textit{(Admise)} Résulte de la remarque en fin de \textbf{b)} sur les transformations élémentaires : dans un magma associatif, chaque transformation élémentaire conserve la valeur du produit puisque $(xy)z = x(yz)$.
+\end{demonstration}
+
+\begin{remarque}[Notation]
+Lorsque $x_1 = \dots = x_n = x$ ($n \in \N^*$) dans un magma associatif, on note :
+\[
+\overset{n}{\underset{}{\top}} x = \underbrace{x \, T \, x \, T \dots T \, x}_{n \text{ fois}}
+\]
+En notation multiplicative, on note cela $x^n$.
+\end{remarque}
+
+\newpage
+\subsection{1.3. Lois commutatives}
+
+\begin{definition}
+Soit $(E, T)$ un magma.
+\begin{enumerate}
+    \item On dit que deux éléments $a$ et $b$ de $E$ sont \mot{permutables}, ou \mot{commutent}, si :
+    \[
+    a \, T \, b = b \, T \, a
+    \]
+    \item La loi $T$ est dite \mot{commutative} si deux éléments quelconques de $E$ sont permutables, c'est-à-dire :
+    \[
+    \forall (a, b) \in E^2, \quad a \, T \, b = b \, T \, a
+    \]
+    On dit alors que $(E, T)$ est un \mot{magma commutatif}.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+Soit $(E, T)$ un magma associatif, et $x_1, \dots, x_n$ des éléments de $E$ deux à deux permutables (sans avoir nécessairement la commutativité sur tout $E$). Le composé $x_1 \, T \, x_2 \, T \dots T \, x_n$ de ces éléments ne dépend pas de l'ordre dans lequel on les compose.
+\end{proposition}
+
+\begin{demonstration}
+Il s'agit de prouver que pour toute permutation $\sigma : \intEnt{1}{n} \to \intEnt{1}{n}$, on a :
+\[
+x_{\sigma(1)} \, T \, x_{\sigma(2)} \, T \dots T \, x_{\sigma(n)} = x_1 \, T \, x_2 \, T \dots T \, x_n
+\]
+
+Cette égalité est vraie si $\sigma$ est une \mot{transposition élémentaire} $\tau_i$ (où $1 \le i < n$), définie par :
+\[
+\tau_i(i) = i+1, \qquad \tau_i(i+1) = i, \qquad \text{et} \quad \forall j \notin \{i, i+1\}, \quad \tau_i(j) = j
+\]
+En effet, puisque $x_i$ et $x_{i+1}$ commutent et que $T$ est associative :
+\begin{align*}
+    x_1 \, T \, x_2 \, T \dots T \, x_{\tau_i(i)} \, T \, x_{\tau_i(i+1)} \, T \dots T \, x_n 
+    &= x_1 \, T \, x_2 \, T \dots T \, (x_{i+1} \, T \, x_i) \, T \dots T \, x_n \\
+    &= x_1 \, T \, x_2 \, T \dots T \, (x_i \, T \, x_{i+1}) \, T \dots T \, x_n \\
+    &= x_1 \, T \, x_2 \, T \dots T \, x_i \, T \, x_{i+1} \, T \dots T \, x_n
+\end{align*}
+
+Toute permutation de $\mathfrak{S}_n$ étant composée de transpositions élémentaires, l'égalité est vraie pour tout $\sigma \in \mathfrak{S}_n$.
+\end{demonstration}
+
+\begin{remarque}[Conséquences]
+\begin{enumerate}
+    \item Le composé pourra être noté $\displaystyle\underset{i=1}{\overset{n}{\top}} x_i$ sans que l'ordre dans lequel on compose les $x_i$ soit imposé.
+    \item Soient $x, y$ deux éléments permutables pour une loi associative $T$. Alors :
+    \begin{itemize}
+        \item $\forall n, p \in \N^*$, $\overset{n}{\top} x$ et $\overset{p}{\top} y$ sont permutables (en notation multiplicative, $x^n$ et $y^p$ sont permutables).
+        \item En particulier, $\forall n \in \N^*$, $(\overset{n}{\top} x) \, T \, (\overset{n}{\top} y) = \overset{n}{\top} (x \, T \, y)$ (en notation multiplicative, $x^n \cdot y^n = (x \cdot y)^n$).
+    \end{itemize}
+    \textit{(Preuve : par récurrence sur $n$, exercice à faire).}
+\end{enumerate}
+\end{remarque}
+
+\newpage
+\subsection{1.4. Élément neutre}
+
+\begin{definition}
+Soit $(E, T)$ un magma. On appelle \mot{élément neutre} pour la loi $T$ tout élément $e$ de $E$ tel que :
+\[
+\forall x \in E, \quad e \, T \, x = x \, T \, e = x
+\]
+\end{definition}
+
+\begin{proposition}
+S'il existe, un tel élément neutre est unique.
+\end{proposition}
+
+\begin{demonstration}
+Soient $e$ et $e' \in E$ deux éléments neutres. Alors :
+\[
+e \, T \, e' = e' \quad (\text{car } e \text{ est neutre})
+\]
+\[
+e \, T \, e' = e \quad (\text{car } e' \text{ est neutre})
+\]
+Donc $e = e'$.
+\end{demonstration}
+
+\begin{definition}[Magma unifère et Monoïde]
+\begin{itemize}
+    \item Un magma $(E, T)$ qui possède un élément neutre est dit \mot{unifère}.
+    \item On appelle \mot{monoïde} tout magma associatif et unifère $(E, T)$. Lorsque de plus $T$ est commutative, le monoïde est dit \mot{commutatif} ou \mot{abélien}.
+\end{itemize}
+\end{definition}
+
+\begin{remarque}[Convention]
+Si $(E, T)$ est un magma associatif et unifère de neutre $e$, on étend la notation $\overset{n}{\top} x$ à $n = 0$ en posant :
+\[
+\overset{0}{\top} x = e \qquad \text{(en notation multiplicative : } x^0 = e\text{)}
+\]
+\end{remarque}
+
+\begin{exemples}
+\begin{enumerate}
+    \item $(\N, +)$ est un monoïde commutatif dont l'élément neutre est $0$.
+    \item $(\N, \times)$ est un monoïde commutatif dont l'élément neutre est $1$.
+    \item Soit $X$ un ensemble. Le magma $(X^X, \circ)$ est un monoïde dont l'élément neutre est $\mathrm{id}_X$, muni de la loi :
+    \[
+    X^X \times X^X \longrightarrow X^X, \quad (f, g) \longmapsto f \circ g
+    \]
+    En effet, la composition des applications est associative :
+    \[
+    \forall f, g, h \in X^X, \quad (f \circ g) \circ h = f \circ (g \circ h)
+    \]
+    et possède un neutre :
+    \[
+    \forall f \in X^X, \quad f \circ \mathrm{id}_X = \mathrm{id}_X \circ f = f
+    \]
+    \item $(\mathcal{P}(X), \cup)$ et $(\mathcal{P}(X), \cap)$ sont des monoïdes commutatifs, de neutres respectifs $\emptyset$ et $X$.
+\end{enumerate}
+\end{exemples}
+
+\newpage
+\subsection{1.5. Éléments réguliers (ou simplifiables) -- Éléments symétrisables (ou inversibles)}
+
+\begin{definition}[Élément régulier]
+Soit $(E, T)$ un magma. On appelle \mot{élément régulier} (ou \mot{simplifiable}) \mot{à droite} (resp. \mot{à gauche}) tout élément $a \in E$ tel que :
+\[
+\forall (x, y) \in E^2, \quad x \, T \, a = y \, T \, a \implies x = y
+\]
+\[
+\text{(resp. } \forall (x, y) \in E^2, \quad a \, T \, x = a \, T \, y \implies x = y \text{)}
+\]
+c'est-à-dire tel que $\delta_a$ (resp. $\gamma_a$) soit injective.
+
+Un élément est dit \mot{régulier} (ou \mot{simplifiable}) s'il est régulier à droite et à gauche.
+\end{definition}
+
+\begin{exemples}
+\begin{enumerate}
+    \item Tout élément de $(\N, +)$ est simplifiable :
+    \[
+    \forall m, n, p \in \N, \quad m + p = n + p \implies m = n
+    \]
+    \item Tout élément de $(\N^*, \times)$ est simplifiable. En revanche, $(\N, \times)$ possède un seul élément non simplifiable : $0$ (par exemple, $0 \times 0 = 0 \times 1$, mais $0 = 1$ est faux).
+    \item Dans le monoïde $(X^X, \circ)$ :
+    \begin{itemize}
+        \item Les éléments $f \in X^X$ réguliers à droite, c'est-à-dire tels que :
+        \[
+        \forall g, h \in X^X, \quad g \circ f = h \circ f \implies g = h
+        \]
+        sont exactement les \mot{surjections}.
+        \item Les éléments $f \in X^X$ réguliers à gauche, c'est-à-dire tels que :
+        \[
+        \forall g, h \in X^X, \quad f \circ g = f \circ h \implies g = h
+        \]
+        sont exactement les \mot{injections}.
+    \end{itemize}
+    \item En général, les monoïdes $(\mathcal{P}(X), \cup)$ et $(\mathcal{P}(X), \cap)$ ne sont pas réguliers (dès que $X \neq \emptyset$).
+\end{enumerate}
+\end{exemples}
+
+\begin{definition}[Élément symétrisable]
+Soit $(E, T)$ un magma unifère de neutre $e$. On appelle \mot{élément symétrisable} (resp. \mot{symétrisable à droite}, resp. \mot{à gauche}) tout élément $a \in E$ tel qu'il existe au moins un élément $a' \in E$ tel que :
+\[
+a \, T \, a' = a' \, T \, a = e \qquad \text{(resp. } a \, T \, a' = e, \quad \text{resp. } a' \, T \, a = e \text{)}
+\]
+On dit alors que $a'$ est un \mot{symétrique} ou \mot{inverse} (resp. \mot{à droite}, resp. \mot{à gauche}) de $a$ pour la loi $T$.
+\end{definition}
+
+\begin{remarque}
+\textbf{Attention à l'unicité :} dans un magma unifère quelconque, un symétrique à gauche ou à droite n'est pas forcément unique.
+\end{remarque}
+
+\begin{theoreme}
+Soit $(E, T)$ un monoïde d'élément neutre $e$, et $a \in E$. Alors :
+\begin{enumerate}
+    \item Si $a$ est symétrisable à droite (resp. à gauche), alors $a$ est régulier à droite (resp. à gauche).
+    \item Si $a$ admet un symétrique à droite et un symétrique à gauche, ceux-ci sont égaux.
+    \item Si $a$ est symétrisable, il admet un symétrique unique.
+    \item Le composé de deux éléments symétrisables est symétrisable.
+\end{enumerate}
+\end{theoreme}
+
+\begin{demonstration}
+\begin{enumerate}
+    \item Supposons $a$ symétrisable à droite, donc qu'il existe $a' \in E$ tel que $a \, T \, a' = e$.
+    Soient $x, y \in E$ tels que $x \, T \, a = y \, T \, a$. Alors :
+    \[
+    (x \, T \, a) \, T \, a' = (y \, T \, a) \, T \, a'
+    \]
+    Donc, par associativité de $T$ :
+    \[
+    x \, T \, (a \, T \, a') = y \, T \, (a \, T \, a') \implies x \, T \, e = y \, T \, e \implies x = y
+    \]
+    Donc $a$ est régulier à droite. De même si $a$ est symétrisable à gauche.
+
+    \item Supposons qu'il existe $a'$ et $a'' \in E$ tels que $a \, T \, a' = e$ et $a'' \, T \, a = e$. Par associativité de $T$ :
+    \[
+    (a'' \, T \, a) \, T \, a' = a'' \, T \, (a \, T \, a') \implies e \, T \, a' = a'' \, T \, e \implies a' = a''
+    \]
+
+    \item Si $a'$ et $a''$ sont deux symétriques de $a$, alors en particulier $a'$ est symétrique à droite et $a''$ est symétrique à gauche, d'où $a' = a''$ d'après le point 2).
+
+    \item Si $a$ et $b$ sont symétrisables de symétriques respectifs $a'$ et $b'$, alors :
+    \begin{align*}
+        (a \, T \, b) \, T \, (b' \, T \, a') &= a \, T \, (b \, T \, b') \, T \, a' \\
+                                              &= a \, T \, e \, T \, a' \\
+                                              &= a \, T \, a' = e
+    \end{align*}
+    et de même :
+    \begin{align*}
+        (b' \, T \, a') \, T \, (a \, T \, b) &= b' \, T \, (a' \, T \, a) \, T \, b \\
+                                              &= b' \, T \, e \, T \, b \\
+                                              &= b' \, T \, b = e
+    \end{align*}
+    Donc $a \, T \, b$ est symétrisable de symétrique $b' \, T \, a'$.
+\end{enumerate}
+\end{demonstration}
+
+\begin{exemples}
+\begin{enumerate}
+    \item Le neutre $e$ d'un monoïde est toujours symétrisable, égal à son symétrique ($e \, T \, e = e$).
+    \item Dans le monoïde $(\mathcal{P}(X), \cup)$ (de neutre $\emptyset$), le seul élément $A \in \mathcal{P}(X)$ symétrisable (c'est-à-dire tel qu'il existe $B \in \mathcal{P}(X)$ vérifiant $A \cup B = \emptyset$) est l'ensemble $\emptyset$.
+    
+    Dans le monoïde $(\mathcal{P}(X), \cap)$ (de neutre $X$), le seul élément symétrisable est $X$.
+    \item Dans $(\N, +)$, de neutre $0$, le seul élément symétrisable est $0$, mais tous les éléments sont réguliers.
+    \item Dans le monoïde $(X^X, \circ)$ :
+    \begin{itemize}
+        \item[\textbf{a)}] Les éléments $f \in X^X$ symétrisables à droite, c'est-à-dire tels qu'il existe $g \in X^X$ vérifiant $f \circ g = \mathrm{id}_X$, sont exactement les \mot{surjections} (ce qui coïncide ici avec les éléments réguliers à droite).
+        \item[\textbf{b)}] Les éléments $f \in X^X$ symétrisables à gauche, c'est-à-dire tels qu'il existe $g \in X^X$ vérifiant $g \circ f = \mathrm{id}_X$, sont exactement les \mot{injections} (ce qui coïncide ici avec les éléments réguliers à gauche).
+    \end{itemize}
+\end{enumerate}
+\end{exemples}
+
+\begin{remarque}[Notation $\overset{n}{\top} x$ étendue à $\Z$]
+Soit $(E, T)$ un monoïde de neutre $e$. Si $x \in E$ est symétrisable de symétrique $x'$, on étend la notation $\overset{n}{\top} x$ à $n \in \Z$ en posant :
+\[
+\forall n \in \Z \setminus \N, \quad \overset{n}{\top} x = \overset{-n}{\top} x'
+\]
+En notation multiplicative : $x^n = (x')^{-n}$ (on peut donc noter $x^{-1} = x'$).
+\end{remarque}
+
+\newpage
+\section{II -- Structure de groupe}
+
+\subsection{2.1. Définitions, premières propriétés}
+
+\begin{definition}
+On appelle \mot{groupe} tout magma $(G, T)$ vérifiant les propriétés suivantes :
+\begin{itemize}
+    \item \textbf{(A)} $\forall x, y, z \in G, \quad (x \, T \, y) \, T \, z = x \, T \, (y \, T \, z)$ \quad (associativité)
+    \item \textbf{(N)} $\exists e \in G, \ \forall x \in G, \quad x \, T \, e = e \, T \, x = x$ \quad (existence d'un élément neutre)
+    \item \textbf{(S)} $\forall x \in G, \ \exists x' \in G, \quad x \, T \, x' = x' \, T \, x = e$ \quad (tout élément est symétrisable)
+\end{itemize}
+En d'autres termes, un groupe est un \mot{monoïde dont tout élément est symétrisable}.
+On dit que $G$ est l'\mot{ensemble sous-jacent} du groupe $(G, T)$.
+\end{definition}
+
+Dans la pratique, $G$ désigne aussi bien le groupe $(G, T)$ que l'ensemble sous-jacent.
+
+\begin{remarque}
+Un groupe n'est \mot{jamais vide} (il contient au moins l'élément neutre $e$).
+\end{remarque}
+
+\begin{remarque}[Notations]
+\begin{itemize}
+    \item Les lois de groupes sont le plus souvent notées \mot{multiplicativement} $(G, \cdot)$. Le neutre $e$ de $G$ est unique (il peut se noter $1$ ou $1_G$). Si $x \in G$, le symétrique de $x$ (qui est unique) est noté $x'$ ou $x^{-1}$.
+    \item Lorsque la loi est commutative (on dit alors que le groupe est \mot{commutatif} ou \mot{abélien}), elle pourra être notée \mot{additivement} $(G, +)$. Le neutre se note alors $0$ (ou $0_G$) et le symétrique de $x$ se note $-x$ (on l'appelle également l'\mot{opposé} de $x$).
+\end{itemize}
+\end{remarque}
+
+\begin{exemples}
+\begin{enumerate}
+    \item $(\Z, +)$ est un groupe abélien. En revanche, $(\Z, \times)$ est un monoïde (de neutre $1$), mais seuls $1$ et $-1$ sont symétrisables.
+    
+    $(\Q, +)$ et $(\Q^*, \times)$ sont deux groupes commutatifs :
+    \[
+    \forall q \in \Q^*, \ \exists! q' \in \Q^*, \quad qq' = 1
+    \]
+    mais $0$ n'est pas symétrisable dans le monoïde $(\Q, \times)$ ($\forall q \in \Q, \ q \times 0 = 0 \neq 1$).
+    
+    De même, $(\R, +)$, $(\R^*, \times)$, $(\C, +)$, $(\C^*, \times)$ sont des groupes commutatifs.
+    
+    \item $(\N, +)$ n'est pas un groupe, puisque seul $0$ est symétrisable.
+    
+    \item Si $E$ est un ensemble, $(\mathfrak{S}_E, \circ)$, le monoïde des permutations de $E$, est un groupe, appelé le \mot{groupe des permutations} de $E$ (non abélien dès que $\mathrm{Card}(E) \ge 3$).
+    
+    En effet, la loi $\mathfrak{S}_E \times \mathfrak{S}_E \to \mathfrak{S}_E, \ (\sigma, \tau) \mapsto \sigma \circ \tau$ vérifie :
+    \begin{itemize}
+        \item \textbf{(A)} $\forall \sigma_1, \sigma_2, \sigma_3 \in \mathfrak{S}_E, \quad (\sigma_1 \circ \sigma_2) \circ \sigma_3 = \sigma_1 \circ (\sigma_2 \circ \sigma_3)$
+        \item \textbf{(N)} $\forall \sigma \in \mathfrak{S}_E, \quad \sigma \circ \mathrm{id}_E = \mathrm{id}_E \circ \sigma = \sigma$
+        \item \textbf{(S)} $\forall \sigma \in \mathfrak{S}_E, \quad \sigma \circ \sigma^{-1} = \sigma^{-1} \circ \sigma = \mathrm{id}_E$ (où $\sigma^{-1} \in \mathfrak{S}_E$ est la bijection réciproque).
+    \end{itemize}
+    En particulier, si $E = \intEnt{1}{n}$ où $n \in \N^*$, $\mathfrak{S}_E$ se note $\mathfrak{S}_n$, appelé \mot{groupe symétrique} d'indice $n$.
+\end{enumerate}
+\end{exemples}
+
+\begin{proposition}[Groupe des inversibles d'un monoïde]
+Plus généralement, si $(M, \cdot)$ est un monoïde, l'ensemble $\mathcal{U}_M$ de ses éléments symétrisables forme un groupe pour la loi induite, appelé \mot{groupe des inversibles} du monoïde $(M, \cdot)$.
+\end{proposition}
+
+\begin{demonstration}
+\begin{itemize}
+    \item \textbf{Stabilité :} Si $x, y \in \mathcal{U}_M$, alors on sait que dans le monoïde $(M, \cdot)$, $x \cdot y$ est symétrisable (de symétrique $y^{-1} x^{-1}$). Donc la loi $\cdot$ de $(M, \cdot)$ induit une loi interne sur $\mathcal{U}_M$.
+    \item \textbf{(A)} L'associativité de la loi induite sur $\mathcal{U}_M$ découle de celle de $(M, \cdot)$.
+    \item \textbf{(N)} On sait que $e \in \mathcal{U}_M$ (car $e \cdot e = e$) et $e$ est encore neutre pour la loi induite sur $\mathcal{U}_M$.
+    \item \textbf{(S)} Soit $x \in \mathcal{U}_M$. Alors il existe $x' \in M$ tel que $x \cdot x' = x' \cdot x = e$. Donc $x'$ est symétrisable de symétrique $x$, d'où $x' \in \mathcal{U}_M$.
+\end{itemize}
+En conclusion, $(\mathcal{U}_M, \cdot)$ est un groupe.
+\end{demonstration}
+
+\begin{exemples}[Suite des exemples de groupes]
+Pour $(M, \cdot) = (E^E, \circ)$, les éléments symétrisables $f \in E^E$ de ce monoïde sont les fonctions $f : E \to E$ telles qu'il existe $g : E \to E$ vérifiant $f \circ g = g \circ f = \mathrm{id}_E$. Ce sont exactement les bijections de $E$ dans $E$, c'est-à-dire les permutations de $E$. Donc $\mathcal{U}_{E^E} = \mathfrak{S}_E$.
+
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item Soit $X$ un ensemble, et $\Delta : \mathcal{P}(X) \times \mathcal{P}(X) \to \mathcal{P}(X)$ la différence symétrique :
+    \[
+    (A, B) \longmapsto A \Delta B = (A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)
+    \]
+    $(\mathcal{P}(X), \Delta)$ est un groupe commutatif :
+    \begin{itemize}
+        \item \textbf{(A)} L'associativité a été prouvée dans le cours de théorie des ensembles.
+        \item \textbf{(N)} $\emptyset$ est neutre pour $\Delta$ : $\forall A \in \mathcal{P}(X), \ A \Delta \emptyset = \emptyset \Delta A = A$.
+        \item \textbf{(S)} $\forall A \in \mathcal{P}(X), \ A \Delta A = \emptyset$ (tout $A$ est symétrisable, égal à son symétrique).
+    \end{itemize}
+    
+    \item Soit $(G, \cdot)$ un groupe et $I$ un ensemble non vide. L'ensemble $\mathcal{F}(I, G) = G^I$ peut être muni de la loi de composition interne :
+    \[
+    G^I \times G^I \longrightarrow G^I, \quad (f, g) \longmapsto f \cdot g
+    \]
+    où $f \cdot g : I \to G, \ x \mapsto f(x) \cdot g(x)$.
+    
+    Muni de cette loi, $G^I$ est un groupe :
+    \begin{itemize}
+        \item \textbf{(A)} Soient $f, g, h \in G^I$. Alors $\forall x \in I$ :
+        \begin{align*}
+            [(f \cdot g) \cdot h](x) &= (f \cdot g)(x) \cdot h(x) \\
+                                     &= (f(x) \cdot g(x)) \cdot h(x) \\
+                                     &= f(x) \cdot (g(x) \cdot h(x)) \quad (\text{associativité de } \cdot \text{ dans } G) \\
+                                     &= [f \cdot (g \cdot h)](x)
+        \end{align*}
+        Donc $(f \cdot g) \cdot h = f \cdot (g \cdot h)$.
+        \item \textbf{(N)} L'application constante $\chi : I \to G, \ x \mapsto e$ vérifie $\forall f \in G^I, \ f \cdot \chi = \chi \cdot f = f$.
+        \item \textbf{(S)} Si $f : I \to G$, alors $f' : I \to G, \ x \mapsto f(x)^{-1}$ vérifie $f \cdot f' = f' \cdot f = \chi$.
+    \end{itemize}
+    \textit{Exemple particulier :} $(\mathcal{F}(I, \R), +)$ est un groupe dont le neutre est la fonction nulle.
+    
+    \item $(\U, \times)$ où $\U = \{ z \in \C \mid |z| = 1 \}$ est un groupe. Pour tout $n \in \N^*$, $(\U_n, \times)$, où $\U_n$ est l'ensemble des racines $n$-èmes de $1$, est un groupe.
+    
+    \item \textbf{Les groupes de la géométrie :}
+    \begin{itemize}
+        \item Groupe des isométries vectorielles du plan euclidien (ses éléments sont les rotations de centre $O$ et les réflexions vectorielles) ;
+        \item Groupe des isométries du plan euclidien ;
+        \item Même chose en remplaçant « plan » par « espace » ;
+        \item Groupe des homographies de $\hat{\C} = \C \cup \{\infty\}$ (droite projective complexe, obtenue en ajoutant un point à l'infini à $\C$). Soient $(a, b, c, d) \in \C^4$ tel que $ad - bc \neq 0$. On note $h_{(a, b, c, d)} : \hat{\C} \to \hat{\C}$ :
+        \begin{itemize}
+            \item Si $c \neq 0$ :
+            \[
+            z \longmapsto \begin{cases}
+            \dfrac{az+b}{cz+d} & \text{si } z \in \C \setminus \left\{-\dfrac{d}{c}\right\} \\[1.2em]
+            \infty & \text{si } z = -\dfrac{d}{c} \\[0.6em]
+            \dfrac{a}{c} & \text{si } z = \infty
+            \end{cases}
+            \]
+            \item Si $c = 0$ (alors $a \neq 0$ et $d \neq 0$) :
+            \[
+            z \longmapsto \begin{cases}
+            \dfrac{az+b}{d} & \text{si } z \in \C \\[1em]
+            \infty & \text{si } z = \infty
+            \end{cases}
+            \]
+        \end{itemize}
+        \item Et les « petits » groupes : groupes des isométries d'un polygone régulier, d'un cube, d'un tétraèdre, d'un octaèdre, d'un dodécaèdre, d'un icosaèdre réguliers.
+    \end{itemize}
+\end{enumerate}
+\end{exemples}
+
+De l'étude des monoïdes, on sait que dans un groupe $(G, \cdot)$ :
+\begin{itemize}
+    \item L'élément neutre $e$ est unique ;
+    \item Tout élément $x \in G$ a un symétrique unique et est régulier ; ce symétrique est noté $x'$ ou $x^{-1}$.
+\end{itemize}
+
+\begin{proposition}[Règles de calcul dans un groupe]
+Soit $(G, \cdot)$ un groupe.
+\begin{enumerate}
+    \item Pour tous $x, y \in G$, $(xy)^{-1} = y^{-1} x^{-1}$.
+    \item Pour tous $m, n \in \Z$ et tout $x \in G$, $x^{m+n} = x^m \cdot x^n$.
+    \item Si $x$ et $y \in G$ commutent, alors pour tout $n \in \Z$, $(xy)^n = x^n y^n$.
+\end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+\begin{enumerate}
+    \item Prouvé dans la partie I (théorème sur les monoïdes).
+    
+    \item Déjà établi pour $m, n \in \N$.
+    \begin{itemize}
+        \item \cas{Si $m \le 0$ et $n \le 0$ :} On a $-m, -n \in \N$, donc $x^{-m-n} = x^{-n} x^{-m}$. En passant aux inverses :
+        \[
+        \left[ x^{-(m+n)} \right]^{-1} = \left[ x^{-n} x^{-m} \right]^{-1} = (x^{-m})^{-1} (x^{-n})^{-1}
+        \]
+        soit $x^{m+n} = x^m \cdot x^n$.
+        
+        \item \cas{Si $m \le 0$ et $n \ge 0$ :}
+        \begin{itemize}
+            \item \textit{1er cas : $m + n \ge 0$.} Alors $x^{-m} \cdot x^{m+n} = x^{-m + m + n} = x^n$ (car $-m \ge 0$ et $m+n \ge 0$). Donc :
+            \[
+            x^{m+n} = (x^{-m})^{-1} x^n = x^m x^n
+            \]
+            \item \textit{2nd cas : $m + n \le 0$.} Alors $x^{m+n} \cdot x^{-n} = x^{m + n - n} = x^m$ (car $-(m+n) \ge 0$ et $-n \le 0$, en utilisant le cas précédent ou par passage à l'inverse sur $x^{-(m+n)} x^n = x^{-m}$). Donc :
+            \[
+            x^{m+n} = x^m (x^{-n})^{-1} = x^m x^n
+            \]
+        \end{itemize}
+        
+        \item \cas{Si $m \ge 0$ et $n \le 0$ :} Idem en échangeant les rôles de $m$ et $n$ (ou par commutativité de $m$ et $n$ dans $\Z$ et symétrie des deux cas précédents).
+    \end{itemize}
+    
+    \item Déjà établi si $n \in \N$.
+    Si $n \in \Z^-$, on a $-n = |n| \in \N$, d'où :
+    \[
+    (xy)^n = (xy)^{-|n|} = \left[ (xy)^{|n|} \right]^{-1} = \left[ x^{|n|} y^{|n|} \right]^{-1} = (y^{|n|})^{-1} (x^{|n|})^{-1} = y^n x^n
+    \]
+    Or $x$ et $y$ commutent, donc $x^n$ et $y^n$ commutent également (en effet, $xy = yx \implies y^{-1} x^{-1} = x^{-1} y^{-1}$, donc $x^{-1}$ et $y^{-1}$ commutent, et par récurrence leurs puissances positives $x^n = (x^{-1})^{|n|}$ et $y^n = (y^{-1})^{|n|}$ commutent). Ainsi :
+    \[
+    (xy)^n = x^n y^n
+    \]
+\end{enumerate}
+\end{demonstration}
+
+\begin{remarque}[Notation additive]
+Si le groupe est commutatif, on peut noter additivement la loi de $G$ (c'est-à-dire par $+$). Le neutre se note $0$ et le symétrique de $x$ se note $-x$.
+
+Dans ce cas, $x^n$ se note $n \cdot x$ (attention : $\cdot$ n'est pas une loi de multiplication interne, mais une loi externe $\Z \times G \to G$), défini par :
+\[
+n \cdot x = \begin{cases}
+\underbrace{x + x + \dots + x}_{n \text{ fois}} & \text{si } n \ge 1 \\[1.2em]
+0 & \text{si } n = 0 \\[0.4em]
+(-x) + (-x) + \dots + (-x) \quad (|n| \text{ fois}) & \text{si } n < 0
+\end{cases}
+\]
+Les propriétés 1), 2), 3) s'écrivent alors :
+\begin{enumerate}
+    \item $\forall x, y \in G, \quad -(x + y) = -x - y$ \quad (c'est-à-dire $-x + (-y)$)
+    \item $\forall m, n \in \Z, \ \forall x \in G, \quad (m + n) \cdot x = m \cdot x + n \cdot x$
+    \item $\forall x, y \in G, \ \forall n \in \Z, \quad n \cdot (x + y) = n \cdot x + n \cdot y$
+\end{enumerate}
+\end{remarque}
+
+\begin{remarque}
+Si $x \in G$ et $y \in G$ vérifient $x \cdot y = e$, alors $y = x^{-1}$.
+En effet, $x$ étant inversible :
+\[
+x \cdot y = e \implies x^{-1} \cdot (x \cdot y) = x^{-1} \cdot e \implies (x^{-1} \cdot x) \cdot y = x^{-1} \implies e \cdot y = x^{-1} \implies y = x^{-1}
+\]
+De même, $y \cdot x = e \implies y = x^{-1}$.
+\end{remarque}
+
+\newpage
+\subsection{2.2. Translations dans un groupe}
+
+\begin{proposition}
+Soit $(G, \cdot)$ un groupe. Les translations à droite et à gauche sont des permutations de $G$.
+\end{proposition}
+
+\begin{demonstration}
+Soit $a \in G$ et $\delta_a : G \to G, \ x \mapsto x \cdot a$.
+Soit $y \in G$. Il s'agit de montrer que :
+\[
+\exists! x \in G, \quad x \cdot a = y
+\]
+\begin{itemize}
+    \item \cas{Analyse :} Si $x \in G$ vérifie $x \cdot a = y$, alors $(x \cdot a) \cdot a^{-1} = y \cdot a^{-1}$, soit $x \cdot (a \cdot a^{-1}) = y \cdot a^{-1}$, et donc $x = y \cdot a^{-1}$.
+    \item \cas{Synthèse :} Réciproquement, en posant $x = y \cdot a^{-1}$, on a :
+    \[
+    (y \cdot a^{-1}) \cdot a = y \cdot (a^{-1} \cdot a) = y \cdot e = y
+    \]
+\end{itemize}
+Donc $\delta_a : G \to G$ est une bijection, et $(\delta_a)^{-1} : G \to G, \ y \mapsto y \cdot a^{-1}$, c'est-à-dire :
+\[
+(\delta_a)^{-1} = \delta_{a^{-1}}
+\]
+De même, $\gamma_a : G \to G, \ x \mapsto a \cdot x$ est une bijection et :
+\[
+(\gamma_a)^{-1} = \gamma_{a^{-1}}
+\]
+\end{demonstration}
+
+\textbf{Table de Cayley d'un groupe :}
+On peut définir un groupe fini par la table de sa loi $\cdot$ sur $G$.
+
+\begin{exemples}[Table de Cayley d'un groupe d'ordre 3]
+\[
+\begin{array}{c|ccc}
+\cdot & a & b & c \\
+\hline
+a & a & b & c \\
+b & b & c & a \\
+c & c & a & b
+\end{array}
+\]
+C'est la table d'une loi de groupe dont le neutre est $a$.
+\end{exemples}
+
+En notant $G = \{a_1, a_2, \dots, a_n\}$, la ligne n°$i$ de la table de Cayley de $G$ représente les éléments $\gamma_{a_i}(a_1), \gamma_{a_i}(a_2), \dots, \gamma_{a_i}(a_n)$ dans cet ordre, et la colonne n°$j$ de la table représente les éléments $\delta_{a_j}(a_1), \delta_{a_j}(a_2), \dots, \delta_{a_j}(a_n)$ dans cet ordre (de haut en bas).
+
+Comme les translations (à droite et à gauche) sont des permutations de $G$, une condition nécessaire pour qu'une table de loi soit celle d'un groupe est que toute ligne (resp. colonne) de la table soit une permutation de l'ensemble des éléments de $G$.
+
+Cette condition n'est cependant \mot{pas suffisante} :
+
+\begin{exemples}[Contre-exemple]
+\[
+\begin{array}{c|ccc}
+\cdot & a & b & c \\
+\hline
+a & a & b & c \\
+b & c & a & b \\
+c & b & c & a
+\end{array}
+\]
+Chaque ligne et chaque colonne est bien une permutation de $\{a, b, c\}$, mais cette loi ne possède pas de neutre (donc ce n'est pas un groupe).
+\end{exemples}
+
+\newpage
+\subsection{2.3. Groupe produit}
+
+\begin{proposition}
+Soient $(G_1, *)$ et $(G_2, \otimes)$ deux groupes. L'ensemble $G_1 \times G_2$ peut être muni de la loi de composition interne $T$ définie par :
+\[
+(x_1, x_2) \, T \, (y_1, y_2) = (x_1 * y_1, \, x_2 \otimes y_2)
+\]
+où $(x_1, x_2), (y_1, y_2) \in G_1 \times G_2$.
+Alors $(G_1 \times G_2, T)$ est un groupe, appelé \mot{groupe produit} de $(G_1, *)$ et $(G_2, \otimes)$.
+\end{proposition}
+
+\begin{demonstration}
+D'abord, $T$ est bien une loi de composition interne sur $G_1 \times G_2$. Notons $e_1$ (resp. $e_2$) le neutre de $G_1$ (resp. $G_2$).
+\begin{itemize}
+    \item \textbf{(N)} On vérifie aisément que $(e_1, e_2)$ est neutre pour $T$.
+    \item \textbf{(A) Associativité :} Soient $(x_1, x_2), (y_1, y_2)$ et $(z_1, z_2)$ trois éléments de $G_1 \times G_2$. Alors :
+    \begin{align*}
+        \big((x_1, x_2) \, T \, (y_1, y_2)\big) \, T \, (z_1, z_2) 
+        &= (x_1 * y_1, \, x_2 \otimes y_2) \, T \, (z_1, z_2) \\
+        &= \big((x_1 * y_1) * z_1, \, (x_2 \otimes y_2) \otimes z_2\big) \\
+        &= \big(x_1 * (y_1 * z_1), \, x_2 \otimes (y_2 \otimes z_2)\big) \\
+        &= (x_1, x_2) \, T \, \big((y_1, y_2) \, T \, (z_1, z_2)\big)
+    \end{align*}
+    \item \textbf{(S)} Soit $(x_1, x_2) \in G_1 \times G_2$. Notons $x_1'$ le symétrique de $x_1$ dans $G_1$ et $x_2'$ le symétrique de $x_2$ dans $G_2$. Alors :
+    \[
+    (x_1, x_2) \, T \, (x_1', x_2') = (x_1 * x_1', \, x_2 \otimes x_2') = (e_1, e_2)
+    \]
+    et
+    \[
+    (x_1', x_2') \, T \, (x_1, x_2) = (x_1' * x_1, \, x_2' \otimes x_2) = (e_1, e_2)
+    \]
+\end{itemize}
+Donc $(G_1 \times G_2, T)$ est un groupe.
+\end{demonstration}
+
+\textbf{Généralisation :} Si $(G_k, *_k)_{k \in \intEnt{1}{n}}$ est une famille de $n$ groupes, le produit cartésien $G_1 \times G_2 \times \dots \times G_n = \displaystyle\prod_{k=1}^n G_k$ est un groupe pour la loi produit :
+\[
+(x_1, x_2, \dots, x_n) \cdot (y_1, y_2, \dots, y_n) = (x_1 *_1 y_1, \dots, x_n *_n y_n)
+\]
+
+\begin{exemples}[Groupe de Klein]
+$\U_2 = \{1, -1\}$ est un groupe à $2$ éléments (de neutre $1$).
+Notons que si $G = \{e, a\}$ est un groupe à $2$ éléments de neutre $e$, sa table de Cayley est :
+\[
+\begin{array}{c|cc}
+\cdot & e & a \\
+\hline
+e & e & a \\
+a & a & e
+\end{array}
+\qquad \text{avec } a \cdot a = e \text{ (c'est-à-dire } a^2 = e\text{)}.
+\]
+Réciproquement, cette table définit bien une loi de groupe.
+
+Formons la table de Cayley du groupe produit $(\U_2 \times \U_2, \times)$ (\mot{groupe de Klein}) :
+\[
+\begin{array}{c|cccc}
+\times & (1, 1) & (1, -1) & (-1, 1) & (-1, -1) \\
+\hline
+(1, 1) & (1, 1) & (1, -1) & (-1, 1) & (-1, -1) \\
+(1, -1) & (1, -1) & (1, 1) & (-1, -1) & (-1, 1) \\
+(-1, 1) & (-1, 1) & (-1, -1) & (1, 1) & (1, -1) \\
+(-1, -1) & (-1, -1) & (-1, 1) & (1, -1) & (1, 1)
+\end{array}
+\]
+On vérifie que $\forall x \in \U_2 \times \U_2, \quad x^2 = (1, 1)$ (neutre de $\U_2 \times \U_2$).
+
+Au contraire, le groupe $(\U_4, \times)$ ne vérifie pas cette propriété :
+\[
+\U_4 = \{1, i, -1, -i\} \quad (\text{neutre } 1)
+\]
+\[
+i^2 = -1 \neq 1 \quad \text{et} \quad (-i)^2 = -1 \neq 1
+\]
+Les tables de Cayley de ces deux groupes $(\U_2 \times \U_2, \times)$ et $(\U_4, \times)$ sont fondamentalement différentes : on dira qu'ils ne sont pas \mot{isomorphes}.
+\end{exemples}
+
+\newpage
+\section{III -- Sous-groupes d'un groupe}
+
+\subsection{3.1. Définitions et caractérisation}
+
+\begin{definition}
+Soit $(G, \cdot)$ un groupe et $H \subset G$. On dit que $H$ est un \mot{sous-groupe} de $G$ si $H$ est stable par la loi $\cdot$, et $(H, \cdot)$ est un groupe pour la loi induite.
+\end{definition}
+
+\begin{lemme}
+Soit $H$ un sous-groupe de $(G, \cdot)$. Alors $e_H = e_G$, et les inverses d'éléments $h \in H$ dans $H$ et $G$ coïncident.
+\end{lemme}
+
+\begin{demonstration}
+On note $e_G$ le neutre de $(G, \cdot)$ et $e_H$ le neutre de $(H, \cdot)$. Alors :
+\[
+e_H \cdot e_H = e_H \quad (\text{car } e_H \text{ est neutre dans } (H, \cdot))
+\]
+\[
+e_H = e_G \cdot e_H \quad (\text{car } e_G \text{ est neutre dans } (G, \cdot))
+\]
+c'est-à-dire $e_H \cdot e_H = e_G \cdot e_H$. Or dans le groupe $(G, \cdot)$, on peut simplifier à droite par $e_H$ (tout élément d'un groupe étant régulier), d'où il vient :
+\[
+\cadre{e_H = e_G}
+\]
+
+Soit $h \in H$, $h'$ son inverse dans $H$ et $h^{-1}$ son inverse dans $G$. Alors :
+\[
+h \cdot h' = e_H = e_G = h \cdot h^{-1}
+\]
+Donc, en simplifiant à gauche par $h$ dans le groupe $(G, \cdot)$, il vient :
+\[
+\cadre{h' = h^{-1}}
+\]
+\end{demonstration}
+
+\begin{proposition}[Caractérisation des sous-groupes]
+Soit $(G, \cdot)$ un groupe et $H \subset G$. Alors $H$ est un sous-groupe de $(G, \cdot)$ si et seulement si l'une des deux conditions équivalentes suivantes est vérifiée :
+\begin{enumerate}
+    \item \begin{itemize}
+        \item $e_G \in H$
+        \item $\forall (x, y) \in H^2, \quad x \cdot y \in H$
+        \item $\forall x \in H, \quad x^{-1} \in H$ \quad (où $x^{-1}$ est l'inverse dans $G$)
+    \end{itemize}
+    \item \begin{itemize}
+        \item $H \neq \emptyset$
+        \item $\forall (x, y) \in H^2, \quad x^{-1} \cdot y \in H$ \quad (ou $\forall (x, y) \in H^2, \quad x \cdot y^{-1} \in H$)
+    \end{itemize}
+\end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+\cas{Équivalence entre « $H$ est un sous-groupe de $(G, \cdot)$ » et 1) :}
+\begin{itemize}
+    \item \textbf{Sens direct ($\implies$) :} Supposons que $H$ soit un sous-groupe de $(G, \cdot)$.
+    D'après le lemme, $e_G = e_H \in H$.
+    Par définition, $H$ est stable par $\cdot$, donc $\forall (x, y) \in H^2, \ x \cdot y \in H$.
+    Le lemme dit aussi que si $x \in H$, alors son inverse dans $G$ coïncide avec son inverse dans $H$, donc $x^{-1} \in H$.
+    Ainsi, la condition 1) est vérifiée.
+    
+    \item \textbf{Réciproque ($\Longleftarrow$) :} Supposons 1).
+    Alors $H$ est stable par la loi $\cdot$ de $G$. Vérifions que $H$, muni de la loi induite, est bien un groupe :
+    \begin{itemize}
+        \item \textbf{(A)} L'associativité de la loi induite sur $H$ découle de l'associativité de la loi de $G$.
+        \item \textbf{(N)} $e_G \in H$ et $\forall x \in H, \ x \cdot e_G = x = e_G \cdot x$, donc $H$ possède un neutre, à savoir $e_G$.
+        \item \textbf{(S)} Soit $x \in H$. Alors $x^{-1} \in H$ et $x \cdot x^{-1} = x^{-1} \cdot x = e_G$, où $e_G$ est le neutre de $G$, mais aussi celui de $H$. Donc tout élément de $H$ est symétrisable pour la loi induite.
+    \end{itemize}
+    Donc $(H, \cdot)$ est un groupe, c'est-à-dire un sous-groupe de $(G, \cdot)$.
+\end{itemize}
+
+\vspace{8pt}
+\cas{Équivalence entre 1) et 2) :}
+\begin{itemize}
+    \item \textbf{1) $\implies$ 2) :} Supposons 1). Comme $e_G \in H$, on a $H \neq \emptyset$.
+    De plus, soient $(x, y) \in H^2$. Par 1), $x^{-1} \in H$, et par stabilité de $H$, $x^{-1} \cdot y \in H$. D'où 2).
+    
+    \item \textbf{2) $\implies$ 1) :} Supposons 2).
+    Comme $H \neq \emptyset$, on peut choisir $x_0 \in H$. Alors $x_0^{-1} \cdot x_0 \in H$, c'est-à-dire $e_G \in H$.
+    
+    Dans la propriété $\forall (x, y) \in H^2, \ x^{-1} \cdot y \in H$, on peut remplacer $y$ par $e_G \in H$, ce qui donne :
+    \[
+    \forall x \in H, \quad x^{-1} \cdot e_G = x^{-1} \in H
+    \]
+    Alors, pour tout $(x, y) \in H^2$, on a $(x^{-1}, y) \in H^2$, et donc $(x^{-1})^{-1} \cdot y \in H$, c'est-à-dire $x \cdot y \in H$.
+    Donc 2) $\implies$ 1).
+\end{itemize}
+\end{demonstration}
+
+\begin{remarque}[Caractérisation d'un intérêt pratique important]
+Dans de nombreux cas, pour montrer qu'un magma $(G, \cdot)$ est un groupe, on montre que c'est un sous-groupe d'un groupe bien connu.
+\end{remarque}
+
+\begin{exemples}
+\begin{enumerate}
+    \item $\{e\}$ et $G$ sont des sous-groupes de $(G, \cdot)$ (dits \mot{sous-groupes triviaux}).
+    
+    \item $\U = \{ z \in \C \mid |z| = 1 \}$ est un sous-groupe de $(\C^*, \times)$ :
+    \begin{itemize}
+        \item D'abord, $\U \subset \C^*$ ;
+        \item $1 \in \U$ (car $|1| = 1$) ;
+        \item $\forall z, z' \in \U, \ |zz'| = |z||z'| = 1 \times 1 = 1$, donc $zz' \in \U$ ;
+        \item $\forall z \in \U, \ z^{-1} = \bar{z}$, donc $|z^{-1}| = |\bar{z}| = |z| = 1$, donc $z^{-1} \in \U$.
+    \end{itemize}
+    Donc $\U$ est un sous-groupe de $(\C^*, \times)$.
+    
+    \item Pour tout $n \in \N^*$, $\U_n = \{ z \in \C \mid z^n = 1 \}$ est un sous-groupe de $(\C^*, \times)$ (et de $(\U, \times)$) :
+    \begin{itemize}
+        \item D'abord, $\U_n \subset \C^*$ (en fait $\U_n \subset \U \subset \C^*$) ;
+        \item $1 \in \U_n$ (car $1^n = 1$) ;
+        \item Si $z, z' \in \U_n$, alors $(zz')^n = z^n z'^n = 1 \times 1 = 1$, donc $zz' \in \U_n$ ;
+        \item Si $z \in \U_n$, $(z^{-1})^n = \dfrac{1}{z^n} = \dfrac{1}{1} = 1$, donc $z^{-1} \in \U_n$.
+    \end{itemize}
+    Donc $\U_n$ est un sous-groupe de $(\C^*, \times)$ (et de $(\U, \times)$).
+    
+    \item $\U_\infty = \{ z \in \C \mid \exists n \in \N^*, \ z^n = 1 \} = \displaystyle\bigcup_{n \ge 1} \U_n$ (groupe des racines de l'unité) est un sous-groupe de $(\C^*, \times)$ (et de $(\U, \times)$) :
+    \begin{itemize}
+        \item $1 \in \U_\infty$ (car $1^1 = 1$) ;
+        \item Si $z, z' \in \U_\infty$, alors il existe $n$ et $n' \ge 1$ tels que $z^n = 1$ et $z'^{n'} = 1$. Alors (comme $nn' \ge 1$) :
+        \[
+        (z^{-1} z')^{nn'} = (z^{-1})^{nn'} (z')^{nn'} = \left[ (z^{-1})^n \right]^{n'} \left[ (z')^{n'} \right]^n = \left( \frac{1}{z^n} \right)^{n'} \times 1^n = 1^{n'} \times 1^n = 1
+        \]
+        Donc $z^{-1} z' \in \U_\infty$.
+    \end{itemize}
+\end{enumerate}
+\end{exemples}
+
+\end{document}
