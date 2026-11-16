@@ -4,6 +4,7 @@
 \usepackage{lmodern}
 \usepackage[french]{babel}
 \usepackage{amsmath,amssymb}
+\usepackage{stmaryrd} % Indispensable pour \llbracket et \rrbracket
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 \usepackage{tikz}
@@ -34,6 +35,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\D}{\mathcal{D}}
 \newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\intEnt}[2]{\llbracket #1, #2 \rrbracket} % Raccourci propre pour les intervalles d'entiers
 \DeclareMathOperator{\Argch}{Argch}
 \DeclareMathOperator{\sgn}{signe}
 
@@ -250,13 +252,13 @@ Donc $A = \N$.
 \begin{theoreme}[Corollaire]
 Toute partie $A$ de $\N$ telle que :
 \[
-0 \in A \quad \text{et} \quad \forall n \in \N, \quad \big( [\![0, n]\!] \subset A \implies n' = n + 1 \in A \big)
+0 \in A \quad \text{et} \quad \forall n \in \N, \quad \big( \llbracket 0, n \rrbracket \subset A \implies n' = n + 1 \in A \big)
 \]
 est égale à $\N$.
 \end{theoreme}
 
 \begin{demonstration}
-On pose $B = \{ n \in \N \mid [\![0, n]\!] \subset A \}$.
+On pose $B = \{ n \in \N \mid \llbracket 0, n \rrbracket \subset A \}$.
 
 Alors $0 \in B$ et $\forall n \in B, \ n' = n + 1 \in B$.
 
@@ -423,7 +425,7 @@ n + 0 = n \\
 
 On dispose alors d'une loi de composition interne :
 \[
-\N  \times \N \longrightarrow \N, \quad (n, p) \longmapsto n+p
+\N \times \N \longrightarrow \N, \quad (n, p) \longmapsto n+p
 \]
 
 \textbf{Produit :}
@@ -468,37 +470,37 @@ Enfin, $\forall m, n, \quad m \times n = 1 \implies m = n = 1$.
 
 \subsection{3.1. Cardinal d'un ensemble fini}
 
-On note, pour $n \in \N^*$, $[\![1, n]\!]$ l'ensemble :
+On note, pour $n \in \N^*$, $\llbracket 1, n \rrbracket$ l'ensemble :
 \[
-[\![1, n]\!] = \{ k \in \N \mid 1 \le k \le n \}
+\llbracket 1, n \rrbracket = \{ k \in \N \mid 1 \le k \le n \}
 \]
 
 \begin{definition}
-Un ensemble $E$ est dit fini si $E = \emptyset$ ou s'il existe $n \in \N^*$ et une bijection $E \to [\![1, n]\!]$.
+Un ensemble $E$ est dit fini si $E = \emptyset$ ou s'il existe $n \in \N^*$ et une bijection $E \to \llbracket 1, n \rrbracket$.
 \end{definition}
 
 \begin{theoreme}
 Soient $n, p \in \N^*$. Les assertions suivantes sont équivalentes :
 \begin{enumerate}
     \item[(i)] $n \le p$
-    \item[(ii)] il existe une injection $[\![1, n]\!] \to [\![1, p]\!]$
+    \item[(ii)] il existe une injection $\llbracket 1, n \rrbracket \to \llbracket 1, p \rrbracket$
 \end{enumerate}
 \end{theoreme}
 
 \begin{demonstration}
-\textbf{(i) $\implies$ (ii)} est évidente, car si $n \le p$ alors $[\![1, n]\!] \subset [\![1, p]\!]$, donc l'injection canonique $j : [\![1, n]\!] \to [\![1, p]\!]$ convient.
+\textbf{(i) $\implies$ (ii)} est évidente, car si $n \le p$ alors $\llbracket 1, n \rrbracket \subset \llbracket 1, p \rrbracket$, donc l'injection canonique $j : \llbracket 1, n \rrbracket \to \llbracket 1, p \rrbracket$ convient.
 
 \textbf{(ii) $\implies$ (i)} Par récurrence sur $n$.
-$HR(n)$ : $\ll$ Pour tout $p \in \N^*$, s'il existe une injection de $[\![1, n]\!]$ dans $[\![1, p]\!]$, alors $n \le p \gg$.
+$HR(n)$ : $\ll$ Pour tout $p \in \N^*$, s'il existe une injection de $\llbracket 1, n \rrbracket$ dans $\llbracket 1, p \rrbracket$, alors $n \le p \gg$.
 
 $HR(1)$ est vraie car pour tout $p \in \N^*, \ 1 \le p$.
 
 $HR(n) \implies HR(n+1)$ :
 Supposons $HR(n)$ et montrons $HR(n+1)$.
-Soit $p \in \N^*$ et $f : [\![1, n+1]\!] \to [\![1, p]\!]$ une injection.
+Soit $p \in \N^*$ et $f : \llbracket 1, n+1 \rrbracket \to \llbracket 1, p \rrbracket$ une injection.
 
 \textbf{1er cas :} $f(n+1) = p$
-Alors $f$ induit, par restriction à $[\![1, n]\!]$, une injection de $[\![1, n]\!]$ dans $[\![1, p-1]\!]$.
+Alors $f$ induit, par restriction à $\llbracket 1, n \rrbracket$, une injection de $\llbracket 1, n \rrbracket$ dans $\llbracket 1, p-1 \rrbracket$.
 Donc, d'après $HR(n)$, $n \le p-1$, donc $n+1 \le p$.
 
 \textbf{2nd cas :} $f(n+1) = y \neq p$
@@ -540,7 +542,7 @@ Donc, d'après $HR(n)$, $n \le p-1$, donc $n+1 \le p$.
 \end{tikzpicture}
 \end{center}
 
-Soit $\varphi : [\![1, p]\!] \to [\![1, p]\!]$ définie par :
+Soit $\varphi : \llbracket 1, p \rrbracket \to \llbracket 1, p \rrbracket$ définie par :
 \[
 \begin{cases}
 y \mapsto p \\
@@ -549,9 +551,9 @@ x \neq p, y \mapsto x
 \end{cases}
 \]
 (c'est une involution).
-Clairement, $\varphi$ est bijective ($\varphi^2 = \text{id}_{[\![1, p]\!]}$).
+Clairement, $\varphi$ est bijective ($\varphi^2 = \text{id}_{\llbracket 1, p \rrbracket}$).
 
-Donc $\tilde{f} = \varphi \circ f : [\![1, n+1]\!] \to [\![1, p]\!]$ est injective et vérifie $\tilde{f}(n+1) = p$.
+Donc $\tilde{f} = \varphi \circ f : \llbracket 1, n+1 \rrbracket \to \llbracket 1, p \rrbracket$ est injective et vérifie $\tilde{f}(n+1) = p$.
 Donc d'après le 1er cas, $n+1 \le p$.
 Ce qui prouve $HR(n+1)$ dans tous les cas.
 \end{demonstration}
@@ -581,16 +583,16 @@ Preuve facile.
 \end{demonstration}
 
 \begin{proposition}[Corollaire 1]
-$[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents ssi $n = p$.
+$\llbracket 1, n \rrbracket$ et $\llbracket 1, p \rrbracket$ sont équipotents ssi $n = p$.
 \end{proposition}
 
 \begin{demonstration}
-Si $n = p$, prendre $f = \text{id}_{[\![1, n]\!]}$.
-Si $[\![1, n]\!]$ et $[\![1, p]\!]$ sont équipotents, alors on a à la fois $n \le p$ et $p \le n$, donc $n = p$.
+Si $n = p$, prendre $f = \text{id}_{\llbracket 1, n \rrbracket}$.
+Si $\llbracket 1, n \rrbracket$ et $\llbracket 1, p \rrbracket$ sont équipotents, alors on a à la fois $n \le p$ et $p \le n$, donc $n = p$.
 
-\textbf{Détails:} 
+\textbf{Détails :} 
 \textbf{Sens «\,$\Leftarrow$\,» : $n=p \Rightarrow$ équipotents.}
- C'est la première phrase : si $n=p$, alors $\llbracket 1,n\rrbracket$ et
+C'est la première phrase : si $n=p$, alors $\llbracket 1,n\rrbracket$ et
 $\llbracket 1,p\rrbracket$ sont le même ensemble, et l'identité en est une
 bijection. Celui-là est évident.
 
@@ -607,21 +609,20 @@ On en déduit deux injections :
         aussi une bijection, donc injective, donc $p \le n$.
 \end{itemize}
 Comme $\le$ est antisymétrique, $n \le p$ et $p \le n$ donnent $n = p$.
-
 \end{demonstration}
 
 \begin{theoreme}[Corollaire 2]
-Si $E$ est un ensemble fini $\neq \emptyset$, il existe un unique entier naturel $n \in \N^*$ tel que $E$ soit équipotent à $[\![1, n]\!]$.
+Si $E$ est un ensemble fini $\neq \emptyset$, il existe un unique entier naturel $n \in \N^*$ tel que $E$ soit équipotent à $\llbracket 1, n \rrbracket$.
 \end{theoreme}
 
 \begin{demonstration}
-Soient $n$ et $p \in \N^*$ tels qu'il existe 2 fonctions bijectives $f : E \to [\![1, n]\!]$ et $g : E \to [\![1, p]\!]$.
-Alors $g \circ f^{-1} : [\![1, n]\!] \to [\![1, p]\!]$ est une bijection. Donc $n = p$ d'après le corollaire 1.
+Soient $n$ et $p \in \N^*$ tels qu'il existe 2 fonctions bijectives $f : E \to \llbracket 1, n \rrbracket$ et $g : E \to \llbracket 1, p \rrbracket$.
+Alors $g \circ f^{-1} : \llbracket 1, n \rrbracket \to \llbracket 1, p \rrbracket$ est une bijection. Donc $n = p$ d'après le corollaire 1.
 \end{demonstration}
 
 \begin{definition}
 Si $E = \emptyset$, le cardinal de $E$ est $0$.
-Si $E$ est fini non vide, son cardinal est l'unique entier naturel $n \in \N^*$ tel que $E$ soit équipotent à $[\![1, n]\!]$. On le note $\text{Card}(E)$.
+Si $E$ est fini non vide, son cardinal est l'unique entier naturel $n \in \N^*$ tel que $E$ soit équipotent à $\llbracket 1, n \rrbracket$. On le note $\text{Card}(E)$.
 \end{definition}
 
 \textbf{Conséquence :} Soient $E$ et $F$ deux ensembles finis. Ils sont équipotents ssi $\text{Card}(E) = \text{Card}(F)$.
@@ -639,10 +640,10 @@ Soit $E$ un ensemble fini de cardinal $n \neq 0$. Soit $a \in E$. Alors l'ensemb
 \end{lemme}
 
 \begin{demonstration}
-On choisit une bijection $f : E \to [\![1, n]\!]$.
+On choisit une bijection $f : E \to \llbracket 1, n \rrbracket$.
 \begin{itemize}
-    \item Si $f(a) = n$, alors $f$ induit une bijection de $E \setminus \{a\}$ sur $[\![1, n-1]\!]$, donc $E \setminus \{a\}$ est fini de cardinal $n - 1$.
-    \item Si $f(a) = p < n$, on se ramène au cas précédent en posant $\tilde{f} = \varphi \circ f$, où $\varphi$ est la permutation de $[\![1, n]\!]$ qui échange $p$ et $n$, et laisse fixes les autres éléments. De la sorte, $\tilde{f} : E \to [\![1, n]\!]$ est une bijection qui vérifie $\tilde{f}(a) = n$.
+    \item Si $f(a) = n$, alors $f$ induit une bijection de $E \setminus \{a\}$ sur $\llbracket 1, n-1 \rrbracket$, donc $E \setminus \{a\}$ est fini de cardinal $n - 1$.
+    \item Si $f(a) = p < n$, on se ramène au cas précédent en posant $\tilde{f} = \varphi \circ f$, où $\varphi$ est la permutation de $\llbracket 1, n \rrbracket$ qui échange $p$ et $n$, et laisse fixes les autres éléments. De la sorte, $\tilde{f} : E \to \llbracket 1, n \rrbracket$ est une bijection qui vérifie $\tilde{f}(a) = n$.
 \end{itemize}
 \end{demonstration}
 
@@ -723,18 +724,15 @@ Si (iii) est vérifiée, $E$ ne peut être fini car dans ce cas toutes ses parti
 \end{demonstration}
 
 \begin{remarque}
-    
-    
+\textbf{Axiome du choix (AC).} Pour toute famille $(A_i)_{i \in I}$ d'ensembles non vides, il existe une application
+\[
+  c : I \to \bigcup_{i \in I} A_i
+  \quad\text{telle que}\quad
+  \forall i \in I,\ c(i) \in A_i .
+\]
+On choisit un élément dans chaque $A_i$ simultanément, l'ensemble d'indices $I$ étant \emph{quelconque} (par exemple $I = \mathbb{R}$).
 
-  \textbf{Axiome du choix (AC).} Pour toute famille $(A_i)_{i \in I}$ d'ensembles non vides, il existe une application
-  \[
-    c : I \to \bigcup_{i \in I} A_i
-    \quad\text{telle que}\quad
-    \forall i \in I,\ c(i) \in A_i .
-  \]
-  On choisit un élément dans chaque $A_i$ simultanément, l'ensemble d'indices $I$ étant \emph{quelconque} (par exemple $I = \mathbb{R}$).
-
-  Ce que veut l'axiome, c'est un représentant de \emph{chaque} $A_i$,
+Ce que veut l'axiome, c'est un représentant de \emph{chaque} $A_i$,
 c'est-à-dire un élément pris dans $A_1$, un dans $A_2$, un dans $A_3$, etc.
 La condition
 \[
@@ -749,32 +747,31 @@ et l'énoncé resterait équivalent. L'union est simplement le plus petit
 ensemble qui convient, et il existe toujours : l'axiome de la réunion de ZF
 garantit que $\bigcup_{i \in I} A_i$ est un ensemble.
 
-  \medskip
-  \textbf{Axiome du choix dénombrable (ACD).} Même énoncé, mais uniquement pour $I = \mathbb{N}$ : pour toute suite $(A_n)_{n \in \mathbb{N}}$ d'ensembles non vides, il existe une suite $(a_n)_{n \in \mathbb{N}}$ telle que $\forall n \in \mathbb{N},\ a_n \in A_n$. On ne fait donc qu'une infinité \emph{dénombrable} de choix.
+\medskip
+\textbf{Axiome du choix dénombrable (ACD).} Même énoncé, mais uniquement pour $I = \mathbb{N}$ : pour toute suite $(A_n)_{n \in \mathbb{N}}$ d'ensembles non vides, il existe une suite $(a_n)_{n \in \mathbb{N}}$ telle que $\forall n \in \mathbb{N},\ a_n \in A_n$. On ne fait donc qu'une infinité \emph{dénombrable} de choix.
 
-  \medskip
-  \textbf{Différence.} L'AC autorise un ensemble d'indices quelconque, l'ACD seulement $\mathbb{N}$. On a $\mathrm{AC} \Rightarrow \mathrm{ACD}$ (cas particulier $I = \mathbb{N}$), mais pas la réciproque : l'ACD est strictement plus faible.
+\medskip
+\textbf{Différence.} L'AC autorise un ensemble d'indices quelconque, l'ACD seulement $\mathbb{N}$. On a $\mathrm{AC} \Rightarrow \mathrm{ACD}$ (cas particulier $I = \mathbb{N}$), mais pas la réciproque : l'ACD est strictement plus faible.
 
-  \medskip
-  \textbf{Pourquoi un axiome ?} Pour un nombre fini de choix, aucun axiome n'est nécessaire : on enchaîne les choix par récurrence. Le problème n'apparaît qu'avec une infinité de choix, lorsqu'aucune règle explicite ne désigne un élément plutôt qu'un autre. Dans une infinité de paires de chaussures, on choisit la chaussure gauche de chaque paire ; dans une infinité de paires de chaussettes identiques, rien ne distingue les deux, et il faut l'axiome du choix.
+\medskip
+\textbf{Pourquoi un axiome ?} Pour un nombre fini de choix, aucun axiome n'est nécessaire : on enchaîne les choix par récurrence. Le problème n'apparaît qu'avec une infinité de choix, lorsqu'aucune règle explicite ne désigne un élément plutôt qu'un autre. Dans une infinité de paires de chaussures, on choisit la chaussure gauche de chaque paire ; dans une infinité de paires de chaussettes identiques, rien ne distingue les deux, et il faut l'axiome du choix.
 
-  \medskip
-  \textbf{Dans la preuve de (i) $\Rightarrow$ (ii).} Une récurrence rigoureuse ne donne que
-  \[
-    \forall n \in \mathbb{N},\ \exists\, (x_0,\dots,x_n) \text{ deux à deux distincts,}
-  \]
-  alors qu'on veut
-  \[
-    \exists\, (x_n)_{n \in \mathbb{N}},\ \forall n,\ x_n \notin \{x_0,\dots,x_{n-1}\}.
-  \]
-  Rien ne garantit que les listes finies s'emboîtent en une unique suite infinie : c'est ce que permet l'axiome du choix dénombrable (plus précisément, du choix dépendant, où chaque choix peut dépendre des précédents).
-
+\medskip
+\textbf{Dans la preuve de (i) $\Rightarrow$ (ii).} Une récurrence rigoureuse ne donne que
+\[
+  \forall n \in \mathbb{N},\ \exists\, (x_0,\dots,x_n) \text{ deux à deux distincts,}
+\]
+alors qu'on veut
+\[
+  \exists\, (x_n)_{n \in \mathbb{N}},\ \forall n,\ x_n \notin \{x_0,\dots,x_{n-1}\}.
+\]
+Rien ne garantit que les listes finies s'emboîtent en une unique suite infinie : c'est ce que permet l'axiome du choix dénombrable (plus précisément, du choix dépendant, où chaque choix peut dépendre des précédents).
 \end{remarque}
 
 % ================= SUITE DES NOTES TRANSCRITES =================
 
 \begin{proposition}[Dedekind]
-    Un ensemble est infini si et seulement si il est équipotent à l'une de ses parties strictes.
+Un ensemble est infini si et seulement si il est équipotent à l'une de ses parties strictes.
 \end{proposition}
 
 \begin{exemples}
@@ -782,27 +779,27 @@ $\N$ est équipotent à $\N^*$.
 \end{exemples}
 
 \begin{demonstration}
-    Soit $E$ un ensemble.
-    
-    $\bullet$ S'il existe $F \subset E$, $F \neq E$, tel que $E \sim F$ (lire : $\ll$ est équipotent à $\gg$), alors $E$ ne peut être fini d'après le théorème du a).
-    
-    Supposons $E$ infini.
-    
-    Alors il existe une suite $(x_n)_{n\in\N}$ d'éléments deux à deux distincts de $E$.
-    
-    Définissons :
-    \[
-    f : E \longrightarrow E \setminus \{x_0\}
-    \]
-    \[
-    x \longmapsto 
-    \begin{cases} 
-    x & \text{si } x \notin \{x_n ; n \in \N\} \\[1em]
-    x_{n+1} & \text{si } x = x_n \text{ ($n$ est alors unique)}
-    \end{cases}
-    \]
-    
-    Ainsi $f$ est bien définie et c'est une bijection de $E$ sur $E \setminus \{x_0\}$.
+Soit $E$ un ensemble.
+
+$\bullet$ S'il existe $F \subset E$, $F \neq E$, tel que $E \sim F$ (lire : $\ll$ est équipotent à $\gg$), alors $E$ ne peut être fini d'après le théorème du a).
+
+$\bullet$ Réciproquement, supposons $E$ infini.
+
+Alors il existe une suite $(x_n)_{n\in\N}$ d'éléments deux à deux distincts de $E$.
+
+Définissons :
+\[
+f : E \longrightarrow E \setminus \{x_0\}
+\]
+\[
+x \longmapsto 
+\begin{cases} 
+x & \text{si } x \notin \{x_n \mid n \in \N\} \\[0.5em]
+x_{n+1} & \text{si } x = x_n \text{ ($n$ est alors unique)}
+\end{cases}
+\]
+
+Ainsi $f$ est bien définie et c'est une bijection de $E$ sur $E \setminus \{x_0\}$, qui est une partie stricte de $E$.
 \end{demonstration}
 
 \subsection*{b) Parties de $\N$}
@@ -812,7 +809,7 @@ $\N$ est équipotent à $\N^*$.
 \end{theoreme}
 
 \begin{demonstration}
-    Si $P \subset \N$, disons majorée par $n_0 \in \N$, alors $P \subset [\![0, n_0]\!]$. Donc $P$ est une partie d'un ensemble fini, donc est un ensemble fini.
+    Si $P \subset \N$, disons majorée par $n_0 \in \N$, alors $P \subset \llbracket 0, n_0 \rrbracket$. Donc $P$ est une partie d'un ensemble fini, donc est un ensemble fini.
     
     Démontrons, par récurrence sur $n$, que :
     \begin{center}
@@ -835,7 +832,7 @@ $\N$ est équipotent à $\N^*$.
 \subsection*{c) Énumération des éléments d'une partie de $\N$}
 
 \begin{lemme}[1]
-    Si $f : [\![0, n]\!] \to \N$ est strictement croissante, alors $\forall p \in [\![0, n]\!], \; f(p) \ge p$.
+    Si $f : \llbracket 0, n \rrbracket \to \N$ est strictement croissante, alors $\forall p \in \llbracket 0, n \rrbracket, \; f(p) \ge p$.
     
     2. Si $f : \N \to \N$ est strictement croissante, alors $\forall p \in \N, \; f(p) \ge p$.
 \end{lemme}
@@ -847,7 +844,7 @@ $\N$ est équipotent à $\N^*$.
     
     $\bullet$ Supposons l'énoncé 1) vrai au rang $n$.
     
-    Soit $f : [\![0, n+1]\!] \to \N$ strictement croissante. Alors sa restriction à $[\![0, n]\!]$ est strictement croissante donc d'après $HR(n)$ elle vérifie $\forall p \in [\![0, n]\!], \; f(p) \ge p$.
+    Soit $f : \llbracket 0, n+1 \rrbracket \to \N$ strictement croissante. Alors sa restriction à $\llbracket 0, n \rrbracket$ est strictement croissante donc d'après $HR(n)$ elle vérifie $\forall p \in \llbracket 0, n \rrbracket, \; f(p) \ge p$.
     
     De plus par stricte croissance de $f$, $f(n+1) > f(n) \ge n$.
     
@@ -858,12 +855,12 @@ $\N$ est équipotent à $\N^*$.
     \vspace{10pt}
     \textbf{Preuve 2 :} Soit $f : \N \to \N$ strictement croissante.
     
-    Alors pour tout $n \in \N$, la restriction $f_{| [\![0, n]\!]} : [\![0, n]\!] \to \N$ est strictement croissante. 
+    Alors pour tout $n \in \N$, la restriction $f_{| \llbracket 0, n \rrbracket} : \llbracket 0, n \rrbracket \to \N$ est strictement croissante. 
     Donc d'après 1), $\forall n \in \N, \; f(n) \ge n$.
 \end{demonstration}
 
 \begin{proposition}[1]
-    Pour toute partie finie non vide $P$ de cardinal $n$ de $\N$, il existe une unique bijection strictement croissante de $[\![1, n]\!]$ dans $P$.
+    Pour toute partie finie non vide $P$ de cardinal $n$ de $\N$, il existe une unique bijection strictement croissante de $\llbracket 1, n \rrbracket$ dans $P$.
 \end{proposition}
 
 \begin{demonstration}
@@ -878,29 +875,29 @@ $\N$ est équipotent à $\N^*$.
     
     Donc $P$ possède un plus grand élément (pge) $a$.
     
-    Alors $P' = P \setminus \{a\}$ est de cardinal $n$, donc d'après $HR(n)$, il existe une bijection strictement croissante $f : [\![1, n]\!] \to P'$. 
+    Alors $P' = P \setminus \{a\}$ est de cardinal $n$, donc d'après $HR(n)$, il existe une bijection strictement croissante $f : \llbracket 1, n \rrbracket \to P'$. 
     
-    On prolonge $f$ à $[\![1, n+1]\!]$ en posant $f(n+1) = a$.
+    On prolonge $f$ à $\llbracket 1, n+1 \rrbracket$ en posant $f(n+1) = a$.
     
-    On obtient alors une bijection strictement croissante de $[\![1, n+1]\!]$ sur $P$.
+    On obtient alors une bijection strictement croissante de $\llbracket 1, n+1 \rrbracket$ sur $P$.
     Donc $HR(n+1)$ est vérifiée. 
     
     \vspace{10pt}
-    \cas{Unicité :} Soient $f$ et $g$ 2 bijections strictement croissantes de $[\![1, n]\!]$ dans $P$.
+    \cas{Unicité :} Soient $f$ et $g$ 2 bijections strictement croissantes de $\llbracket 1, n \rrbracket$ dans $P$.
     
-    Alors $f^{-1} : P \to [\![1, n]\!]$ est également strictement croissante.
+    Alors $f^{-1} : P \to \llbracket 1, n \rrbracket$ est également strictement croissante.
     
-    Donc, par composition $f^{-1} \circ g : [\![1, n]\!] \to [\![1, n]\!]$ est strictement croissante.
+    Donc, par composition $f^{-1} \circ g : \llbracket 1, n \rrbracket \to \llbracket 1, n \rrbracket$ est strictement croissante.
     
     D'après le lemme 1), on a :
     \[
-    \forall p \in [\![1, n]\!], \quad f^{-1}(g(p)) \ge p
+    \forall p \in \llbracket 1, n \rrbracket, \quad f^{-1}(g(p)) \ge p
     \]
-    Donc $\forall p \in [\![1, n]\!], \quad g(p) \ge f(p)$.
+    Donc $\forall p \in \llbracket 1, n \rrbracket, \quad g(p) \ge f(p)$.
     
     En échangeant les rôles de $f$ et $g$, on a aussi :
     \[
-    \forall p \in [\![1, n]\!], \quad f(p) \ge g(p)
+    \forall p \in \llbracket 1, n \rrbracket, \quad f(p) \ge g(p)
     \]
     Donc $f = g$. 
 \end{demonstration}
@@ -917,7 +914,7 @@ $\N$ est équipotent à $\N^*$.
     Comme $P$ est infini, $P \neq \emptyset$, donc $P$ possède un plus petit élément (ppe) $a_0$. 
     On pose $f(0) = a_0$.
     
-    Supposons construite $f(0) < f(1) < \dots < f(n)$ telle que $P \cap [\![0, f(n)]\!] = \{f(0), f(1), \dots, f(n)\}$.
+    Supposons construite $f(0) < f(1) < \dots < f(n)$ telle que $P \cap \llbracket 0, f(n) \rrbracket = \{f(0), f(1), \dots, f(n)\}$.
     
     Comme $P$ est infini, $P$ n'est pas majorée (par $f(n)$).
     
@@ -1004,10 +1001,10 @@ $\N$ est équipotent à $\N^*$.
     
     Il existe donc 2 bijections :
     \[
-    f : A \to [\![1, n]\!] \quad \text{et} \quad g : B \to [\![1, m]\!]
+    f : A \to \llbracket 1, n \rrbracket \quad \text{et} \quad g : B \to \llbracket 1, m \rrbracket
     \]
     
-    Alors l'application $h : A \cup B \to [\![1, n+m]\!]$ définie par :
+    Alors l'application $h : A \cup B \to \llbracket 1, n+m \rrbracket$ définie par :
     \[
     x \longmapsto 
     \begin{cases}
@@ -1015,7 +1012,7 @@ $\N$ est équipotent à $\N^*$.
     g(x) + n & \text{si } x \in B
     \end{cases}
     \]
-    est une bijection, car ses restrictions aux 2 ensembles disjoints $A$ et $B$ réalisent des bijections sur $[\![1, n]\!]$ et $[\![n+1, n+m]\!]$ respectivement.
+    est une bijection, car ses restrictions aux 2 ensembles disjoints $A$ et $B$ réalisent des bijections sur $\llbracket 1, n \rrbracket$ et $\llbracket n+1, n+m \rrbracket$ respectivement.
     
     Donc $A \cup B$ est fini et $\text{Card}(A \cup B) = n+m = \text{Card}(A) + \text{Card}(B)$.
 \end{demonstration}
@@ -1069,7 +1066,7 @@ Par une récurrence immédiate sur $p$ :
         \node[bleu] at (-0.8, 0) {\Large $A$};
         \node[bleu] at (2.8, 0) {\Large $B \setminus A$};
         
-        % Flèches indicatives (optionnelles pour reproduire le style manuscrit)
+        % Flèches indicatives
         \draw[->, gray] (-1.5, -1.5) to[bend left] (-0.8, -0.5);
         \draw[->, gray] (3.5, -1.5) to[bend right] (2.8, -0.5);
     \end{tikzpicture}
@@ -1234,7 +1231,6 @@ On a aussi la proposition $\ll$ duale $\gg$ suivante :
 % ==========================================
 
 \begin{demonstration}
-  % (Suite de la démonstration de la page 29)
   D'après les 2 propositions précédentes :
   $$ f \text{ est injective} \iff \text{Card}(f(E)) = \text{Card}(E) $$
   $$ f \text{ est surjective} \iff \text{Card}(f(E)) = \text{Card}(F) $$
@@ -1660,7 +1656,7 @@ Comme $\N^2$ est dénombrable, on en déduit que $\bigcup_{m \in \N} E_m$ est d�
 \end{demonstration}
 
 \begin{remarque}
-\textbf{⚠️ Un produit infini d'ensembles dénombrables n'est pas dénombrable.}
+\textbf{Attention : Un produit infini d'ensembles dénombrables n'est pas dénombrable.}
 \end{remarque}
 
 \textbf{Exercice :} Montrer que $\mathbb{Z}$ et $\mathbb{Q}$ sont dénombrables.
@@ -1862,13 +1858,13 @@ On obtient donc :
 $$ 47 = 101111_2 = 1 + 2 + 2^2 + 2^3 + 0\times 2^4 + 2^5 $$
 \end{exemples}
 
-Notons $[\![0, b-1]\!]^{(\N)}$ l'ensemble des suites d'entiers appartenant à $[\![0, b-1]\!]$ et nulles à partir d'un certain rang.
+Notons $\llbracket 0, b-1 \rrbracket^{(\N)}$ l'ensemble des suites d'entiers appartenant à $\llbracket 0, b-1 \rrbracket$ et nulles à partir d'un certain rang.
 
 \begin{proposition}
 On a montré que l'application :
 $$
 \begin{array}{rccl}
-\varphi : & [\![0, b-1]\!]^{(\N)} & \longrightarrow & \N \\
+\varphi : & \llbracket 0, b-1 \rrbracket^{(\N)} & \longrightarrow & \N \\
 & (a_p)_{p\in \N} & \longmapsto & \displaystyle \sum_{p=0}^\infty a_p b^p
 \end{array}
 $$
@@ -1876,7 +1872,7 @@ est une \mot{bijection}.
 \end{proposition}
 
 \begin{definition}[Ordre lexicographique]
-Munissons $[\![0, b-1]\!]^{(\N)}$ de l'\mot{ordre lexicographique} :
+Munissons $\llbracket 0, b-1 \rrbracket^{(\N)}$ de l'\mot{ordre lexicographique} :
 $$ (a_p)_{p\in \N} \preceq (a'_p)_{p\in \N} \iff
 \begin{cases}
 (a_p)_{p\in\N} = (a'_p)_{p\in\N} \\
@@ -1886,7 +1882,7 @@ $$ (a_p)_{p\in \N} \preceq (a'_p)_{p\in \N} \iff
 $$
 \end{definition}
 
-On vérifie aisément que c'est un ordre total sur $[\![0, b-1]\!]^{(\N)}$.
+On vérifie aisément que c'est un ordre total sur $\llbracket 0, b-1 \rrbracket^{(\N)}$.
 
 \begin{theoreme}
 Via la bijection $\varphi$, l'ordre lexicographique correspond à l'ordre naturel sur $\N$, c'est-à-dire :
@@ -1896,7 +1892,7 @@ $$ n = \sum_{p=0}^\infty a_p b^p < n' = \sum_{p=0}^\infty a'_p b^p \iff (a_p)_{p
 \begin{demonstration}
 \textit{Preuve :} (Il n'y a pas besoin de faire la réciproque car l'ordre est total, donc la réciproque d'une bijection croissante est croissante).
 
-Comme l'ordre est total sur $[\![0, b-1]\!]^{(\N)}$, il suffit de montrer que :
+Comme l'ordre est total sur $\llbracket 0, b-1 \rrbracket^{(\N)}$, il suffit de montrer que :
 $$ (a_p)_{p\in \N} \prec (a'_p)_{p\in \N} \implies n < n' $$
 
 Supposons $(a_p)_{p\in \N} \prec (a'_p)_{p\in \N}$. Notons $i_0$ tel que :
@@ -1911,7 +1907,7 @@ n' &= a'_0 + a'_1 b + \dots + a'_{i_0-1} b^{i_0-1} + a'_{i_0} b^{i_0} + a_{i_0+1
 Donc, en effectuant la différence $n' - n$ (les termes d'indice strictement supérieur à $i_0$ s'annulent) :
 $$ n' - n = a'_0 - a_0 + (a'_1 - a_1)b + \dots + (a'_{i_0-1} - a_{i_0-1})b^{i_0-1} + (a'_{i_0} - a_{i_0})b^{i_0} $$
 
-Or, $\forall i, \ a'_i - a_i \ge -(b-1)$ (car les coefficients appartiennent à $[\![0, b-1]\!]$), et $a'_{i_0} - a_{i_0} \ge 1$. On a donc :
+Or, $\forall i, \ a'_i - a_i \ge -(b-1)$ (car les coefficients appartiennent à $\llbracket 0, b-1 \rrbracket$), et $a'_{i_0} - a_{i_0} \ge 1$. On a donc :
 \begin{align*}
 n' - n &\ge \underbrace{-(b-1) \left[ 1 + b + b^2 + \dots + b^{i_0-1} \right]}_{= -(b^{i_0} - 1)} + b^{i_0} \\
 &\ge -(b^{i_0} - 1) + b^{i_0} = 1
