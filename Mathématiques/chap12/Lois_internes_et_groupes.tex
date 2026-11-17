@@ -1089,4 +1089,325 @@ Dans de nombreux cas, pour montrer qu'un magma $(G, \cdot)$ est un groupe, on mo
 \end{enumerate}
 \end{exemples}
 
+\begin{proposition}[Intersection de sous-groupes]
+Soit $(H_i)_{i \in I}$ une famille non vide ($I \neq \emptyset$) de sous-groupes de $(G, \cdot)$. Alors $\displaystyle\bigcap_{i \in I} H_i$ est un sous-groupe de $(G, \cdot)$.
+\end{proposition}
+
+\begin{demonstration}
+D'abord, $\displaystyle\bigcap_{i \in I} H_i \subset G$.
+\begin{enumerate}
+    \item $\forall i \in I, \ e \in H_i$ car $H_i$ est un sous-groupe de $(G, \cdot)$. Donc $e \in \displaystyle\bigcap_{i \in I} H_i$ (en particulier, $\displaystyle\bigcap_{i \in I} H_i \neq \emptyset$).
+    \item Soient $x, y \in \displaystyle\bigcap_{i \in I} H_i$. Alors $\forall i \in I, \ x \in H_i$ et $y \in H_i$, donc $x^{-1} \cdot y \in H_i$.
+    Ainsi, $x^{-1} \cdot y \in \displaystyle\bigcap_{i \in I} H_i$.
+\end{enumerate}
+De 1) et 2), il résulte que $\displaystyle\bigcap_{i \in I} H_i$ est un sous-groupe de $(G, \cdot)$.
+\end{demonstration}
+
+\begin{remarque}
+\textbf{Attention :} La réunion de deux sous-groupes n'est pas toujours un sous-groupe.
+\end{remarque}
+
+\begin{proposition}[Réunion de deux sous-groupes -- Question de cours]
+Soient $H$ et $K$ deux sous-groupes de $(G, \cdot)$. Alors $H \cup K$ est un sous-groupe de $(G, \cdot)$ si et seulement si $H \subset K$ ou $K \subset H$.
+\end{proposition}
+
+\begin{demonstration}
+\begin{itemize}
+    \item \textbf{Sens direct ($\implies$) :} Supposons que $H \cup K$ soit un sous-groupe de $(G, \cdot)$. Montrons que $H \subset K$ ou $K \subset H$, ce qui revient à montrer que $\neg(H \subset K) \implies K \subset H$.
+    
+    Supposons $H \not\subset K$ ; il existe donc $h_0 \in H \setminus K$. Montrons que $K \subset H$.
+    
+    Soit $k \in K$. Comme $h_0$ et $k$ appartiennent à $H \cup K$ qui est un sous-groupe de $(G, \cdot)$, on a $h_0 \cdot k \in H \cup K$.
+    
+    Or $h_0 \cdot k \notin K$, car sinon on aurait :
+    \[
+    h_0 = \underbrace{(h_0 \cdot k)}_{\in K} \cdot \underbrace{k^{-1}}_{\in K} \in K
+    \]
+    ce qui est contradictoire avec $h_0 \notin K$.
+    
+    Donc $h_0 \cdot k \in H$, d'où :
+    \[
+    k = \underbrace{h_0^{-1}}_{\in H} \cdot \underbrace{(h_0 \cdot k)}_{\in H} \in H
+    \]
+    Ainsi $K \subset H$.
+    
+    \item \textbf{Réciproque ($\Longleftarrow$) :} Si $H \subset K$ ou $K \subset H$, alors $H \cup K = K$ ou $H \cup K = H$, qui sont par hypothèse déjà des sous-groupes de $(G, \cdot)$.
+\end{itemize}
+\end{demonstration}
+
+\begin{remarque}[Exercices sur les réunions de sous-groupes]
+\begin{enumerate}
+    \item Soit $(H_n)_{n \in \N}$ une suite croissante de sous-groupes de $(G, \cdot)$. Alors $\displaystyle\bigcup_{n \in \N} H_n$ est un sous-groupe de $(G, \cdot)$.
+    \item La suite $(\U_n)_{n \in \N^*}$ n'est pas croissante (pour l'inclusion), mais $\forall m, n \in \N^*, \ \exists p \in \N^*$ tel que $\U_m \cup \U_n \subset \U_p$ (par exemple $p = mn$). Cette propriété permet également de montrer que $\U_\infty = \displaystyle\bigcup_{n \ge 1} \U_n$ est un sous-groupe de $(\U, \times)$.
+\end{enumerate}
+\end{remarque}
+
+\newpage
+\subsection{3.2. Sous-groupe engendré par une partie}
+
+\begin{proposition}
+Soient $(G, \cdot)$ un groupe et $S \subset G$. Il existe un plus petit sous-groupe (pour l'inclusion) contenant $S$. C'est l'intersection de l'ensemble des sous-groupes de $(G, \cdot)$ contenant $S$. On l'appelle le \mot{sous-groupe engendré par $S$} et on le note $\langle S \rangle$.
+\end{proposition}
+
+\begin{demonstration}
+Notons $\mathscr{S} = \{ H \mid H \text{ sous-groupe de } G \text{ et } S \subset H \}$.
+$\mathscr{S} \neq \emptyset$ car $G \in \mathscr{S}$. On peut donc former $\displaystyle\bigcap_{H \in \mathscr{S}} H$, qui est un sous-groupe de $(G, \cdot)$ d'après le paragraphe 3.1.
+
+De plus, pour tout $H \in \mathscr{S}$, $S \subset H$, donc $S \subset \displaystyle\bigcap_{H \in \mathscr{S}} H$.
+
+Enfin, si $H_0 \in \mathscr{S}$, alors $\displaystyle\bigcap_{H \in \mathscr{S}} H \subset H_0$.
+
+Donc $\displaystyle\bigcap_{H \in \mathscr{S}} H$ est le plus petit sous-groupe de $G$ contenant $S$.
+\end{demonstration}
+
+\begin{remarque}
+Si $S = \emptyset$, alors $\langle \emptyset \rangle = \{e\}$ (car $\emptyset \subset \{e\}$ est vraie).
+\end{remarque}
+
+\begin{proposition}[Sous-groupe engendré par un élément]
+Soit $(G, \cdot)$ un groupe et $x \in G$. Le sous-groupe engendré par $\{x\}$ (noté $\langle x \rangle$) est :
+\[
+\cadre{\langle x \rangle = \{ x^n \mid n \in \Z \}}
+\]
+\end{proposition}
+
+\begin{demonstration}
+Par définition, $\langle x \rangle$ contient $e$ et $x$. Comme $\langle x \rangle$ est un sous-groupe, on a aussi $x^{-1} \in \langle x \rangle$.
+Par stabilité du sous-groupe $\langle x \rangle$ par la loi $\cdot$, on a :
+\[
+\forall n \ge 1, \quad x^n \in \langle x \rangle \quad \text{et} \quad (x^{-1})^n = x^{-n} \in \langle x \rangle
+\]
+Donc $\forall n \in \Z^*, \ x^n \in \langle x \rangle$. Comme $x^0 = e \in \langle x \rangle$, on a bien :
+\[
+\{ x^n \mid n \in \Z \} \subset \langle x \rangle
+\]
+
+Il suffit de vérifier que $H = \{ x^n \mid n \in \Z \}$ est un sous-groupe de $(G, \cdot)$ pour conclure par minimalité de $\langle x \rangle$ :
+\begin{itemize}
+    \item $x^0 = e \in H$ ;
+    \item Soient $m, n \in \Z$. Alors $x^m \cdot x^n = x^{m+n} \in H$ ;
+    \item Si $m \in \Z$, alors $(x^m)^{-1} = x^{-m} \in H$.
+\end{itemize}
+Donc $\{ x^n \mid n \in \Z \}$ est un sous-groupe de $(G, \cdot)$ contenant $x$, d'où $\langle x \rangle = \{ x^n \mid n \in \Z \}$.
+\end{demonstration}
+
+\begin{definition}[Groupe monogène]
+Un groupe $(G, \cdot)$ est dit \mot{monogène} s'il est engendré par un seul élément, c'est-à-dire s'il existe $a \in G$ tel que :
+\[
+G = \langle a \rangle = \{ a^n \mid n \in \Z \}
+\]
+Un tel élément $a$ s'appelle un \mot{générateur} du groupe $(G, \cdot)$ (on dit aussi que $a$ engendre $(G, \cdot)$).
+\end{definition}
+
+\begin{exemples}
+\begin{enumerate}
+    \item $(\U_n, \times)$ est un groupe monogène engendré par $\omega = e^{\frac{2i\pi}{n}}$ (on montre que les générateurs de $\U_n$ sont exactement les $\omega^k$ où $1 \le k \le n$ et $\mathrm{pgcd}(k, n) = 1$).
+    
+    \item $(\Z, +)$ est un groupe monogène. Attention au passage en notation additive : si $a \in (G, +)$, alors $\langle a \rangle = \{ n \cdot a \mid n \in \Z \}$. En effet :
+    \[
+    \Z = \langle 1 \rangle = \langle -1 \rangle
+    \]
+    
+    \item $(\Z^2, +)$ n'est pas monogène. En effet, si $(m_0, n_0) \in \Z^2 \setminus \{(0, 0)\}$, le sous-groupe engendré par $(m_0, n_0)$ est :
+    \[
+    \langle (m_0, n_0) \rangle = \{ k \cdot (m_0, n_0) \mid k \in \Z \} = \{ (k m_0, \, k n_0) \mid k \in \Z \}
+    \]
+    Un couple $(x, y) \in \Z^2$ tel que $n_0 x \neq m_0 y$ n'appartient pas à ce sous-groupe (par exemple, si $m_0 \neq 0$, le couple $(0, 1)$ n'y appartient pas ; si $n_0 \neq 0$, $(1, 0)$ n'y appartient pas).
+    
+    \item \textit{Généralisation (Exercice) :} Soit $(G, +)$ un groupe commutatif noté additivement et $S = \{a_1, \dots, a_n\} \subset G$. Alors le sous-groupe engendré par $S$ est :
+    \[
+    \langle a_1, \dots, a_n \rangle = \{ x \in G \mid \exists (k_1, \dots, k_n) \in \Z^n, \ x = k_1 \cdot a_1 + \dots + k_n \cdot a_n \}
+    \]
+\end{enumerate}
+\end{exemples}
+
+\newpage
+\subsection{3.3. Les sous-groupes de $(\Z, +)$}
+
+\textbf{a) Division euclidienne dans $(\Z, +)$}
+
+\begin{theoreme}[Division euclidienne dans $\Z$]
+Pour tout $(a, b) \in \Z \times \N^*$, il existe un unique couple $(q, r) \in \Z \times \N$ tel que :
+\[
+\begin{cases}
+a = qb + r \\
+0 \le r < b
+\end{cases}
+\]
+\end{theoreme}
+
+\begin{demonstration}
+\cas{Existence :} Déjà établie lorsque $a \in \N$.
+
+Supposons $a \in \Z^-$. Alors $a + b|a| \ge a + |a| \ge 0$ (puisque $b \ge 1$), donc $a + b|a| \in \N$.
+
+D'après le cas positif, il existe $(q_0, r) \in \N^2$ tel que :
+\[
+a + b|a| = q_0 b + r \quad \text{et} \quad 0 \le r < b
+\]
+En posant $q = q_0 - |a|$, on a $q \in \Z$ et :
+\[
+a = qb + r \quad \text{avec} \quad 0 \le r < b
+\]
+
+\cas{Unicité :} Supposons qu'il existe $(q, r)$ et $(q', r') \in \Z \times \intEnt{0}{b-1}$ tels que $a = bq + r$ et $a = bq' + r'$.
+Alors :
+\[
+b(q - q') = r' - r \implies b|q - q'| = |r' - r| < b
+\]
+Donc $|q' - q| < 1$. Comme $|q' - q| \in \N$, on a $|q' - q| = 0$, d'où $q' = q$, et par suite $r = r'$.
+\end{demonstration}
+
+\vspace{8pt}
+\textbf{b) Sous-groupes de $(\Z, +)$}
+
+\begin{theoreme}
+Les sous-groupes de $(\Z, +)$ sont les parties de $\Z$ de la forme $m\Z$ où $m \in \N$.
+\end{theoreme}
+
+\begin{remarque}
+Ce théorème affirme que tous les sous-groupes de $(\Z, +)$ sont monogènes. Si $m \in \N$, $m\Z = \{ k \cdot m \mid k \in \Z \} = \langle m \rangle$ (et on a aussi $\langle -m \rangle = \langle m \rangle$).
+\end{remarque}
+
+\begin{demonstration}
+\begin{itemize}
+    \item \textbf{Sens direct :} D'abord, si $m \in \N$, $m\Z$ est un sous-groupe de $(\Z, +)$ puisque c'est le sous-groupe engendré par $m$.
+    
+    \item \textbf{Réciproque :} Soit $H$ un sous-groupe de $(\Z, +)$.
+    \begin{itemize}
+        \item Si $H = \{0\}$, alors $H = \langle 0 \rangle = 0\Z$.
+        \item Supposons $H \neq \{0\}$. Alors il existe $x_0 \in \Z^*$ tel que $x_0 \in H$. Comme $H$ est un sous-groupe de $(\Z, +)$, on a aussi $-x_0 \in H$, donc $|x_0| \in H \cap \N^*$.
+        
+        Ainsi, $H \cap \N^*$ est une partie non vide de $\N^*$ ; à ce titre, elle possède un plus petit élément, noté $m = \min(H \cap \N^*)$.
+        
+        Montrons que $H = m\Z$ par double inclusion :
+        \begin{itemize}
+            \item \textit{Inclusion $m\Z \subset H$ :} $m\Z = \langle m \rangle$ est le sous-groupe engendré par $m$, et $m \in H$ qui est un sous-groupe. Donc $\langle m \rangle \subset H$, c'est-à-dire $m\Z \subset H$.
+            \item \textit{Inclusion $H \subset m\Z$ :} Soit $x \in H$. Comme $m \neq 0$, on peut diviser euclidiennement $x$ par $m$ : il existe $q \in \Z$ et $r \in \intEnt{0}{m-1}$ tels que :
+            \[
+            x = q \cdot m + r
+            \]
+            Mais alors $r = x - qm \in H$ (car $x \in H$ et $qm \in H$). De plus, $r \ge 0$, donc $r \in H \cap \N$.
+            Or $r < m = \min(H \cap \N^*)$, donc $r \in (H \cap \N) \setminus (H \cap \N^*)$, ce qui impose $r = 0$.
+            Ainsi $x = qm \in m\Z$, ce qui prouve $H \subset m\Z$.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+Par double inclusion, $H = m\Z$.
+\end{demonstration}
+
+\begin{remarque}
+Dans $\Z$, la notation $q \cdot m = q \times m$ désigne à la fois la loi externe $\Z \times \Z \to \Z$ et la loi interne de multiplication usuelle.
+\end{remarque}
+
+\newpage
+\subsection{3.4. Classes à droite / Classes à gauche modulo un sous-groupe -- Théorème de Lagrange}
+
+\begin{definition}[Classes à gauche et à droite modulo un sous-groupe]
+Soit $(G, \cdot)$ un groupe et $H \subset G$ un sous-groupe de $(G, \cdot)$.
+\begin{enumerate}
+    \item La relation binaire $\mathcal{R}_g$ sur $G$ définie par :
+    \[
+    \forall (x, y) \in G^2, \quad x \, \mathcal{R}_g \, y \iff x^{-1} y \in H
+    \]
+    est une relation d'équivalence sur $G$, dont les classes d'équivalence sont les parties de $G$ de la forme $xH$ où $x \in G$. Elles sont appelées \mot{classes à gauche} de $G$ modulo $H$.
+    
+    L'ensemble quotient est noté $G / H$ :
+    \[
+    G / H = \{ xH \mid x \in G \}
+    \]
+    
+    \item La relation binaire $\mathcal{R}_d$ sur $G$ définie par :
+    \[
+    \forall (x, y) \in G^2, \quad x \, \mathcal{R}_d \, y \iff x y^{-1} \in H
+    \]
+    est une relation d'équivalence sur $G$, dont les classes d'équivalence sont les parties de $G$ de la forme $Hx$ où $x \in G$. Elles sont appelées \mot{classes à droite} de $G$ modulo $H$.
+    
+    L'ensemble quotient est noté $H \backslash G$ :
+    \[
+    H \backslash G = \{ Hx \mid x \in G \}
+    \]
+\end{enumerate}
+\end{definition}
+
+\begin{lemme}
+Soit $H$ un sous-groupe de $(G, \cdot)$ et $(x, y) \in G^2$. Alors :
+\begin{enumerate}
+    \item $x^{-1} y \in H \iff xH = yH$
+    \item $x y^{-1} \in H \iff Hx = Hy$
+\end{enumerate}
+\end{lemme}
+
+\begin{demonstration}
+\begin{enumerate}
+    \item \begin{itemize}
+        \item \textbf{Sens direct ($\implies$) :} Supposons $x^{-1} y \in H$, donc $x^{-1} y = h$ où $h \in H$, d'où $y = xh$.
+        Alors :
+        \[
+        yH = (xh)H = x(hH)
+        \]
+        c'est-à-dire $yH = \gamma_y(H) = \gamma_{xh}(H) = (\gamma_x \circ \gamma_h)(H) = \gamma_x(\gamma_h(H))$.
+        Or, $h$ étant un élément du sous-groupe $H$, la translation $\gamma_h$ induit une permutation de $H$, donc $\gamma_h(H) = H$ (soit $hH = H$).
+        Finalement, $yH = \gamma_x(H) = xH$.
+        
+        \item \textbf{Réciproque ($\Longleftarrow$) :} Supposons $xH = yH$. En particulier, $y = y \cdot e \in yH = xH$, donc il existe $h \in H$ tel que $y = xh$, d'où $x^{-1} y = h \in H$.
+    \end{itemize}
+    
+    \item \textbf{Preuve analogue} (en utilisant la translation à droite) :
+    Si $xy^{-1} = h \in H$, alors $x = hy$, et en utilisant $\delta_x = \delta_{hy} = \delta_y \circ \delta_h$ :
+    \[
+    Hx = \delta_x(H) = \delta_{hy}(H) = (\delta_y \circ \delta_h)(H) = \delta_y(\delta_h(H)) = \delta_y(H) = Hy
+    \]
+    et réciproquement si $Hx = Hy$, alors $x = e \cdot x \in Hx = Hy$, donc $x = hy$ avec $h \in H$, soit $xy^{-1} = h \in H$.
+\end{enumerate}
+\end{demonstration}
+
+\begin{demonstration}[Preuve de la proposition sur $\mathcal{R}_g$ et $\mathcal{R}_d$]
+D'après le lemme, on a pour tout $(x, y) \in G^2$ :
+\[
+x \, \mathcal{R}_g \, y \iff x^{-1} y \in H \iff xH = yH
+\]
+Il en résulte aisément que $\mathcal{R}_g$ est une relation d'équivalence sur $G$ :
+\begin{itemize}
+    \item \textbf{Réflexivité :} $\forall x \in G, \ x \, \mathcal{R}_g \, x$ car $xH = xH$.
+    \item \textbf{Symétrie :} $\forall x, y \in G, \ x \, \mathcal{R}_g \, y \iff xH = yH \iff yH = xH \iff y \, \mathcal{R}_g \, x$.
+    \item \textbf{Transitivité :} $\forall x, y, z \in G, \ (x \, \mathcal{R}_g \, y \text{ et } y \, \mathcal{R}_g \, z) \implies (xH = yH \text{ et } yH = zH) \implies xH = zH \implies x \, \mathcal{R}_g \, z$.
+\end{itemize}
+Soit $x \in G$. La classe d'équivalence de $x$ modulo $\mathcal{R}_g$ est :
+\begin{align*}
+    \mathrm{Cl}_{\mathcal{R}_g}(x) &= \{ y \in G \mid x \, \mathcal{R}_g \, y \} \\
+                                   &= \{ y \in G \mid x^{-1} y \in H \} \\
+                                   &= \{ y \in G \mid \exists h \in H, \ x^{-1} y = h \} \\
+                                   &= \{ y \in G \mid \exists h \in H, \ y = xh \} \\
+                                   &= \gamma_x(H) = xH
+\end{align*}
+On prouve de même que $\mathcal{R}_d$ est une relation d'équivalence sur $G$ et que pour tout $x \in G$, $\mathrm{Cl}_{\mathcal{R}_d}(x) = Hx$.
+\end{demonstration}
+
+\begin{proposition}[Équipotence des ensembles quotients $G / H$ et $H \backslash G$]
+Soit $H$ un sous-groupe de $(G, \cdot)$. Les ensembles quotients $G / H$ et $H \backslash G$ sont équipotents. Plus précisément, l'application :
+\[
+\varphi : G / H \longrightarrow H \backslash G, \quad xH \longmapsto Hx^{-1}
+\]
+est bien définie et bijective.
+\end{proposition}
+
+\begin{demonstration}
+\begin{itemize}
+    \item \textbf{Vérifions que $\varphi$ est bien définie :}
+    Soient $x, y \in G$ tels que $xH = yH$. Il s'agit de montrer que $Hx^{-1} = Hy^{-1}$.
+    On a $x^{-1} y \in H$, donc il existe $h \in H$ tel que $y = xh$. Alors $y^{-1} = (xh)^{-1} = h^{-1} x^{-1}$, donc :
+    \[
+    Hy^{-1} = H(h^{-1} x^{-1}) = (H h^{-1}) x^{-1} = H x^{-1}
+    \]
+    (car $h^{-1} \in H$, donc $Hh^{-1} = H$). Ainsi $\varphi$ ne dépend pas du représentant choisi.
+    
+    \item \textbf{Bijectivité :} L'application réciproque de $\varphi$ est :
+    \[
+    \psi : H \backslash G \longrightarrow G / H, \quad Hx \longmapsto x^{-1} H
+    \]
+    (on vérifie de la même manière que $\psi$ est bien définie : si $Hx = Hy$, alors $x = hy$ avec $h \in H$, donc $x^{-1} = y^{-1} h^{-1}$, d'où $x^{-1} H = y^{-1} (h^{-1} H) = y^{-1} H$, et on a bien $\psi \circ \varphi = \mathrm{id}_{G/H}$ et $\varphi \circ \psi = \mathrm{id}_{H \backslash G}$).
+\end{itemize}
+\end{demonstration}
+
 \end{document}
