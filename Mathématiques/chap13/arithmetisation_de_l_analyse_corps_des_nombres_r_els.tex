@@ -1,0 +1,460 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{stmaryrd}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+
+%==================================================================
+% COULEURS
+%==================================================================
+\definecolor{brun}{RGB}{140,90,15}
+\definecolor{bordeaux}{RGB}{150,30,45}
+\definecolor{bleu}{RGB}{40,100,170}
+\definecolor{bleuclair}{RGB}{228,239,250}
+\definecolor{vert}{RGB}{30,120,80}
+\definecolor{orange}{RGB}{205,100,20}
+\definecolor{violet}{RGB}{110,60,150}
+
+%==================================================================
+% RACCOURCIS MATHÉMATIQUES
+%==================================================================
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\intEnt}[2]{\llbracket #1, #2 \rrbracket}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\sgn}{signe}
+\DeclareMathOperator{\pge}{pge}
+
+% Formule mise en valeur
+\newcommand{\cadre}[1]{%
+  \tcbox[on line,enhanced,colback=white,colframe=brun,arc=3pt,boxrule=0.7pt,
+         boxsep=3pt,left=2pt,right=2pt,top=1pt,bottom=1pt]{$\displaystyle #1$}}
+
+% Mot ou expression mis en valeur dans le texte
+\newcommand{\mot}[1]{\textcolor{bordeaux}{\textbf{#1}}}
+\newcommand{\cas}[1]{\textbf{\textcolor{orange}{#1}}}
+
+%==================================================================
+% PAGE, EN-TÊTE, TITRES (Aéré et espacé)
+%==================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{brun}{Mathématiques}}
+\fancyhead[R]{\small\textcolor{brun}{Chapitre 13 -- Arithmétisation de l'analyse -- Corps des nombres réels}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{brun}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\renewcommand{\labelitemi}{\textcolor{bleu}{\textbullet}}
+
+\titleformat{\section}{\Large\scshape\color{bordeaux}}{}{0pt}{}[{\color{bordeaux}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\large\scshape\color{brun}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{20pt}{10pt}
+\titlespacing*{\subsection}{0pt}{16pt}{8pt}
+
+%==================================================================
+% BLOCS COLORÉS
+%==================================================================
+\newcommand{\titrebloc}[2]{\textsc{#1}\ifx\relax#2\relax\else\ \textsc{(#2)}\fi}
+\newcommand{\titreblocnum}[2]{\textsc{#1}\ifx\relax#2\relax\else~#2\fi}
+
+\tcbset{
+  bloc/.style={enhanced,breakable,arc=3pt,boxrule=0.8pt,
+    left=8pt,right=8pt,top=7pt,bottom=7pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=14pt,after skip=14pt},
+  marge/.style={enhanced,breakable,frame hidden,arc=2pt,
+    left=10pt,right=6pt,top=6pt,bottom=6pt,
+    fonttitle=\small,attach title to upper={\ \ },
+    before skip=12pt,after skip=12pt}
+}
+
+% Environnements de base
+\newtcolorbox{definition}[1][]{bloc, colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7, title={\titrebloc{Définition}{#1}}}
+\newtcolorbox{proposition}[1][]{bloc, colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5, title={\titrebloc{Proposition}{#1}}}
+\newtcolorbox{theoreme}[1][]{bloc, colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt, coltitle=bordeaux,colbacktitle=bordeaux!8, title={\titrebloc{Théorème}{#1}}}
+\newtcolorbox{demonstration}{marge, colback=bleuclair,borderline west={2.5pt}{0pt}{bleu}, before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ }, after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+\newtcolorbox{remarque}[1][]{marge, colback=vert!6,borderline west={2.5pt}{0pt}{vert}, coltitle=vert!70!black,colbacktitle=vert!6, title={\titreblocnum{Remarque}{#1}}}
+\newtcolorbox{exemples}[1][Exemples]{marge, colback=orange!6,borderline west={2.5pt}{0pt}{orange}, coltitle=orange!85!black,colbacktitle=orange!6, title={\textsc{#1}}}
+\newtcolorbox{methode}[1][Méthode]{marge, colback=violet!6,borderline west={2.5pt}{0pt}{violet}, coltitle=violet,colbacktitle=violet!6, title={\textsc{#1}}}
+
+% Nouveaux environnements
+\newtcolorbox{lemme}[1][]{bloc, colback=bleu!5,colframe=bleu,coltitle=bleu,colbacktitle=bleu!5, title={\titrebloc{Lemme}{#1}}}
+\newtcolorbox{corollaire}[1][]{bloc, colback=orange!5,colframe=orange,coltitle=orange,colbacktitle=orange!5, title={\titrebloc{Corollaire}{#1}}}
+\newtcolorbox{synthese}[1][]{bloc, colback=violet!5,colframe=violet,coltitle=violet,colbacktitle=violet!5, title={\titrebloc{Synthèse}{#1}}}
+
+%==================================================================
+% DEBUT DU DOCUMENT
+%==================================================================
+\begin{document}
+
+\begin{center}
+  {\Huge \scshape \color{bordeaux} Chapitre 13 -- Arithmétisation de l'analyse -- Corps des nombres réels}
+\end{center}
+\vspace{10pt}
+
+% ==============================================================================
+% SECTION I
+% ==============================================================================
+\section{I -- Le corps des rationnels}
+
+Dans l'anneau $\Z$, la division n'est pas toujours possible. On est amené à étendre la notion de nombre, pour obtenir un ensemble contenant $\Z$, dans lequel la division par un nombre $\neq 0$ est toujours possible. Le plus petit ensemble vérifiant cette propriété, muni d'une addition et d'une multiplication qui prolongent celles de $\Z$, est le \mot{corps $\Q$ des nombres rationnels}.
+
+\subsection{Construction de $\Q$}
+
+Sur l'ensemble $\Z \times \Z^*$, on définit la relation binaire $\mathcal{R}$ par :
+\[
+(a, b) \, \mathcal{R} \, (a', b') \iff a b' = a' b
+\]
+
+Il est facile de vérifier que $\mathcal{R}$ est une \mot{relation d'équivalence} (la transitivité se prouve en s'appuyant sur l'intégrité de l'anneau $\Z$).
+
+On note $\Q = (\Z \times \Z^*) / \mathcal{R}$ l'ensemble quotient. Désignons par :
+\[
+s : \Z \times \Z^* \longrightarrow \Q, \quad (a, b) \longmapsto s(a, b)
+\]
+la surjection canonique. On note $\dfrac{a}{b}$ pour $s(a, b)$.
+
+On voit que $\Z$ se plonge dans $\Q$ au moyen de l'application :
+\[
+\psi : \Z \longrightarrow \Q, \quad a \longmapsto \frac{a}{1}
+\]
+qui est injective :
+\[
+\forall a, a' \in \Z, \quad \frac{a}{1} = \frac{a'}{1} \iff a' \times 1 = a \times 1 \iff a = a'
+\]
+
+À l'aide de cette injection, on identifie $\Z$ à son image dans $\Q$. On munit ensuite $\Q$ de deux lois $+$ et $\times$, qui prolongent l'addition et la multiplication des entiers.
+
+\textbf{L'addition :} Soient $(A, B) \in \Q^2$, et $(a, a'), (b, b') \in \Z \times \Z^*$ tels que $A = \dfrac{a}{a'}$ et $B = \dfrac{b}{b'}$.
+
+On pose :
+\[
+A + B = \frac{ab' + ba'}{a'b'}
+\]
+et on vérifie que cette classe ne dépend pas des choix des représentants $(a, a')$ et $(b, b')$ de $A$ et $B$, respectivement.
+
+\begin{remarque}[NB]
+$a'b' \neq 0$ car $a' \neq 0$ et $b' \neq 0$ (intégrité de $\Z$).
+\end{remarque}
+
+\textbf{La multiplication :} Avec les mêmes notations, on définit :
+\[
+A \times B = \frac{ab}{a'b'}
+\]
+Cette classe ne dépend que de $A$ et $B$, pas des représentants utilisés.
+
+On note que $\forall (a, b) \in \Z^2$ :
+\[
+\psi(\underbrace{a + b}_{\text{dans }\Z}) = \underbrace{\psi(a) + \psi(b)}_{\text{dans }\Q} \qquad \text{et} \qquad \psi(a \times b) = \psi(a) \times \psi(b)
+\]
+Donc l'addition et la multiplication prolongent celles de $\Z$. Ainsi, si $a \in \Z$, on notera $\dfrac{a}{1}$ par $a$, sans que cela ne crée de confusions calculatoires.
+
+\begin{theoreme}
+L'addition et la multiplication dans $\Q$ munissent ce dernier d'une structure de \mot{corps commutatif} qui contient $\Z$ comme \mot{sous-anneau}.
+\end{theoreme}
+
+\begin{demonstration}
+Soit $A \in \Q$, $A \neq 0$ (où $0 = \dfrac{0}{1}$ est la classe de $0$).
+
+En choisissant $(a, b) \in \Z \times \Z^*$ tel que $A = \dfrac{a}{b}$, la condition $A \neq \dfrac{0}{1}$ signifie que $a \times 1 \neq 0 \times b$, c'est-à-dire $a \neq 0$.
+
+Donc on peut poser $A' = \dfrac{b}{a}$, et on voit que :
+\[
+A \times A' = A' \times A = \frac{ab}{ba} = \frac{1}{1} = 1 \quad (\text{unité de l'anneau } \Q)
+\]
+\end{demonstration}
+
+\begin{proposition}
+Dans l'anneau $\Q$, tout élément non nul est inversible. De plus, l'application $\Z \times \Z^* \to \Q, \ (a, b) \mapsto \dfrac{a}{b}$ vérifie $\dfrac{a}{b} = a b^{-1}$.
+\end{proposition}
+
+\begin{demonstration}[Preuve de la seconde affirmation]
+Soit $A \in \Q$ et $(a, b) \in \Z \times \Z^*$ tel que $A = \dfrac{a}{b}$.
+
+On a donc :
+\[
+A = \frac{a}{1} \times \frac{1}{b} = \psi(a) \, \psi(b)^{-1}
+\]
+En identifiant $\psi(a)$ à $a$ et $\psi(b)$ à $b$, cela s'écrit :
+\[
+A = a b^{-1}
+\]
+\end{demonstration}
+
+\subsection{Ordre dans $\Q$}
+
+Si $r \in \Q^*$, il n'y a que deux cas possibles : ou bien tous les couples $(a, b) \in \Z \times \Z^*$ tels que $r = \dfrac{a}{b}$ vérifient $ab \in \N^*$, ou bien tous vérifient $-ab \in \N^*$.
+
+On appelle \mot{rationnels strictement positifs} ceux qui relèvent du premier cas ; ils forment un ensemble noté $\Q_+^*$. Si on lui adjoint $0$, on obtient l'ensemble $\Q^+$ des \mot{rationnels positifs ou nuls}.
+
+La relation binaire sur $\Q$ définie par :
+\[
+\forall x, y \in \Q, \quad x \le y \iff y - x \in \Q^+
+\]
+est une \mot{relation d'ordre total} sur $\Q$ qui prolonge l'ordre usuel de $\Z$. Cet ordre vérifie :
+\[
+\forall (x, y, z) \in \Q^3, \quad x \le y \implies x + z \le y + z
+\]
+\[
+\forall (x, y) \in \Q^2, \ \forall z \in \Q_+^*, \quad x \le y \implies xz \le yz
+\]
+
+Cependant, l'ordre usuel sur $\Q$ est beaucoup plus complexe que celui de $\Z$ car, si $A, B \in \Q$ vérifient $A < B$, alors l'intervalle $[A, B]$ est infini — car $A < \dfrac{A + B}{2} < B$.
+
+\subsection{Insuffisance de $\Q$}
+
+\begin{itemize}
+    \item $\Q$ ne contient pas des nombres dont l'existence se manifeste dans le monde (réel) idéal :
+    
+    \begin{center}
+    \begin{tikzpicture}[scale=1.3]
+      \draw[thick, bleu] (0,0) rectangle (1.3,1.3);
+      \draw[thick, bordeaux] (0,0) -- (1.3,1.3) node[midway, above left=-2pt, font=\small] {$d$};
+      \node[left=2pt, font=\small] at (0, 0.65) {$1$};
+      \node[below=2pt, font=\small] at (0.65, 0) {$1$};
+      \node[right=12pt, align=left, font=\small] at (1.3, 0.65) {La longueur $d$ de la diagonale de ce carré doit vérifier $d^2 = 2$.\\ Or il n'existe aucun rationnel tel que $d^2 = 2$ (prouvé dans le cours 4).};
+    \end{tikzpicture}
+    \end{center}
+    \textit{(Il n'existe pas de carré de longueur $1 \times 1$ en soi, d'où « idéale » $\to$ c'est une représentation de l'esprit).}
+
+    \item On peut également formuler cette observation en disant que la fonction
+    \[
+    f : \Q \longrightarrow \Q, \quad x \longmapsto x^2 - 2
+    \]
+    prend des valeurs $> 0$ et $< 0$, mais ne s'annule pas $\implies$ \mot{le TVI est faux} pour les fonctions de $\Q$ dans $\Q$.
+
+    \item Une $3^{\text{ème}}$ formulation de cette insuffisance est la suivante : l'ensemble
+    \[
+    A = \{ x \in \Q^+ \mid x^2 \le 2 \}
+    \]
+    est une partie majorée non vide qui \mot{ne possède pas de borne supérieure} (pas de plus petit majorant) dans $\Q$ : pour tout majorant $M \in \Q$ de $A$, il existe $M' \in \Q$, $M' < M$, qui est un majorant de $A$.
+
+    \item Cette insuffisance se manifeste par des propriétés déficientes des suites. Par exemple, la suite $(u_n)_n$ de rationnels définie par :
+    \[
+    \forall n \in \N, \quad u_n = \sum_{k=0}^n \frac{1}{k!}
+    \]
+    est croissante, majorée, mais \mot{ne converge pas dans $\Q$}.
+\end{itemize}
+
+\begin{remarque}[Propriété d'Archimède]
+Cependant, la \mot{propriété d'Archimède} subsiste dans $\Q$ : en notant $|r| = \max(r, -r)$ (si $r \in \Q$), on a :
+\[
+\forall a \in \Q_+^*, \ \forall r \in \Q, \ \exists n \in \N, \quad n \cdot a \ge |r|
+\]
+\end{remarque}
+
+Pour remédier aux insuffisances de $\Q$, on introduit le \mot{corps des nombres réels}, qui contient $\Q$, est muni d'une addition et d'une multiplication qui prolongent celles de $\Q$, ainsi que d'une relation d'ordre total telle que \mot{toute partie non vide majorée de $\R$ admet une borne supérieure}.
+
+Il existe plusieurs constructions de $\R$ :
+\begin{exemples}[Coupure de Dedekind]
+On considère :
+\[
+D = \{ x \in \Q \mid x \le 0 \ \text{ou} \ (x \ge 0 \ \text{et} \ x^2 \le 2) \}
+\]
+\textit{(On veut écrire $x \le \sqrt{2}$, mais $\sqrt{2}$ n'existe pas encore).}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \draw[thick] (-3, 0) -- (3, 0);
+  \draw[ultra thick, bleu] (-3, 0) -- (0.4, 0);
+  \draw[thick, bordeaux] (0.4, -0.15) -- (0.4, 0.15) node[below=4pt, font=\small] {$\sqrt{2}$};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, bleu] (-3, -0.25) -- (0.35, -0.25) node[midway, below=6pt, font=\small] {$D$};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, vert!70!black] (0.45, -0.25) -- (3, -0.25) node[midway, below=6pt, font=\small] {$\Q \setminus D$};
+\end{tikzpicture}
+\end{center}
+Alors on peut représenter $\sqrt{2}$ sous la forme du couple $(D, \Q \setminus D)$ (construction qui n'utilise pas la notion d'ensemble quotient).
+\end{exemples}
+
+% ==============================================================================
+% SECTION II
+% ==============================================================================
+\newpage
+\section{II -- Corps des nombres réels}
+
+\subsection{2.1. Théorème (admis)}
+
+\begin{theoreme}[Admis]
+Il existe un corps, appelé \mot{corps des nombres réels}, noté $\R$, ayant les propriétés suivantes : c'est un \mot{corps commutatif totalement ordonné} qui vérifie l'\mot{axiome de la borne supérieure} :
+\[
+\text{« Toute partie \underline{non vide} et majorée de } \R \text{ admet une borne supérieure. »}
+\]
+\end{theoreme}
+
+\begin{remarque}
+Si une partie est \mot{vide}, elle n'a pas de borne supérieure car l'ensemble de ses majorants est $\R$ tout entier (qui n'a pas de plus petit élément).
+\end{remarque}
+
+\textbf{Précisions des termes utilisés :}
+\begin{itemize}
+    \item $(\R, +, \times)$ est un \mot{corps commutatif} signifie que $(\R, +)$ est un groupe commutatif (de neutre $0$) et $(\R^*, \times)$ est un groupe commutatif (de neutre $1 \neq 0$) :
+    \[
+    \begin{array}{l@{\qquad\qquad}l}
+    a + b = b + a & ab = ba \\[4pt]
+    (a + b) + c = a + (b + c) & c(ab) = (ca)b \\[4pt]
+    a + 0 = 0 + a = a & a \cdot 1 = 1 \cdot a = a \\[4pt]
+    a + (-a) = -a + a = 0 & a a^{-1} = a^{-1} a = 1 \quad (a \neq 0)
+    \end{array}
+    \]
+    avec la distributivité de $\times$ sur $+$ :
+    \[
+    \forall (a, b, c) \in \R^3, \quad a \times (b + c) = a \times b + a \times c
+    \]
+\end{itemize}
+
+\begin{definition}
+Un corps $(\R, \le)$ est dit \mot{totalement ordonné} si la relation d'ordre $\le$ est totale, et compatible avec l'addition et la multiplication :
+\[
+\forall (a, b, c) \in \R^3, \quad a \le b \implies a + c \le b + c
+\]
+\[
+\forall (a, b, c) \in \R^3, \quad a \le b \ \text{et} \ 0 \le c \implies ac \le bc
+\]
+On note alors $\R^+ = \{ x \in \R \mid 0 \le x \}$.
+\end{definition}
+
+\begin{proposition}[Conséquence]
+$\R$ est un \mot{corps de caractéristique nulle}, c'est-à-dire :
+\[
+\forall n \in \Z, \quad n \cdot 1 = 0 \implies n = 0
+\]
+\textit{(où $n \cdot 1$ est la notation additive dans le groupe $(\R, +)$ : $\underbrace{1 + 1 + \dots + 1}_{n \text{ fois}}$ pour $n > 0$).}
+\end{proposition}
+
+\begin{demonstration}
+D'abord, $0 < 1$, car sinon l'ordre étant total (et $1 \neq 0$), on aurait $1 < 0$, donc $1 + (-1) < -1$ par compatibilité de $\le$ avec $+$, c'est-à-dire $0 < -1$. Par compatibilité de l'ordre avec $\times$, on aurait alors $0 < (-1)^2$, c'est-à-dire $0 < 1$, contradiction. Donc $0 < 1$.
+
+De là, $\forall n \in \N$, $n \cdot 1_\R < (n + 1) \cdot 1_\R$ puisque :
+\[
+(n + 1) \cdot 1_\R - n \cdot 1_\R = (n + 1 - n) \cdot 1_\R = 1_\R > 0
+\]
+Donc la suite $(n \cdot 1)_{n \in \N}$ est strictement croissante. En particulier, $\forall n \in \N^*$, $0 < n \cdot 1$, et donc $n \cdot 1 \neq 0$.
+
+Si $n \in \Z_-^*$, alors $n \cdot 1 = (-|n|) \cdot 1 = -(|n| \cdot 1) \neq 0$ puisque $|n| \cdot 1 \neq 0$.
+
+Donc $\forall n \in \Z^*$, $n \cdot 1 \neq 0$. Il en résulte que l'application :
+\[
+\Z \longrightarrow \R, \quad n \longmapsto n \cdot 1
+\]
+est injective. En identifiant $\Z$ à son image dans $\R$, on écrira $\Z \subset \R$.
+\end{demonstration}
+
+\subsection{2.2. Valeur absolue}
+
+\begin{definition}
+Si $x \in \R$, on définit la \mot{valeur absolue} de $x$ par :
+\[
+|x| = \max(x, -x) = \begin{cases} x & \text{si } 0 \le x \\ -x & \text{si } x \le 0 \end{cases}
+\]
+\end{definition}
+
+\begin{exemples}[Partie positive et partie négative]
+Soit $x \in \R$, on pose :
+\[
+x^+ = \max(x, 0) \qquad \text{et} \qquad x^- = \max(-x, 0)
+\]
+On a alors :
+\[
+x = x^+ - x^- \qquad \text{et} \qquad |x| = x^+ + x^-
+\]
+\end{exemples}
+
+\begin{proposition}
+Étant donnés deux réels $x$ et $y$ et un réel $h > 0$, on a :
+\begin{enumerate}
+    \item $|x| \ge 0$ et $(|x| = 0 \iff x = 0)$
+    \item $|x - y| \le h \iff y - h \le x \le y + h$
+    \item $|xy| = |x||y|$
+    \item $|x + y| \le |x| + |y|$ \quad (\mot{inégalité triangulaire})
+\end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+Détails admis.
+\end{demonstration}
+
+\begin{corollaire}[Seconde forme de l'inégalité triangulaire]
+\[
+\forall (x, y) \in \R^2, \quad \big| |x| - |y| \big| \le |x - y|
+\]
+\end{corollaire}
+
+\begin{demonstration}
+On a :
+\[
+|x| = |x - y + y| \le |x - y| + |y|
+\]
+donc :
+\[
+|x| - |y| \le |x - y|
+\]
+En échangeant les rôles de $x$ et $y$ (car cela vaut pour tout $(x, y) \in \R^2$), on a :
+\[
+|y| - |x| \le |y - x| = |x - y|
+\]
+Donc :
+\[
+-|x - y| \le |x| - |y| \le |x - y|
+\]
+c'est-à-dire :
+\[
+\big| |x| - |y| \big| \le |x - y|
+\]
+\end{demonstration}
+
+\begin{remarque}
+On l'utilise souvent sous la forme $|x - y| \ge |x| - |y|$, qui est pertinente lorsque $|x| - |y| \ge 0$ (c'est-à-dire $|x| \ge |y|$).
+\end{remarque}
+
+\begin{definition}[Distance usuelle sur $\R$]
+On appelle \mot{distance} de deux réels $x$ et $y$ la valeur absolue de leur différence : $d(x, y) = |x - y|$.
+\end{definition}
+
+On obtient la droite numérique $\R$ \textit{(voir Chapitre 7)}.
+
+% ==============================================================================
+% SECTION III
+% ==============================================================================
+\newpage
+\section{III -- Axiome de la borne supérieure}
+
+\subsection{3.1. Rappels}
+
+\begin{definition}
+\begin{itemize}
+    \item La \mot{borne supérieure} d'une partie $A$ de $\R$ est, s'il existe, le plus petit de ses majorants. On le note $\sup(A)$ ou $\sup A$, ou parfois $\displaystyle\sup_{x \in A} x$.
+    \item La \mot{borne inférieure} d'une partie $A$ de $\R$ est, s'il existe, le plus grand élément de ses minorants. On la note $\inf(A)$ ou $\inf A$, ou $\displaystyle\inf_{x \in A} x$.
+\end{itemize}
+\end{definition}
+
+On a vu que $\sup(A) \in A \iff \sup(A) = \pge(A)$ (plus grand élément de $A$).
+
+La notion de borne supérieure pour une partie $A$ de $\R$ devient particulièrement pertinente lorsque $A$ n'a pas de plus grand élément, c'est-à-dire lorsque $\sup(A) \notin A$.
+
+\begin{exemples}
+\begin{itemize}
+    \item $\sup\big(\,]0, 1[\,\big) = 1$
+    \item $\sup(\R_-^*) = 0$
+\end{itemize}
+\end{exemples}
+
+\end{document}
