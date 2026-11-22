@@ -1898,4 +1898,333 @@ On a alors $\varphi(i)^2 = (1, 1)$ (car $\forall x \in \U_2 \times \U_2, \, x^2 
 Donc $i^2 = -1 \in \Ker \varphi$, donc $\Ker \varphi \neq \{1\}$. Donc $\varphi$ n'est pas injectif, *a fortiori* pas bijectif.
 \end{exemple}
 
+\section{V -- Structure quotient -- Applications}
+
+\subsection{5.1. Relation d'équivalence compatible avec une loi interne}
+
+\begin{definition}
+Soit $(M, T)$ un magma et $\mathcal{R}$ une relation d'équivalence sur $M$.
+\begin{itemize}
+    \item On dit que $\mathcal{R}$ est \mot{compatible} avec $T$ si :
+    \[
+    \forall (x, x', y, y') \in M^4, \quad (x \, \mathcal{R} \, x' \ \text{et} \ y \, \mathcal{R} \, y') \implies (x \, T \, y) \, \mathcal{R} \, (x' \, T \, y')
+    \]
+    \item On dit que $\mathcal{R}$ est \mot{compatible à droite} avec $T$ si :
+    \[
+    \forall (x, y, z) \in M^3, \quad x \, \mathcal{R} \, y \implies (x \, T \, z) \, \mathcal{R} \, (y \, T \, z)
+    \]
+    \item On dit que $\mathcal{R}$ est \mot{compatible à gauche} avec $T$ si :
+    \[
+    \forall (x, y, z) \in M^3, \quad x \, \mathcal{R} \, y \implies (z \, T \, x) \, \mathcal{R} \, (z \, T \, y)
+    \]
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+Une relation d'équivalence $\mathcal{R}$ sur $M$ est compatible avec $T$ si et seulement si elle est compatible à droite et à gauche avec $T$.
+\end{proposition}
+
+\begin{demonstration}
+\begin{itemize}
+    \item \textbf{Sens direct ($\implies$) :} Supposons $\mathcal{R}$ compatible avec $T$.
+    Soit $(x, y) \in M^2$ tel que $x \, \mathcal{R} \, y$. Or, pour tout $z \in M$, $z \, \mathcal{R} \, z$ (par réflexivité).
+    Donc, par compatibilité de $\mathcal{R}$ avec $T$, on a :
+    \[
+    (x \, T \, z) \, \mathcal{R} \, (y \, T \, z) \quad \text{et} \quad (z \, T \, x) \, \mathcal{R} \, (z \, T \, y)
+    \]
+    Ainsi, $\mathcal{R}$ est compatible à droite et à gauche avec $T$.
+
+    \item \textbf{Réciproque ($\Longleftarrow$) :} Supposons $\mathcal{R}$ compatible à droite et à gauche avec $T$.
+    Soit $(x, x', y, y') \in M^4$ tel que $x \, \mathcal{R} \, x'$ et $y \, \mathcal{R} \, y'$.
+    \begin{itemize}
+        \item Par compatibilité à droite : $(x \, T \, y) \, \mathcal{R} \, (x' \, T \, y)$.
+        \item Par compatibilité à gauche : $(x' \, T \, y) \, \mathcal{R} \, (x' \, T \, y')$.
+    \end{itemize}
+    Donc, par transitivité de $\mathcal{R}$, $(x \, T \, y) \, \mathcal{R} \, (x' \, T \, y')$.
+\end{itemize}
+\end{demonstration}
+
+\begin{theoreme}[et Définition]
+Soit $(M, T)$ un magma et $\mathcal{R}$ une relation d'équivalence compatible avec $T$.
+Soit la surjection canonique :
+\[
+s : M \longrightarrow M / \mathcal{R}, \quad x \longmapsto \overline{x}
+\]
+où $\overline{x}$ désigne la classe d'équivalence de $x$ \textit{(c'est l'application qui associe un représentant à sa classe d'équivalence)}.
+
+Alors il existe une, et une seule loi de composition interne $\overline{T}$ sur $M / \mathcal{R}$ telle que :
+\[
+\forall (x, y) \in M^2, \quad s(x \, T \, y) = s(x) \, \overline{T} \, s(y)
+\]
+On dit que $\overline{T}$ est la \mot{loi quotient} de $T$ par $\mathcal{R}$.
+\end{theoreme}
+
+\begin{demonstration}
+Procédons par analyse-synthèse :
+\begin{itemize}
+    \item \cas{Analyse :} On suppose que $\overline{T} : M / \mathcal{R} \times M / \mathcal{R} \to M / \mathcal{R}$ vérifie :
+    \[
+    \forall (x, y) \in M^2, \quad s(x \, T \, y) = s(x) \, \overline{T} \, s(y) \quad \text{c'est-à-dire} \quad \overline{x \, T \, y} = \overline{x} \, \overline{T} \, \overline{y}
+    \]
+    Soient $X, Y \in M / \mathcal{R}$. Choisissons $x \in X$ et $y \in Y$, c'est-à-dire tels que $X = \overline{x}$ et $Y = \overline{y}$.
+    On doit avoir :
+    \[
+    X \, \overline{T} \, Y = \overline{x \, T \, y}
+    \]
+    Donc $\overline{T}$, sous réserve qu'elle soit bien définie, est unique.
+
+    \item \cas{Synthèse :} Définissons $\overline{T} : M / \mathcal{R} \times M / \mathcal{R} \to M / \mathcal{R}$ par :
+    \[
+    (X, Y) \longmapsto \overline{x \, T \, y}
+    \]
+    où $x$ (resp. $y$) est n'importe quel élément de $X$ (resp. $Y$).
+
+    Il faut vérifier que $\overline{T}$ est bien une application, ce qui revient à vérifier que pour tout $(X, Y) \in (M / \mathcal{R})^2$, le couple $(X, Y)$ a une seule image (indépendance vis-à-vis du choix des représentants).
+    
+    Soient $x, x' \in X$ et $y, y' \in Y$. On a $\overline{x} = \overline{x'} = X$ et $\overline{y} = \overline{y'} = Y$, donc $x \, \mathcal{R} \, x'$ et $y \, \mathcal{R} \, y'$.
+    Par compatibilité de $\mathcal{R}$ avec $T$, on a $(x \, T \, y) \, \mathcal{R} \, (x' \, T \, y')$, donc :
+    \[
+    \overline{x \, T \, y} = \overline{x' \, T \, y'}
+    \]
+    Ainsi, $(X, Y)$ a une image unique. Par analyse-synthèse, il existe une unique loi $\overline{T} : M / \mathcal{R} \times M / \mathcal{R} \to M / \mathcal{R}$ telle que $\forall (x, y) \in M^2, \ s(x \, T \, y) = s(x) \, \overline{T} \, s(y)$.
+\end{itemize}
+\end{demonstration}
+
+\begin{remarque}[NB]
+Dans l'analyse, on montre que $\overline{T}$ a pour graphe :
+\[
+\big\{ ((X, Y), \, \overline{x \, T \, y}) \mid (X, Y) \in (M / \mathcal{R})^2, \ x \in X, \ y \in Y \big\}
+\]
+(ce n'était pas encore une fonction qu'on définissait, mais un graphe). Dans la synthèse, on vérifie que ce graphe est fonctionnel.
+\end{remarque}
+
+\begin{proposition}
+Soit $(M, T)$ un magma, $\mathcal{R}$ une relation d'équivalence sur $M$ compatible avec $T$, et $\overline{T}$ la loi quotient sur $M / \mathcal{R}$.
+\begin{enumerate}
+    \item Si $T$ est associative, alors $\overline{T}$ aussi.
+    \item Si $T$ est commutative, alors $\overline{T}$ aussi.
+    \item Si $T$ possède un élément neutre $e$, alors $\overline{e}$ (la classe d'équivalence de $e$ modulo $\mathcal{R}$) est neutre pour $\overline{T}$.
+    \item Si $(M, T)$ est un monoïde, alors $(M / \mathcal{R}, \overline{T})$ aussi.
+\end{enumerate}
+\end{proposition}
+
+\begin{demonstration}
+Notons $s : M \to M / \mathcal{R}, \ x \mapsto s(x) = \overline{x}$ la surjection canonique.
+Les propriétés 1) à 3) découlent de la surjectivité de $s$ et de la propriété :
+\[
+\forall (x, y) \in M^2, \quad s(x \, T \, y) = s(x) \, \overline{T} \, s(y)
+\]
+\begin{itemize}
+    \item \textbf{Preuve de 1) :} Soient $X, Y, Z \in M / \mathcal{R}$. Choisissons $x, y, z \in M$ tels que $X = s(x) = \overline{x}$, $Y = s(y) = \overline{y}$ et $Z = s(z) = \overline{z}$ (c'est-à-dire $x \in X$, $y \in Y$ et $z \in Z$). Alors :
+    \begin{align*}
+        (X \, \overline{T} \, Y) \, \overline{T} \, Z &= (s(x) \, \overline{T} \, s(y)) \, \overline{T} \, s(z) \\
+                                                       &= s(x \, T \, y) \, \overline{T} \, s(z) \\
+                                                       &= s((x \, T \, y) \, T \, z) \\
+                                                       &= s(x \, T \, (y \, T \, z)) \quad (\text{par associativité de } T) \\
+                                                       &= s(x) \, \overline{T} \, (s(y) \, \overline{T} \, s(z)) \\
+                                                       &= X \, \overline{T} \, (Y \, \overline{T} \, Z)
+    \end{align*}
+    \item Les points 2) et 3) se démontrent de manière analogue.
+    \item \textbf{Preuve de 4) :} Découle directement des points 1) et 3).
+\end{itemize}
+\end{demonstration}
+
+\newpage
+\subsection{5.2. Symétrisation d'un monoïde régulier}
+
+\textbf{Objectif :} Donner une construction permettant d'obtenir le groupe $(\Z, +)$ à partir du monoïde $(\N, +)$.
+
+Plus généralement, si $(M, +)$ est un monoïde abélien, on veut construire un groupe $(G, +)$ aussi petit que possible tel que $M \subset G$, et dont la loi prolonge celle de $M$.
+
+Cela ne sera possible que si $(M, +)$ est un \mot{monoïde régulier}, c'est-à-dire :
+\[
+\forall m \in M, \ \forall (p, q) \in M^2, \quad m + p = m + q \implies p = q
+\]
+
+Soit $(M, +)$ un monoïde abélien régulier de neutre $0$. Munissons $M^2$ de la relation $\mathcal{R}$ définie par :
+\[
+\forall (m, n), (m', n') \in M^2, \quad (m, n) \, \mathcal{R} \, (m', n') \iff m + n' = m' + n
+\]
+*(L'idée sous-jacente est de s'affranchir de la soustraction en écrivant $m - n = m' - n'$ sous la forme $m + n' = m' + n$ pour pouvoir construire les symétriques).*
+
+Munissons par ailleurs $M^2$ de la structure de \mot{monoïde produit} :
+\[
+\forall (m, n), (m', n') \in M^2, \quad (m, n) + (m', n') = (m + m', \, n + n')
+\]
+Il est facile de vérifier que cette addition produit est associative, commutative et possède $(0, 0)$ pour élément neutre.
+
+\begin{theoreme}
+Soit $(M, +)$ un monoïde abélien régulier. La relation $\mathcal{R}$ sur $M^2$ définie par :
+\[
+(m, n) \, \mathcal{R} \, (m', n') \iff m + n' = m' + n
+\]
+est une relation d'équivalence compatible avec la loi produit sur $M^2$.
+\end{theoreme}
+
+\begin{demonstration}
+\begin{itemize}
+    \item \textbf{Relation d'équivalence :} La réflexivité et la symétrie de $\mathcal{R}$ sont évidentes.
+    
+    \textit{Transitivité :} Soient $(m, n), (m', n'), (m'', n'') \in M^2$ tels que $(m, n) \, \mathcal{R} \, (m', n')$ et $(m', n') \, \mathcal{R} \, (m'', n'')$, c'est-à-dire :
+    \[
+    m + n' = m' + n \quad \text{et} \quad m' + n'' = m'' + n'
+    \]
+    Alors :
+    \[
+    m + n' + n'' = m' + n + n'' = (m' + n'') + n = m'' + n' + n
+    \]
+    Comme $n'$ est régulier dans $(M, +)$ (et la loi commutative), on peut simplifier par $n'$ et on obtient :
+    \[
+    m + n'' = m'' + n
+    \]
+    c'est-à-dire $(m, n) \, \mathcal{R} \, (m'', n'')$. Donc $\mathcal{R}$ est une relation d'équivalence.
+
+    \item \textbf{Compatibilité avec la loi produit :} La loi produit sur $M^2$ étant commutative, il suffit de vérifier que $\mathcal{R}$ est compatible à gauche avec cette loi.
+    
+    Soient $(m, n), (m', n'), (m'', n'') \in M^2$ tels que $(m', n') \, \mathcal{R} \, (m'', n'')$, c'est-à-dire $m' + n'' = m'' + n'$.
+    Vérifions que :
+    \[
+    \underbrace{(m, n) + (m', n')}_{(m + m', \, n + n')} \, \mathcal{R} \, \underbrace{(m, n) + (m'', n'')}_{(m + m'', \, n + n'')}
+    \]
+    On a, par associativité et commutativité de $+$ dans $M$ :
+    \begin{align*}
+        (m + m') + (n + n'') &= m + n + (m' + n'') \\
+                             &= m + n + (m'' + n') \\
+                             &= (m + m'') + (n + n')
+    \end{align*}
+    On a bien $\big((m, n) + (m', n')\big) \, \mathcal{R} \, \big((m, n) + (m'', n'')\big)$.
+\end{itemize}
+\end{demonstration}
+
+D'après le paragraphe 5.1, l'ensemble quotient $M^2 / \mathcal{R}$ peut être muni de la loi quotient $\dot{+}$ telle que :
+\[
+\forall (m, n), (m', n') \in M^2, \quad [m, n] \, \dot{+} \, [m', n'] = [m + m', \, n + n']
+\]
+où $[m, n]$ désigne la classe d'équivalence de $(m, n) \in M^2$ modulo $\mathcal{R}$.
+
+Notons $(G, \dot{+})$ le magma quotient $(M^2 / \mathcal{R}, \dot{+})$. On sait déjà, d'après le paragraphe 5.1, que $(G, \dot{+})$ est un monoïde commutatif dont le neutre est $[0, 0]$.
+
+\begin{theoreme}
+Soit $(M, +)$ un monoïde abélien régulier et $(G, \dot{+})$ le magma $(M^2 / \mathcal{R}, \dot{+})$ défini ci-dessus.
+Alors :
+\begin{enumerate}
+    \item $(G, \dot{+})$ est un \mot{groupe abélien}.
+    \item L'application :
+    \[
+    f : M \longrightarrow G, \quad m \longmapsto [m, 0]
+    \]
+    est un \mot{morphisme de monoïdes injectif}.
+    \item Enfin, pour tout élément $g \in G$, il existe $(m, n) \in M^2$ tel que :
+    \[
+    g = f(m) - f(n)
+    \]
+\end{enumerate}
+\end{theoreme}
+
+\begin{demonstration}
+On sait déjà que $(G, \dot{+})$ est un monoïde abélien de neutre $[0, 0]$.
+
+\begin{itemize}
+    \item \textbf{Symétrisabilité dans $G$ :} Soit $X \in G$ et $(m, n) \in M^2$ tel que $X = [m, n]$.
+    Posons $X' = [n, m] \in G$. Alors :
+    \[
+    X \, \dot{+} \, X' = [m, n] \, \dot{+} \, [n, m] = [m + n, \, n + m] = [0, 0]
+    \]
+    (car $(m + n) + 0 = 0 + (n + m)$), et de même $X' \, \dot{+} \, X = [0, 0]$.
+    Donc $(G, \dot{+})$ est un monoïde dont tout élément est symétrisable : c'est donc un groupe (abélien).
+
+    \item \textbf{Propriétés de $f$ :} Considérons $f : M \to G, \ m \mapsto [m, 0]$.
+    \begin{itemize}
+        \item Elle vérifie $\forall m, n \in M, \ f(m + n) = [m + n, 0] = [m, 0] \, \dot{+} \, [n, 0] = f(m) \, \dot{+} \, f(n)$, ainsi que $f(0) = [0, 0]$ (condition nécessaire pour un morphisme de monoïdes). Donc $f$ est un morphisme de monoïdes.
+        \item De plus, si $m, n \in M$ vérifient $f(m) = f(n)$, c'est-à-dire $[m, 0] = [n, 0]$, alors $(m, 0) \, \mathcal{R} \, (n, 0)$, soit $m + 0 = n + 0$, d'où $m = n$. Donc $f$ est injective.
+    \end{itemize}
+    Ainsi, $f(M)$, muni de la loi induite par $\dot{+}$, est un sous-monoïde du groupe $(G, \dot{+})$ isomorphe à $(M, +)$.
+
+    \item \textbf{Décomposition de tout élément de $G$ :} On a montré que le symétrique de $[n, 0]$ est $-[n, 0] = [0, n]$.
+    Donc, pour tout $g \in G$, en choisissant $(m, n) \in M^2$ tel que $g = [m, n]$, on a :
+    \[
+    g = [m, 0] \, \dot{+} \, [0, n] = [m, 0] - [n, 0] = f(m) - f(n)
+    \]
+    (en notant $[m, 0] - [n, 0]$ pour $[m, 0] \, \dot{+} \, (-[n, 0])$).
+\end{itemize}
+\end{demonstration}
+
+\begin{remarque}
+On peut identifier $M$ à $f(M)$, et donc noter simplement $m$ pour $f(m)$ si $m \in M$.
+Par la propriété morphique de $f$, $m + n$ désigne aussi bien $f(m + n)$ que $f(m) \, \dot{+} \, f(n)$.
+\end{remarque}
+
+\begin{exemples}[Construction de $(\Z, +)$]
+$(\N, +)$ est un monoïde abélien régulier. Par la construction décrite ci-dessus, on obtient le groupe $(\Z, +)$ (où la loi quotient $\dot{+}$ est notée $+$).
+
+\textbf{Premières propriétés de $(\Z, +)$ :}
+\begin{itemize}
+    \item On a identifié $\N$ à $\Z^+ = \{ [m, 0] \mid m \in \N \}$.
+    \item Tout $x \in \Z$ s'écrit $x = [m, n]$ où $(m, n) \in \N^2$ :
+    \begin{itemize}
+        \item Si $m \ge n$, alors $x = [m - n, 0] \in \Z^+ = \N$.
+        \item Si $m \le n$, alors $x = [0, n - m] = -[n - m, 0]$, donc $-x \in \Z^+ = \N$.
+    \end{itemize}
+    Ainsi, $\Z = \N \cup (-\N)$.
+    \item De plus, $\N \cap (-\N) = \{0\}$ car :
+    \[
+    [m, 0] = [0, n] \implies m + n = 0 \implies m = n = 0
+    \]
+    \item On note $\Z^+ = \N$ et $\Z^- = -\N$. L'application $\Z^+ \to \Z^-, \ x \mapsto -x$ est une bijection.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  % Axes
+  \draw[->, >=stealth, thick] (-4, 0) -- (5.5, 0);
+  \draw[->, >=stealth, thick] (0, -0.5) -- (0, 5.2);
+
+  % Graduations
+  \foreach \x/\lbl in {-3/-3, -2/-2, -1/-1, 0/0, 1/1, 2/2, 3/3, 4.5/m} {
+    \fill[bleu] (\x, 0) circle (2pt);
+    \node[below=3pt, font=\small] at (\x, 0) {$\lbl$};
+  }
+  \node[below=3pt, font=\small] at (3.75, 0) {$\dots$};
+
+  % Classes d'équivalence (droites obliques parallèles)
+  \draw[bleu, thick] (-3, 0) -- (1.5, 4.5) node[right, font=\footnotesize\color{black}] {$[0, m]$};
+  \draw[bleu, thick] (-2, 0) -- (2.1, 4.1) node[right, font=\footnotesize\color{black}] {$[0, 2]$};
+  \draw[bleu, thick] (-1, 0) -- (2.7, 3.7) node[right, font=\footnotesize\color{black}] {$[0, 1]$};
+  \draw[bordeaux, thick] (0, 0) -- (3.2, 3.2) node[right, font=\footnotesize\color{bordeaux}] {$[0, 0]$};
+  \draw[bleu, thick] (1, 0) -- (3.8, 2.8) node[right, font=\footnotesize\color{black}] {$[1, 0]$};
+  \draw[bleu, thick] (2, 0) -- (4.3, 2.3) node[right, font=\footnotesize\color{black}] {$[2, 0]$};
+  \draw[bleu, thick] (3, 0) -- (4.8, 1.8) node[right, font=\footnotesize\color{black}] {$[3, 0]$};
+  \draw[bleu, thick] (4.5, 0) -- (5.8, 1.3) node[right, font=\footnotesize\color{black}] {$[m, 0]$};
+
+  % Note marginale
+  \node[align=left, font=\footnotesize\itshape, text=brun] at (7.8, 2.5) {$\rightarrow$ Les entiers relatifs\\ sont des ensembles\\ (rien de surprenant :\\ les entiers naturels aussi).};
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+    \item Comme $(\Z, +)$ est un groupe abélien, la soustraction ne pose plus de problème : si $x, y \in \Z$, il existe un et un seul $d \in \Z$ tel que $x + d = y$, c'est $d = y - x$.
+    \item Puisque $\Z = \N \cup (-\N)$ et $\N \cap (-\N) = \{0\}$, pour tout $x \in \Z$, un et un seul des éléments $x$ ou $-x$ appartient à $\N$. On le note $|x|$, appelé \mot{valeur absolue} de $x$. Pour tous $x, y \in \Z$, on a $|x + y| \le |x| + |y|$.
+    \item On munit $\Z$ de la relation d'ordre :
+    \[
+    x \le y \iff y - x \in \N
+    \]
+    L'ordre est total puisqu'on a toujours $y - x \in \N$ ou $x - y \in \N$. On constate que cet ordre prolonge celui de $\N$.
+    
+    Enfin, l'ordre sur $\Z$ est compatible avec $+$ :
+    \[
+    \forall x, y, z \in \Z, \quad x \le y \implies x + z \le y + z
+    \]
+    et avec la multiplication par un entier $n > 0$ :
+    \[
+    \forall x, y \in \Z, \ \forall n \in \N^*, \quad x \le y \implies n \cdot x \le n \cdot y
+    \]
+    \item On munit $\Z$ d'une seconde loi de composition interne, la multiplication $\times$, telle que $\forall (x, y) \in \Z^2, \ x \times y = x \cdot y$.
+    
+    Cette loi prolonge la multiplication sur $\N$, et on obtient un \mot{anneau commutatif} $(\Z, +, \times)$. C'est un \mot{anneau intègre}, c'est-à-dire qu'il vérifie :
+    \[
+    \forall (x, y) \in \Z^2, \quad x \times y = 0 \implies x = 0 \ \text{ou} \ y = 0
+    \]
+\end{itemize}
+\end{exemples}
+
 \end{document}
