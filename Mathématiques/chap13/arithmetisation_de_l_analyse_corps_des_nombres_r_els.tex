@@ -43,6 +43,9 @@
 \DeclareMathOperator{\Argch}{Argch}
 \DeclareMathOperator{\sgn}{signe}
 \DeclareMathOperator{\pge}{pge}
+\DeclareMathOperator{\ppe}{ppe}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{Im}
 
 % Formule mise en valeur
 \newcommand{\cadre}[1]{%
@@ -119,7 +122,7 @@
 
 Dans l'anneau $\Z$, la division n'est pas toujours possible. On est amené à étendre la notion de nombre, pour obtenir un ensemble contenant $\Z$, dans lequel la division par un nombre $\neq 0$ est toujours possible. Le plus petit ensemble vérifiant cette propriété, muni d'une addition et d'une multiplication qui prolongent celles de $\Z$, est le \mot{corps $\Q$ des nombres rationnels}.
 
-\subsection{Construction de $\Q$}
+\subsection{1.1. Construction de $\Q$}
 
 Sur l'ensemble $\Z \times \Z^*$, on définit la relation binaire $\mathcal{R}$ par :
 \[
@@ -201,7 +204,8 @@ A = a b^{-1}
 \]
 \end{demonstration}
 
-\subsection{Ordre dans $\Q$}
+\newpage
+\subsection{1.2. Ordre dans $\Q$}
 
 Si $r \in \Q^*$, il n'y a que deux cas possibles : ou bien tous les couples $(a, b) \in \Z \times \Z^*$ tels que $r = \dfrac{a}{b}$ vérifient $ab \in \N^*$, ou bien tous vérifient $-ab \in \N^*$.
 
@@ -221,7 +225,8 @@ est une \mot{relation d'ordre total} sur $\Q$ qui prolonge l'ordre usuel de $\Z$
 
 Cependant, l'ordre usuel sur $\Q$ est beaucoup plus complexe que celui de $\Z$ car, si $A, B \in \Q$ vérifient $A < B$, alors l'intervalle $[A, B]$ est infini — car $A < \dfrac{A + B}{2} < B$.
 
-\subsection{Insuffisance de $\Q$}
+\newpage
+\subsection{1.3. Insuffisance de $\Q$}
 
 \begin{itemize}
     \item $\Q$ ne contient pas des nombres dont l'existence se manifeste dans le monde (réel) idéal :
@@ -358,6 +363,7 @@ Donc $\forall n \in \Z^*$, $n \cdot 1 \neq 0$. Il en résulte que l'application 
 est injective. En identifiant $\Z$ à son image dans $\R$, on écrira $\Z \subset \R$.
 \end{demonstration}
 
+\newpage
 \subsection{2.2. Valeur absolue}
 
 \begin{definition}
@@ -437,12 +443,12 @@ On obtient la droite numérique $\R$ \textit{(voir Chapitre 7)}.
 \newpage
 \section{III -- Axiome de la borne supérieure}
 
-\subsection{3.1. Rappels}
+\subsection{3.1. Rappels et caractérisations}
 
 \begin{definition}
 \begin{itemize}
     \item La \mot{borne supérieure} d'une partie $A$ de $\R$ est, s'il existe, le plus petit de ses majorants. On le note $\sup(A)$ ou $\sup A$, ou parfois $\displaystyle\sup_{x \in A} x$.
-    \item La \mot{borne inférieure} d'une partie $A$ de $\R$ est, s'il existe, le plus grand élément de ses minorants. On la note $\inf(A)$ ou $\inf A$, ou $\displaystyle\inf_{x \in A} x$.
+    \item La \mot{borne inférieure} d'une partie $A$ de $\R$ est, s'il existe, le plus grand élément de ses minorants. On la note $\inf(A)$ ou $\inf A$, ou parfois $\displaystyle\inf_{x \in A} x$.
 \end{itemize}
 \end{definition}
 
@@ -456,5 +462,1059 @@ La notion de borne supérieure pour une partie $A$ de $\R$ devient particulière
     \item $\sup(\R_-^*) = 0$
 \end{itemize}
 \end{exemples}
+
+\begin{proposition}[Axiome de la borne supérieure]
+Toute partie non vide majorée $X$ de $\R$ admet une borne supérieure.
+\end{proposition}
+
+\begin{proposition}[Caractérisations de la borne supérieure]
+Soit $X$ une partie non vide de $\R$ et $a \in \R$. On note $M(X)$ l'ensemble des majorants de $X$. Alors :
+\[
+a = \sup(X) \iff
+\begin{cases}
+1)\ a \in M(X), \text{ i.e. } \forall x \in X, \ x \le a \\[4pt]
+2)\ \forall \alpha \in M(X), \ a \le \alpha \quad \big(\text{i.e. } \forall \alpha \in \R, \ [\forall x \in X, \ x \le \alpha] \implies a \le \alpha\big)
+\end{cases}
+\]
+L'ordre sur $\R$ étant total, on a aussi la caractérisation équivalente :
+\[
+a = \sup(X) \iff
+\begin{cases}
+1)\ a \in M(X), \text{ i.e. } \forall x \in X, \ x \le a \\[4pt]
+2')\ \forall \alpha \in \R, \ \big[\alpha < a \implies \exists c \in X, \ \alpha < c \ (\le a)\big]
+\end{cases}
+\]
+En notant que tout $\alpha < a$ peut s'écrire $a - \varepsilon$ où $\varepsilon > 0$, on obtient la \mot{caractérisation $\varepsilon$-esque de la borne supérieure} :
+\[
+a = \sup(X) \iff
+\begin{cases}
+1)\ \forall x \in X, \ x \le a \\[4pt]
+2_{\text{bis}})\ \forall \varepsilon > 0, \ \exists c \in X, \ a - \varepsilon < c \le a
+\end{cases}
+\]
+\end{proposition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  % Premier schéma : alpha < c <= a
+  \begin{scope}[xshift=-4.2cm]
+    \draw[thick, ->] (-2.5, 0) -- (2.5, 0);
+    \draw[ultra thick, bleu] (-2.2, 0) -- (1.2, 0);
+    \node[below=4pt, bleu, font=\small] at (-1.5, 0) {$X$};
+    \draw[thick, bordeaux] (1.2, -0.15) -- (1.2, 0.15) node[above=3pt, font=\small] {$a$};
+    \draw[thick, orange] (-0.3, -0.15) -- (-0.3, 0.15) node[above=3pt, font=\small] {$\alpha$};
+    \fill[vert!70!black] (0.5, 0) circle (2pt) node[below=4pt, font=\small] {$c$};
+  \end{scope}
+  % Second schéma : a - eps < c <= a
+  \begin{scope}[xshift=4.2cm]
+    \draw[thick, ->] (-2.5, 0) -- (2.5, 0);
+    \draw[ultra thick, bleu] (-2.2, 0) -- (1.2, 0);
+    \draw[thick, bordeaux] (1.2, -0.15) -- (1.2, 0.15) node[above=3pt, font=\small] {$a$};
+    \draw[thick, orange] (-0.4, -0.15) -- (-0.4, 0.15) node[below=4pt, font=\small] {$a - \varepsilon$};
+    \fill[vert!70!black] (0.5, 0) circle (2pt) node[below=4pt, font=\small] {$c$};
+    \draw[<->, >=stealth, bordeaux] (-0.35, 0.35) -- (1.15, 0.35) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{exemples}[Existence de $\sqrt{2} \in \R$]
+Posons :
+\[
+X = \{ x \in \R \mid x \ge 0 \ \text{et} \ x^2 \le 2 \}
+\]
+$X \neq \emptyset$ car $0 \in X$, et $X$ est majorée par $2$ car :
+\[
+\forall x \in X, \quad x \ge 0 \ \text{et} \ x^2 \le 2 < 4 \implies x \le 2
+\]
+Donc $X$ possède une borne supérieure $a \in \R$. On sait déjà que $a \ge 0$ (et même que $a \ge 1$ car $1 \in X$).
+
+\textbf{Montrons que $a^2 = 2$ par l'absurde :}
+\begin{enumerate}
+    \item \cas{Supposons $a^2 > 2$.}
+    
+    \begin{center}
+    \begin{tikzpicture}[scale=1.0]
+      \draw[thick, ->] (-2.5, 0) -- (2.5, 0);
+      \fill[bordeaux] (-1.2, 0) circle (2pt) node[above=3pt, font=\small] {$2$};
+      \fill[bleu] (0.1, 0) circle (2pt) node[above=3pt, font=\small] {$(a-h)^2$};
+      \fill[bordeaux] (1.4, 0) circle (2pt) node[above=3pt, font=\small] {$a^2$};
+    \end{tikzpicture}
+    \end{center}
+    
+    Montrons qu'il existe $h \in \R$ tel que $h > 0$, $a - h > 0$ et $(a - h)^2 > 2$.
+    
+    On veut donc :
+    \[
+    0 < h < a \qquad \text{et} \qquad a^2 - 2ah + \underbrace{h^2}_{> 0} > 2
+    \]
+    Il suffit que :
+    \[
+    \begin{cases} 0 < h < a \\ a^2 - 2ah > 2 \end{cases} \iff \begin{cases} 0 < h < a \\ h < \dfrac{a^2 - 2}{2a} \end{cases}
+    \]
+    Comme $a^2 - 2 > 0$ (et $a \ge 1 > 0$), on peut trouver :
+    \[
+    h \in \left] 0, \min\left(a, \frac{a^2 - 2}{2a}\right) \right[
+    \]
+    Alors, pour tout $x \in X$, on a $x \ge 0$ et $x^2 \le 2 < (a - h)^2$, donc $x \le a - h$ (car $x \ge 0$ et $a - h > 0$).
+    
+    Ainsi, $a - h \in M(X)$ et $a - h < a = \sup(X)$ : \textbf{contradiction !}
+
+    \item \cas{Supposons $a^2 < 2$.}
+    
+    \begin{center}
+    \begin{tikzpicture}[scale=1.0]
+      \draw[thick, ->] (-2.5, 0) -- (2.5, 0);
+      \fill[bordeaux] (-1.4, 0) circle (2pt) node[above=3pt, font=\small] {$a^2$};
+      \fill[bleu] (-0.1, 0) circle (2pt) node[above=3pt, font=\small] {$(a+h)^2$};
+      \fill[bordeaux] (1.2, 0) circle (2pt) node[above=3pt, font=\small] {$2$};
+    \end{tikzpicture}
+    \end{center}
+    
+    Montrons qu'il existe $h > 0$ tel que $(a + h)^2 \le 2$.
+    
+    On a :
+    \[
+    (a + h)^2 \le 2 \iff 2ah + h^2 \le 2 - a^2
+    \]
+    Imposons de plus $h \le 1$. Alors $2ah + h^2 \le 2ah + h = h(2a + 1)$.
+    
+    Il suffit que $h(2a + 1) \le 2 - a^2$ pour que $2ah + h^2 \le 2 - a^2$. Or :
+    \[
+    h(2a + 1) \le 2 - a^2 \iff h \le \frac{2 - a^2}{2a + 1}
+    \]
+    Comme $2 - a^2 > 0$, on peut choisir :
+    \[
+    h \in \left] 0, \min\left(1, \frac{2 - a^2}{2a + 1}\right) \right]
+    \]
+    Pour un tel $h$, on a $(a + h)^2 \le 2$ (et $a + h > 0$), c'est-à-dire $a + h \in X$. Or $a + h > a = \sup(X)$, donc $\sup(X)$ ne majorerait pas $X$ : \textbf{contradiction !}
+\end{enumerate}
+On en déduit que $a^2 = 2$.
+\end{exemples}
+
+\begin{proposition}[Existence et caractérisation de la borne inférieure]
+Toute partie non vide minorée $X$ de $\R$ possède une borne inférieure, et :
+\[
+\inf(X) = -\sup(-X)
+\]
+De plus, on a la \mot{caractérisation $\varepsilon$-esque de $\inf(X)$} : pour tout $a \in \R$,
+\[
+a = \inf(X) \iff
+\begin{cases}
+1)\ \forall x \in X, \ a \le x \\[4pt]
+2_{\text{bis}})\ \forall \varepsilon > 0, \ \exists c \in X, \ a \le c < a + \varepsilon
+\end{cases}
+\]
+\end{proposition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \draw[thick, ->] (-2.5, 0) -- (2.5, 0);
+  \draw[ultra thick, bleu] (-1.2, 0) -- (2.2, 0);
+  \node[below=4pt, bleu, font=\small] at (1.5, 0) {$X$};
+  \draw[thick, bordeaux] (-1.2, -0.15) -- (-1.2, 0.15) node[above=3pt, font=\small] {$a$};
+  \draw[thick, orange] (0.4, -0.15) -- (0.4, 0.15) node[below=4pt, font=\small] {$a + \varepsilon$};
+  \fill[vert!70!black] (-0.5, 0) circle (2pt) node[below=4pt, font=\small] {$c$};
+  \draw[<->, >=stealth, bordeaux] (-1.15, 0.35) -- (0.35, 0.35) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+\end{tikzpicture}
+\end{center}
+
+\begin{demonstration}
+Soit $X$ une partie non vide minorée de $\R$. Notons :
+\[
+X' = -X = \{ x \in \R \mid -x \in X \}
+\]
+Les minorants de $X$ sont les opposés des majorants de $X'$. Donc $X$ est minorée ssi $X'$ est majorée ; alors $X$ possède un plus petit minorant qui est l'opposé du plus grand minorant — c'est-à-dire du plus petit majorant — de $X'$, c'est-à-dire $\sup(X')$.
+
+Donc $X$ possède une borne inférieure et :
+\[
+\inf(X) = -\sup(-X)
+\]
+\end{demonstration}
+
+\newpage
+\subsection{3.2. $\R$ est archimédien}
+
+\begin{theoreme}[Propriété d'Archimède]
+$\R$ est \mot{archimédien}, c'est-à-dire :
+\[
+\forall x \in \R_+^*, \ \forall y \in \R, \ \exists n \in \N, \quad n \cdot x \ge y
+\]
+\end{theoreme}
+
+\begin{demonstration}
+\begin{enumerate}
+    \item Évident si $y \le 0$ car alors $n = 0$ convient ($0 \cdot x = 0 \ge y$).
+    \item Supposons $y > 0$. Procédons \textbf{par l'absurde} : supposons que $\forall n \in \N, \ n \cdot x < y$.
+    
+    Posons alors :
+    \[
+    A = \{ n \cdot x \mid n \in \N \}
+    \]
+    $A$ est une partie non vide de $\R$ (elle contient $0 \cdot x$, par exemple) majorée par $y$. Donc elle admet une borne supérieure $a \in \R$.
+    
+    On a donc $\forall n \in \N, \ n \cdot x \le a$. Mais alors :
+    \[
+    \forall n \in \N, \quad \underbrace{(n + 1) \cdot x}_{n \cdot x + x} \le a
+    \]
+    donc :
+    \[
+    \forall n \in \N, \quad n \cdot x \le a - x
+    \]
+    Ainsi, $a - x$ est un majorant de $A$ strictement inférieur à sa borne supérieure $a$ (puisque $x > 0$) : \textbf{absurde !}
+\end{enumerate}
+Donc $\exists n \in \N, \ n \cdot x \ge y$.
+\end{demonstration}
+
+\begin{remarque}
+On a :
+\[
+n \cdot x = \underbrace{x + \dots + x}_{n \text{ fois}} = (n \cdot 1_\R) \times x
+\]
+Donc, pour $x > 0$ :
+\[
+n \cdot x \ge y \iff n \cdot 1_\R \ge \frac{y}{x} \iff n \ge \frac{y}{x}
+\]
+en identifiant $n \cdot 1_\R$ à $n$ (possible car $\R$ est de caractéristique nulle). Au fond, la démonstration revient à montrer que $\N$ n'est pas une partie majorée de $\R$.
+\end{remarque}
+
+\begin{corollaire}
+Soient $x, y \in \R$ tels que $x > 1$. Alors il existe $n \in \N$ tel que $x^n > y$.
+\end{corollaire}
+
+\begin{demonstration}
+Il existe $h > 0$ tel que $x = 1 + h$. Alors, par l'inégalité de Bernoulli :
+\[
+\forall n \in \N, \quad x^n = (1 + h)^n \ge 1 + n \cdot h
+\]
+Par la propriété d'Archimède (appliquée à $h > 0$ et $y - 1 \in \R$), il existe $n \in \N$ tel que $n \cdot h \ge y - 1$ (et quitte à augmenter $n$ d'une unité, $n \cdot h > y - 1$).
+
+Donc :
+\[
+x^n \ge 1 + n \cdot h > y, \quad \text{d'où} \quad x^n > y
+\]
+\end{demonstration}
+
+\newpage
+\subsection{3.3. Partie entière}
+
+\begin{theoreme}[Division euclidienne dans $\R$]
+Soit $x \in \R$ et $a \in \R_+^*$. Il existe un unique $n \in \Z$ tel que :
+\[
+n \cdot a \le x < (n + 1) \cdot a
+\]
+c'est-à-dire tel que $x = n a + y$ où $0 \le y < a$.
+\end{theoreme}
+
+\begin{demonstration}
+En divisant par $a > 0$ (puisque $n \cdot a = (n \cdot 1_\R) \times a$), cela revient à prouver que :
+\[
+\forall x \in \R, \ \exists! n \in \Z, \quad \underbrace{n \cdot 1_\R}_{\text{noté } n} \le x < \underbrace{(n + 1) \cdot 1_\R}_{\text{noté } n + 1}
+\]
+Fixons $x \in \R$ et considérons l'ensemble :
+\[
+Z_x = \{ k \in \Z \mid k \cdot 1_\R \le x \}
+\]
+Comme $\R$ est archimédien, il existe $n_1 \in \N$ tel que $n_1 \cdot 1_\R \ge -x$, donc $-n_1 \cdot 1_\R = (-n_1) \cdot 1_\R \le x$. Ainsi $-n_1 \in Z_x$, d'où $Z_x \neq \emptyset$.
+
+De plus, il existe $n_2 \in \N$ tel que $x \le n_2 \cdot 1_\R$. Donc, pour tout $k \in Z_x$ :
+\[
+k \cdot 1_\R \le x \le n_2 \cdot 1_\R \implies k \cdot 1_\R \le n_2 \cdot 1_\R \implies k \le n_2
+\]
+Il en résulte que $Z_x$ est une partie non vide et majorée de $\Z$ : elle admet donc un plus grand élément $n = \pge(Z_x) \in \Z$.
+
+Il vérifie $n \in Z_x$ et $n + 1 \notin Z_x$, c'est-à-dire :
+\[
+n \cdot 1_\R \le x < (n + 1) \cdot 1_\R
+\]
+Un tel $n \in \Z$ est unique, car c'est nécessairement le plus grand élément de $Z_x$.
+\end{demonstration}
+
+\begin{definition}[Partie entière]
+On appelle \mot{partie entière} du réel $x$ l'unique entier relatif $n \in \Z$ tel que :
+\[
+n \le x < n + 1
+\]
+On le note $\lfloor x \rfloor$ ou $E(x)$. On a donc :
+\[
+\lfloor x \rfloor = \pge \{ k \in \Z \mid k \le x \}
+\]
+\end{definition}
+
+\begin{proposition}
+\[
+\forall x \in \R, \quad \lfloor x + 1 \rfloor = \lfloor x \rfloor + 1
+\]
+\end{proposition}
+
+\begin{demonstration}
+Immédiat puisque :
+\[
+n \le x < n + 1 \iff n + 1 \le x + 1 < n + 2
+\]
+\end{demonstration}
+
+\newpage
+\subsection{3.4. Densité de $\Q$ et $\R \setminus \Q$ dans $\R$}
+
+Tout d'abord, $\R$ « contient » $\Q$, car $\R$ est de caractéristique nulle. En effet, l'application :
+\[
+f : \Q \longrightarrow \R, \quad r = \frac{p}{q} \longmapsto (p \cdot 1_\R)(q \cdot 1_\R)^{-1}
+\]
+est bien définie car :
+\begin{enumerate}
+    \item $q \neq 0 \implies q \cdot 1_\R \neq 0$ (car $\R$ est de caractéristique nulle) ;
+    \item si $r = \dfrac{p}{q} = \dfrac{p'}{q'}$, alors $(p \cdot 1_\R)(q \cdot 1_\R)^{-1} = (p' \cdot 1_\R)(q' \cdot 1_\R)^{-1}$ car $pq' = p'q$, et donc $(p \cdot 1_\R)(q' \cdot 1_\R) = (p' \cdot 1_\R)(q \cdot 1_\R)$.
+\end{enumerate}
+
+Elle vérifie, pour tous $r, r' \in \Q$ :
+\[
+f(r + r') = f(r) + f(r'), \qquad f(rr') = f(r) \times f(r'), \qquad f(1_\Q) = 1_\R
+\]
+Enfin, $f$ est injective. En effet :
+\[
+\Ker(f) = \{ r \in \Q \mid f(r) = 0 \} = \{ 0 \}
+\]
+car $(p \cdot 1_\R)(q \cdot 1_\R)^{-1} = 0 \iff p \cdot 1_\R = 0 \iff p = 0$.
+
+\begin{definition}[Partie dense]
+Une partie $X$ de $\R$ est dite \mot{dense dans $\R$} si pour tous réels $a$ et $b$ tels que $a < b$, on a :
+\[
+X \cap \, ]a, b[ \, \neq \emptyset
+\]
+\textit{(c'est-à-dire que $X$ possède au moins un élément dans tout intervalle ouvert non vide $]a, b[$).}
+\end{definition}
+
+\begin{remarque}
+$\R$ est dense dans $\R$ car si $a, b \in \R$ et $a < b$, alors $\dfrac{a + b}{2} \in \, ]a, b[$.
+\end{remarque}
+
+\begin{theoreme}[Densité de $\Q$ dans $\R$]
+$\Q$ est \mot{dense dans $\R$}.
+\end{theoreme}
+
+\begin{demonstration}
+Soient $x, y \in \R$ tels que $x < y$. On cherche un rationnel $r = \dfrac{p}{q}$ (identifié à $(p \cdot 1_\R)(q \cdot 1_\R)^{-1}$) où $(p, q) \in \Z \times \N^*$, tel que $x < r < y$, ce qui est équivalent à :
+\[
+\underbrace{(q \cdot 1_\R) \times x}_{q \cdot x} < p \cdot 1_\R < \underbrace{(q \cdot 1_\R) \times y}_{q \cdot y}
+\]
+Comme $\R$ est archimédien et $y - x > 0$, il existe $q \in \N^*$ tel que :
+\[
+q(y - x) > 1_\R \iff q \cdot y > q \cdot x + 1
+\]
+Posons alors $p = E(q \cdot x) + 1 \in \Z$. Alors :
+\[
+q \cdot x < E(q \cdot x) + 1 = p \le q \cdot x + 1 < q \cdot y
+\]
+On a bien $q \cdot x < p < q \cdot y$. Finalement, en divisant par $q > 0$ :
+\[
+x < \frac{p}{q} < y
+\]
+c'est-à-dire $x < (p \cdot 1_\R)(q \cdot 1_\R)^{-1} < y$.
+\end{demonstration}
+
+\begin{corollaire}[Densité des irrationnels]
+$\R \setminus \Q$ est \mot{dense dans $\R$}.
+\end{corollaire}
+
+\begin{demonstration}
+On sait que $\sqrt{2} \in \R \setminus \Q$. De plus, la somme d'un rationnel et d'un irrationnel est un irrationnel : si $x \in \Q$ et $y \notin \Q$, alors $x + y \notin \Q$, car sinon $y = (x + y) - x$ serait la différence entre deux rationnels, donc serait rationnel.
+
+Soient alors $x, y \in \R$ tels que $x < y$. Alors :
+\[
+x + \sqrt{2} < y + \sqrt{2}
+\]
+Donc, par densité de $\Q$ dans $\R$, il existe $r \in \Q$ tel que :
+\[
+x + \sqrt{2} < r < y + \sqrt{2}
+\]
+Par suite, $r - \sqrt{2} \in \, ]x, y[$ et $r - \sqrt{2} \in \R \setminus \Q$. Donc $]x, y[ \, \cap (\R \setminus \Q) \neq \emptyset$.
+\end{demonstration}
+
+% ==============================================================================
+% SECTION IV
+% ==============================================================================
+\newpage
+\section{IV -- Suites numériques}
+
+\subsection{4.1. Définitions}
+
+\begin{definition}[Suite numérique et suite extraite]
+\begin{itemize}
+    \item Une \mot{suite numérique} est une application $u : \N \to \R$. Elle est notée comme une famille : $u = (u_n)_{n \in \N}$.
+    \item On dit que $v$ est une \mot{sous-suite} de $u$, ou qu'elle est \mot{extraite} de $u$, s'il existe une application strictement croissante $\varphi : \N \to \N$ telle que $v = u \circ \varphi$, c'est-à-dire :
+    \[
+    (v_n)_{n \in \N} = (u_{\varphi(n)})_{n \in \N}
+    \]
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Convergence vers une limite finie]
+On dit que la suite $(u_n)_{n \in \N}$ \mot{converge} vers le réel $\ell$ ssi :
+\[
+\forall \varepsilon > 0, \ \exists n_0 \in \N, \ \forall n \in \N, \quad n \ge n_0 \implies |u_n - \ell| \le \varepsilon
+\]
+\end{definition}
+
+\begin{proposition}[Unicité de la limite]
+Si $(u_n)_n$ converge vers un réel, ce dernier est unique. On l'appelle la \mot{limite} de la suite $(u_n)_n$, et on note :
+\[
+\lim_{n \to +\infty} u_n = \ell \qquad \text{ou} \qquad u_n \xrightarrow[n \to +\infty]{} \ell
+\]
+\end{proposition}
+
+\begin{demonstration}
+Soient $\ell_1$ et $\ell_2$ deux limites de $(u_n)_{n \in \N}$. Soit $\varepsilon > 0$.
+\begin{itemize}
+    \item Il existe $n_1 \in \N$ tel que $\forall n \ge n_1, \ |u_n - \ell_1| \le \dfrac{\varepsilon}{2}$.
+    \item Il existe $n_2 \in \N$ tel que $\forall n \ge n_2, \ |u_n - \ell_2| \le \dfrac{\varepsilon}{2}$.
+\end{itemize}
+Posons alors $n_0 = \max(n_1, n_2)$. On a alors $|u_{n_0} - \ell_1| \le \dfrac{\varepsilon}{2}$ et $|u_{n_0} - \ell_2| \le \dfrac{\varepsilon}{2}$. Donc :
+\[
+|\ell_1 - \ell_2| = |\ell_1 - u_{n_0} + u_{n_0} - \ell_2| \le |\ell_1 - u_{n_0}| + |u_{n_0} - \ell_2| \le \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+\]
+Donc $\forall \varepsilon > 0, \ 0 \le |\ell_1 - \ell_2| \le \varepsilon$.
+
+Il en résulte que $|\ell_1 - \ell_2| = 0$ (car sinon, avec $\ell_1 \neq \ell_2$, en posant $\varepsilon = \dfrac{|\ell_1 - \ell_2|}{2} > 0$, on aurait $0 < |\ell_1 - \ell_2| \le \dfrac{|\ell_1 - \ell_2|}{2}$, impossible). Donc $\ell_1 = \ell_2$.
+\end{demonstration}
+
+\begin{definition}[Divergence vers $\pm\infty$]
+On dit que la suite $u = (u_n)_{n \in \N}$ a pour limite $+\infty$ (resp. $-\infty$) quand $n$ tend vers $+\infty$, ou qu'elle \mot{diverge vers $+\infty$} (resp. $-\infty$) si :
+\[
+\forall M \in \R, \ \exists n_0 \in \N, \ \forall n \in \N, \quad n \ge n_0 \implies u_n \ge M \quad (\text{resp. } u_n \le M)
+\]
+On note $\displaystyle\lim_{n \to +\infty} u_n = +\infty$ (resp. $-\infty$) ou $u_n \xrightarrow[n \to +\infty]{} +\infty$ (resp. $-\infty$).
+\end{definition}
+
+\begin{remarque}
+L'unicité de la limite s'étend à $\ell \in \R \cup \{+\infty, -\infty\}$.
+\end{remarque}
+
+\newpage
+\subsection{4.2. Critères élémentaires de convergence -- Théorème des gendarmes}
+
+\begin{theoreme}[Théorème des gendarmes]
+Soient $u, v$ et $w$ trois suites réelles telles que :
+\begin{enumerate}
+    \item $\forall n \in \N, \quad u_n \le v_n \le w_n$
+    \item $u$ et $w$ convergent vers le même réel $\ell$.
+\end{enumerate}
+Alors $v$ est également convergente et $\displaystyle\lim_{n \to +\infty} v_n = \ell$.
+\end{theoreme}
+
+\begin{demonstration}
+Soit $\varepsilon > 0$. Comme $u_n \xrightarrow[n \to +\infty]{} \ell$ et $w_n \xrightarrow[n \to +\infty]{} \ell$ :
+\begin{itemize}
+    \item il existe $n_1 \in \N$ tel que $\forall n \ge n_1, \ \ell - \varepsilon \le u_n \le \ell + \varepsilon$ ;
+    \item il existe $n_2 \in \N$ tel que $\forall n \ge n_2, \ \ell - \varepsilon \le w_n \le \ell + \varepsilon$.
+\end{itemize}
+Posons $n_0 = \max(n_1, n_2)$. Alors, pour tout $n \ge n_0$ :
+\[
+\underbrace{\ell - \varepsilon \le u_n}_{\text{car } n \ge n_1} \le v_n \le \underbrace{w_n \le \ell + \varepsilon}_{\text{car } n \ge n_2}
+\]
+Donc $\forall n \ge n_0, \ \ell - \varepsilon \le v_n \le \ell + \varepsilon$, c'est-à-dire $|v_n - \ell| \le \varepsilon$.
+
+On a prouvé :
+\[
+\forall \varepsilon > 0, \ \exists n_0 \in \N, \ \forall n \in \N, \quad n \ge n_0 \implies |v_n - \ell| \le \varepsilon
+\]
+c'est-à-dire $v_n \xrightarrow[n \to +\infty]{} \ell$.
+\end{demonstration}
+
+\begin{remarque}[Comparaison avec une limite infinie]
+\begin{itemize}
+    \item Si $\forall n \in \N, \ u_n \le v_n$ et $u_n \to +\infty$, alors $v_n \to +\infty$.
+    \item De même, si $\forall n \in \N, \ u_n \le v_n$ et $v_n \to -\infty$, alors $u_n \to -\infty$.
+\end{itemize}
+\textit{Preuve : immédiate en appliquant la définition.}
+\end{remarque}
+
+\begin{exemples}
+Sachant que $\forall x \ge 0, \ x - \dfrac{x^3}{6} \le \sin x \le x$, en déduire $\displaystyle\lim_{n \to +\infty} u_n$ où $u_n = \displaystyle\sum_{k=1}^n \sin\left(\frac{k}{n^2}\right)$.
+\end{exemples}
+
+\newpage
+\subsection{4.3. Préservation des inégalités larges par passage à la limite}
+
+\begin{proposition}
+Soient $u$ et $v$ deux suites ayant pour limites respectives $\ell$ et $m$ (finies ou infinies).
+\[
+\text{Si } \forall n \in \N, \ u_n \le v_n, \quad \text{alors } \ell \le m
+\]
+\end{proposition}
+
+\begin{remarque}[Attention aux inégalités strictes]
+Si $\forall n \in \N, \ u_n < v_n$, on n'a pas nécessairement $\ell < m$.
+
+\textbf{Exemple :} $u_n = 1 - \dfrac{1}{n} < 1 = v_n$ (pour $n \ge 1$), mais $\displaystyle\lim_{n \to +\infty} u_n = 1 = \lim_{n \to +\infty} v_n$.
+\end{remarque}
+
+\begin{demonstration}
+Évident si $\ell$ ou $m$ est infini. On suppose donc $\ell$ et $m$ finis.
+
+\textbf{Par l'absurde :} supposons $\ell > m$. Posons $\varepsilon = \dfrac{\ell - m}{3} > 0$.
+
+Il existe $n_1, n_2 \in \N$ tels que :
+\[
+\forall n \ge n_1, \ \ell - \varepsilon \le u_n \le \ell + \varepsilon \qquad \text{et} \qquad \forall n \ge n_2, \ m - \varepsilon \le v_n \le m + \varepsilon
+\]
+Posons $n_0 = \max(n_1, n_2)$. Alors $\forall n \ge n_0, \ \ell - \varepsilon \le u_n \le v_n \le m + \varepsilon$. En particulier, c'est vrai pour $n = n_0$, donc :
+\[
+\ell - \varepsilon \le m + \varepsilon
+\]
+ce qui est faux ! En effet, cela entraînerait $\ell - m \le 2\varepsilon$, alors que $\ell - m = 3\varepsilon > 2\varepsilon$.
+\end{demonstration}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[thick, ->] (-4.5, 0) -- (4.5, 0);
+  % Positions : m = -3, m+eps = -1, l-eps = 1, l = 3
+  \draw[thick, bleu] (-3, -0.15) -- (-3, 0.15) node[below=4pt, font=\small] {$m$};
+  \draw[thick, bleu] (-1, -0.15) -- (-1, 0.15) node[below=4pt, font=\small] {$m + \varepsilon$};
+  \fill[vert!70!black] (-2, 0) circle (2pt) node[above=3pt, font=\small] {$v_{n_0}$};
+  
+  \draw[thick, bordeaux] (1, -0.15) -- (1, 0.15) node[below=4pt, font=\small] {$\ell - \varepsilon$};
+  \draw[thick, bordeaux] (3, -0.15) -- (3, 0.15) node[below=4pt, font=\small] {$\ell$};
+  \fill[vert!70!black] (2, 0) circle (2pt) node[above=3pt, font=\small] {$u_{n_0}$};
+
+  \draw[<->, >=stealth, bleu] (-2.95, 0.45) -- (-1.05, 0.45) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+  \draw[<->, >=stealth, orange] (-0.95, 0.45) -- (0.95, 0.45) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+  \draw[<->, >=stealth, bordeaux] (1.05, 0.45) -- (2.95, 0.45) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+\end{tikzpicture}
+\end{center}
+
+\newpage
+\subsection{4.4. Convergence monotone}
+
+\begin{definition}
+\begin{itemize}
+    \item Une suite $u = (u_n)_n$ est \mot{croissante} (resp. \mot{décroissante}) si $\forall n \in \N, \ u_n \le u_{n+1}$ (resp. $u_{n+1} \le u_n$).
+    \item Une suite $u = (u_n)_{n \in \N}$ est \mot{majorée} (resp. \mot{minorée}) s'il existe $A \in \R$ tel que $\forall n \in \N, \ u_n \le A$ (resp. $A \le u_n$).
+    \item Une suite est \mot{bornée} si elle est majorée et minorée.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+Une suite $u$ est bornée ssi $|u|$ est majorée, c'est-à-dire ssi il existe $M \in \R^+$ tel que :
+\[
+\forall n \in \N, \quad |u_n| \le M
+\]
+\end{proposition}
+
+\begin{demonstration}
+Supposons $u$ bornée. Donc il existe $m$ et $M \in \R$ tels que $\forall n \in \N, \ m \le u_n \le M$.
+
+Or $M \le |M| \le \max(|m|, |M|)$ et $m \ge -|m| \ge -\max(|m|, |M|)$.
+
+Donc, en posant $C = \max(|m|, |M|) \in \R^+$, on a :
+\[
+\forall n \in \N, \quad -C \le u_n \le C, \quad \text{i.e.} \quad |u_n| \le C
+\]
+Donc $|u|$ est majorée. La réciproque est évidente.
+\end{demonstration}
+
+\begin{theoreme}[Théorème de convergence monotone]
+\begin{itemize}
+    \item Toute suite croissante $u$ (resp. décroissante) et majorée (resp. minorée) converge, et sa limite est :
+    \[
+    \ell = \sup \{ u_n \mid n \in \N \} \qquad \big(\text{resp. } \ell = \inf \{ u_n \mid n \in \N \}\big)
+    \]
+    \item Toute suite croissante (resp. décroissante) et non majorée (resp. non minorée) diverge vers $+\infty$ (resp. vers $-\infty$).
+\end{itemize}
+\end{theoreme}
+
+\begin{demonstration}
+\begin{itemize}
+    \item Supposons $u$ croissante et majorée. Il existe donc $M \in \R$ tel que $\forall n \in \N, \ u_n \le M$. L'ensemble $\{ u_n \mid n \in \N \}$ est donc une partie non vide et majorée de $\R$. Ainsi, elle admet une borne supérieure :
+    \[
+    \ell = \sup_{n \in \N} u_n
+    \]
+    Soit $\varepsilon > 0$. Par la caractérisation $\varepsilon$-esque de la borne supérieure, il existe $n_0 \in \N$ tel que $\ell - \varepsilon < u_{n_0} \le \ell$.
+    
+    Par croissance de $u$, on a alors :
+    \[
+    \forall n \ge n_0, \quad \ell - \varepsilon \le u_{n_0} \le u_n \le \ell
+    \]
+    A fortiori : $\forall n \ge n_0, \ \ell - \varepsilon \le u_n \le \ell + \varepsilon$, c'est-à-dire $|u_n - \ell| \le \varepsilon$.
+    
+    On a prouvé :
+    \[
+    \forall \varepsilon > 0, \ \exists n_0 \in \N, \ \forall n \in \N, \quad n \ge n_0 \implies |u_n - \ell| \le \varepsilon
+    \]
+    c'est-à-dire $u_n \xrightarrow[n \to +\infty]{} \ell$.
+
+    \item Supposons $u$ croissante et non majorée, c'est-à-dire $\text{non}(\exists M \in \R, \ \forall n \in \N, \ u_n \le M)$, soit :
+    \[
+    \forall M \in \R, \ \exists n_0 \in \N, \quad u_{n_0} > M
+    \]
+    Soit $M \in \R$. On peut donc choisir $n_0 \in \N$ tel que $u_{n_0} > M$. Par croissance de $u$, on a :
+    \[
+    \forall n \ge n_0, \quad u_n \ge u_{n_0} > M
+    \]
+    On a prouvé :
+    \[
+    \forall M \in \R, \ \exists n_0 \in \N, \ \forall n \in \N, \quad n \ge n_0 \implies u_n > M
+    \]
+    c'est-à-dire $u_n \xrightarrow[n \to +\infty]{} +\infty$.
+\end{itemize}
+\textit{(Preuve analogue dans les cas décroissante et minorée / non minorée).}
+\end{demonstration}
+
+\newpage
+\subsection{4.5. Caractérisation séquentielle de la borne supérieure}
+
+\begin{proposition}
+Soit $X$ une partie majorée non vide de $\R$ et $a \in \R$. Alors :
+\[
+a = \sup(X) \iff
+\begin{cases}
+1)\ a \text{ est un majorant de } X \\[4pt]
+2)\ \text{il existe une suite d'éléments de } X \text{ qui converge vers } a.
+\end{cases}
+\]
+De plus, la suite du $2)$ peut être choisie croissante, et strictement croissante si $a \notin X$.
+\end{proposition}
+
+\begin{demonstration}
+\textbf{Sens direct ($\implies$) :} Supposons $a = \sup(X)$.
+\begin{enumerate}
+    \item $a$ est un majorant de $X$.
+    \item Pour tout $n \in \N^*$, par caractérisation $\varepsilon$-esque (avec $\varepsilon = \dfrac{1}{n}$), il existe $x_n \in X$ tel que :
+    \[
+    a - \frac{1}{n} < x_n \le a
+    \]
+    \begin{itemize}
+        \item Si $a \in X$ (alors $a = \pge(X)$), il suffit de prendre $\forall n \in \N, \ x_n = a$ (suite croissante).
+        \item Supposons $a \notin X$. Alors $a - \dfrac{1}{n} < x_n < a$. On construit par récurrence $(x_n)_{n \ge 1}$ de sorte que :
+        \[
+        x_n < x_{n+1} < a \qquad \text{et} \qquad a - \frac{1}{n+1} < x_{n+1} < a
+        \]
+        En effet, supposant $x_n \in X$ construit avec $x_n < a$, on a $\max\left(x_n, a - \dfrac{1}{n+1}\right) < a$, donc par caractérisation $\varepsilon$-esque de la borne supérieure, il existe $x_{n+1} \in X$ tel que :
+        \[
+        \max\left(x_n, a - \frac{1}{n+1}\right) < x_{n+1} < a
+        \]
+        Par l'\mot{ACD} (axiome du choix dénombrable), on obtient l'existence d'une suite $(x_n)_{n \in \N^*} \in X^{\N^*}$ telle que $\forall n \in \N^*, \ x_n < x_{n+1}$ et $a - \dfrac{1}{n} < x_n < a$. Par le théorème des gendarmes, $\displaystyle\lim_{n \to +\infty} x_n = a$.
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Réciproquement ($\Longleftarrow$) :} Supposons que :
+\begin{enumerate}
+    \item $\forall x \in X, \ x \le a$
+    \item il existe $(x_n)_{n \in \N} \in X^{\N}$ telle que $x_n \to a$.
+\end{enumerate}
+Alors $a \in M(X)$, et pour tout $\varepsilon > 0$, il existe $n_0 \in \N$ tel que $\forall n \ge n_0, \ |x_n - a| < \varepsilon$. En particulier, $a - \varepsilon < x_{n_0} \le a$ (car $a \in M(X)$). Donc $a = \sup(X)$.
+\end{demonstration}
+
+\begin{exemples}
+Soit $X = \{ x \in \R^+ \mid x^2 \le 2 \}$ et $a = \sup(X)$. On peut montrer rapidement que $a^2 \le 2$ : par la caractérisation séquentielle de la borne supérieure, il existe une suite $(x_n)_{n \in \N} \in X^{\N}$ telle que $x_n \to a$. Alors $x_n^2 \xrightarrow[n \to +\infty]{} a^2$. Or $\forall n \in \N, \ x_n^2 \le 2$, donc par préservation des inégalités larges à la limite :
+\[
+\lim_{n \to +\infty} x_n^2 \le 2, \quad \text{c'est-à-dire} \quad a^2 \le 2
+\]
+\end{exemples}
+
+\newpage
+\subsection{4.6. Caractérisation séquentielle de la densité}
+
+\begin{proposition}
+Une partie $A$ de $\R$ est \mot{dense dans $\R$} ssi tout réel est limite d'une suite de points de $A$.
+\end{proposition}
+
+\begin{demonstration}
+\textbf{Sens direct ($\implies$) :} Supposons $A$ dense dans $\R$. Soit $r \in \R$. Montrons qu'il existe deux suites $(x_n)_n$ et $(y_n)_n$ d'éléments de $A$, respectivement croissante et décroissante, qui convergent vers $r$ (avec $\forall n, \ x_n \le r \le y_n$).
+
+Soit $n \in \N^*$. Par densité de $A$ dans $\R$, il existe $x_1 \in \left]r - 1, r\right[ \cap A$, puis par récurrence, ayant construit $x_n \in \left]r - \dfrac{1}{n}, r\right[ \cap A$, on choisit $x_{n+1}$ tel que :
+\[
+x_{n+1} \in \left] \max\left(r - \frac{1}{n+1}, x_n\right), r \right[ \cap A
+\]
+Par l'ACD, cette construction donne l'existence d'une suite $(x_n)_{n \ge 1} \in A^{\N^*}$, croissante, telle que :
+\[
+\forall n \ge 1, \quad r - \frac{1}{n} < x_n < r
+\]
+Donc $x_n \xrightarrow[n \to +\infty]{} r$. De même, on construit $(y_n)_{n \ge 1} \in A^{\N^*}$ décroissante telle que $y_n \xrightarrow[n \to +\infty]{} r$.
+
+\textbf{Réciproquement ($\Longleftarrow$) :} Supposons que tout réel soit limite d'une suite d'éléments de $A$. Soient $x, y \in \R$ tels que $x < y$. Montrons que $A \cap \, ]x, y[ \, \neq \emptyset$.
+
+Posons $r = \dfrac{x + y}{2} \in \R$. Il existe une suite $(x_n)_{n \in \N} \in A^{\N}$ telle que $x_n \to r$. Pour $\varepsilon = \dfrac{y - x}{2} > 0$, il existe $n_0 \in \N$ tel que $\forall n \ge n_0, \ |x_n - r| < \varepsilon$.
+
+En particulier :
+\[
+\underbrace{r - \varepsilon}_{= x} < x_{n_0} < \underbrace{r + \varepsilon}_{= y}
+\]
+Donc $x_{n_0} \in A \cap \, ]x, y[$, d'où $A \cap \, ]x, y[ \, \neq \emptyset$. Ainsi, $A$ est dense dans $\R$.
+\end{demonstration}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \draw[thick, ->] (-3, 0) -- (3, 0);
+  \draw[thick, bleu] (-1.6, -0.15) -- (-1.6, 0.15) node[below=4pt, font=\small] {$x$};
+  \draw[thick, bordeaux] (0, -0.15) -- (0, 0.15) node[below=4pt, font=\small] {$\dfrac{x+y}{2}$};
+  \draw[thick, bleu] (1.6, -0.15) -- (1.6, 0.15) node[below=4pt, font=\small] {$y$};
+  \draw[<->, >=stealth, orange] (-1.55, 0.35) -- (-0.05, 0.35) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+  \draw[<->, >=stealth, orange] (0.05, 0.35) -- (1.55, 0.35) node[midway, above=1pt, font=\footnotesize] {$\varepsilon$};
+\end{tikzpicture}
+\end{center}
+
+\begin{exemples}[Preuve séquentielle de la densité de $\Q$ dans $\R$]
+Soit $x \in \R$. Alors :
+\[
+\frac{E(nx)}{n} \xrightarrow[n \to +\infty]{} x
+\]
+En particulier, pour tout $n \in \N^*$, $\dfrac{E(nx)}{n} \in \Q$, donc tout réel est limite d'une suite de rationnels.
+
+\textbf{Preuve :} $\forall n \in \N^*, \ nx - 1 < E(nx) \le nx$, donc :
+\[
+\forall n \in \N^*, \quad x - \frac{1}{n} < \frac{E(nx)}{n} \le x
+\]
+Par le théorème des gendarmes, $\dfrac{E(nx)}{n} \xrightarrow[n \to +\infty]{} x$.
+\end{exemples}
+
+% ==============================================================================
+% SECTION V
+% ==============================================================================
+\newpage
+\section{V -- Sous-groupes additifs de $\R$}
+
+\begin{exemples}
+\begin{itemize}
+    \item Si $a \in \R^*$, alors $a\Z$ est un sous-groupe de $(\R, +)$ (discret / monogène).
+    \item $\Q$ est un sous-groupe de $(\R, +)$. Il est dense dans $\R$.
+\end{itemize}
+\end{exemples}
+
+\begin{theoreme}[Classification des sous-groupes additifs de $\R$]
+Soit $G$ un sous-groupe de $(\R, +)$.
+\begin{itemize}
+    \item Ou bien il existe un réel $a \ge 0$ tel que $G = a\Z$ ;
+    \item Ou bien $G$ est dense dans $\R$.
+\end{itemize}
+\end{theoreme}
+
+\begin{demonstration}
+Soit $G$ un sous-groupe de $(\R, +)$.
+\begin{itemize}
+    \item Si $G = \{0\}$, alors $G = 0\Z$.
+    \item Supposons $G \neq \{0\}$. Il existe $a_0 \in G \cap \R^*$. Comme $G$ est un sous-groupe de $(\R, +)$, on a aussi $-a_0 \in G$. Donc $|a_0| \in G \cap \R_+^*$. Ainsi, $G \cap \R_+^*$ est une partie non vide et minorée (par $0$) de $\R$, donc elle admet une borne inférieure :
+    \[
+    a = \inf(G \cap \R_+^*) \ge 0
+    \]
+\end{itemize}
+
+\cas{1\textsuperscript{er} cas : $a > 0$.}
+
+Alors $a \in G$, car sinon, en supposant $a \notin G$, par caractérisation de la borne inférieure (avec $\varepsilon = a > 0$), il existe $a' \in [a, 2a[ \, \cap (G \cap \R_+^*)$, donc $a' \in \, ]a, 2a[$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.05]
+  \draw[thick, ->] (-3.2, 0) -- (3.2, 0);
+  \draw[thick, bordeaux] (-2.2, -0.15) -- (-2.2, 0.15) node[above=3pt, font=\small] {$a$};
+  \fill[bleu] (-0.8, 0) circle (2pt) node[above=3pt, font=\small] {$a''$};
+  \fill[bleu] (0.6, 0) circle (2pt) node[above=3pt, font=\small] {$a'$};
+  \draw[thick, bordeaux] (2.2, -0.15) -- (2.2, 0.15) node[above=3pt, font=\small] {$2a$};
+\end{tikzpicture}
+\end{center}
+
+De même, puisque $a < a'$, il existe $a'' \in G \cap \R_+^*$ tel que $a'' \in \, ]a, a'[$. Mais alors :
+\[
+0 < a' - a'' < a
+\]
+Or $a', a'' \in G$, donc $a' - a'' \in G$. On aurait ainsi un élément $a' - a'' \in G \cap \R_+^*$ tel que $a' - a'' < \inf(G \cap \R_+^*)$ : \textbf{absurde !}
+
+Donc $a \in G$. Ainsi, $a \in G$ donc $\langle a \rangle = a\Z \subset G$ puisque $G$ est un sous-groupe.
+
+Réciproquement, soit $x \in G$. Posons $q = E\left(\dfrac{x}{a}\right)$. Alors $q \in \Z$ et $q \le \dfrac{x}{a} < q + 1$, c'est-à-dire :
+\[
+0 \le x - qa < a
+\]
+Or $\underbrace{x}_{\in G} - \underbrace{qa}_{\in G} \in G$, donc $x - qa \in G \cap \R^+$.
+
+Comme $x - qa < \inf(G \cap \R_+^*) = a$, on a $x - qa \notin G \cap \R_+^*$. Donc $x - qa \in (G \cap \R^+) \setminus (G \cap \R_+^*)$, d'où $x - qa = 0$, soit $x \in a\Z$.
+
+Par double inclusion, $G = a\Z$.
+
+\cas{2\textsuperscript{ème} cas : $a = 0$.}
+
+Montrons que $G$ est dense dans $\R$. Soient $\alpha, \beta \in \R$ tels que $\alpha < \beta$ ; montrons que $G \cap \, ]\alpha, \beta[ \, \neq \emptyset$.
+\begin{itemize}
+    \item Si $\alpha\beta < 0$, alors $0 \in G \cap \, ]\alpha, \beta[$.
+    \item Supposons $\alpha\beta \ge 0$. Comme $G$ est stable par $x \mapsto -x$, on peut se ramener au cas $0 \le \alpha < \beta$ (en considérant $-\beta$ et $-\alpha$ si $\alpha < \beta \le 0$).
+\end{itemize}
+
+\textbf{Technique des sauts de puce :}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \draw[thick, ->] (-4.5, 0) -- (4.8, 0);
+  % Points : 0 à -4, y à -3.3, beta-alpha à -2.2, alpha à 2.3, beta à 4.1
+  \draw[thick, bordeaux] (-4, -0.15) -- (-4, 0.15) node[below=4pt, font=\small] {$0$};
+  \fill[bleu] (-3.3, 0) circle (1.8pt) node[below=4pt, font=\small] {$y$};
+  \draw[thick, vert!70!black] (-2.2, -0.15) -- (-2.2, 0.15) node[below=4pt, font=\small] {$\beta - \alpha$};
+  \draw[thick, bordeaux] (2.3, -0.15) -- (2.3, 0.15) node[below=4pt, font=\small] {$\alpha$};
+  \draw[thick, bordeaux] (4.1, -0.15) -- (4.1, 0.15) node[below=4pt, font=\small] {$\beta$};
+
+  % Sauts de puce (arcs bleus)
+  \foreach \x in {-4, -3.3, -2.6, -1.9, -1.2, -0.5, 0.2, 0.9, 1.6, 2.3} {
+    \draw[->, >=stealth, bleu] (\x, 0.05) to[bend left=45] (\x+0.7, 0.05);
+  }
+
+  % Accolades epsilon
+  \draw[decorate, decoration={brace, amplitude=4pt}, orange] (-4, 0.45) -- (-2.2, 0.45) node[midway, above=4pt, font=\footnotesize] {$\varepsilon$};
+  \draw[decorate, decoration={brace, amplitude=4pt}, orange] (2.3, 0.45) -- (4.1, 0.45) node[midway, above=4pt, font=\footnotesize] {$\varepsilon$};
+\end{tikzpicture}
+\end{center}
+
+Posons $\varepsilon = \beta - \alpha > 0$. Comme $0 = \inf(G \cap \R_+^*)$, il existe $y \in G \cap \R_+^*$ tel que $0 < y < \varepsilon$.
+
+Posons $m = E\left(\dfrac{\alpha}{y}\right) \in \Z$. Alors $m \le \dfrac{\alpha}{y} < m + 1$, donc :
+\[
+my \le \alpha < \underbrace{my + y}_{= (m + 1) \cdot y} \le \alpha + y < \alpha + \beta - \alpha = \beta
+\]
+Donc $(m + 1) \cdot y \in \, ]\alpha, \beta[$. De plus, $(m + 1) \cdot y \in G$ (car $y \in G$ et $m + 1 \in \Z$).
+
+Donc $G \cap \, ]\alpha, \beta[ \, \neq \emptyset$, et par conséquent $G$ est dense dans $\R$.
+\end{demonstration}
+
+\begin{exemples}[Sous-groupes de la forme $a\Z + b\Z$]
+Soient $a, b \in \R^*$. D'après le théorème précédent, le sous-groupe $a\Z + b\Z$ est soit monogène, soit dense dans $\R$.
+
+\begin{proposition}
+\[
+a\Z + b\Z \text{ est monogène} \iff \frac{b}{a} \in \Q
+\]
+Par conséquent :
+\[
+a\Z + b\Z \text{ est dense dans } \R \iff \frac{b}{a} \in \R \setminus \Q
+\]
+\end{proposition}
+
+\begin{demonstration}
+D'abord, l'application :
+\[
+\varphi : \Z^2 \longrightarrow \R, \quad (u, v) \longmapsto au + bv
+\]
+est un morphisme de groupes : pour tous $(u, v), (u', v') \in \Z^2$,
+\begin{align*}
+\varphi\big((u, v) + (u', v')\big) &= \varphi(u + u', v + v') \\
+&= a(u + u') + b(v + v') \\
+&= au + bv + au' + bv' \\
+&= \varphi(u, v) + \varphi(u', v')
+\end{align*}
+Donc $\im \varphi = a\Z + b\Z$ est un sous-groupe de $(\R, +)$.
+
+\begin{itemize}
+    \item \cas{Sens indirect ($\Longleftarrow$) :} Supposons $\dfrac{b}{a} \in \Q$. Il existe donc $(p, q) \in \Z \times \N^*$ tel que $\dfrac{b}{a} = \dfrac{p}{q}$, c'est-à-dire $b = \dfrac{p}{q} a$.
+    
+    Alors :
+    \[
+    a\Z + b\Z = a\Z + \frac{p}{q} a\Z = \frac{a}{q} (q\Z + p\Z)
+    \]
+    Posons $d = \operatorname{pgcd}(p, q)$. On sait que $p\Z + q\Z = d\Z$. Donc :
+    \[
+    a\Z + b\Z = \frac{a}{q}(d\Z) = \left(\frac{ad}{q}\right)\Z
+    \]
+    Ainsi, $a\Z + b\Z$ est un sous-groupe monogène (engendré par $\dfrac{ad}{q}$).
+
+    \item \cas{Sens direct ($\implies$) :} Réciproquement, supposons $a\Z + b\Z$ monogène, c'est-à-dire qu'il existe $c \in \R^*$ tel que $a\Z + b\Z = c\Z$ ($c \neq 0$ car $a \neq 0$ et $b \neq 0$).
+    
+    En particulier :
+    \[
+    a = a \times 1 + b \times 0 \in c\Z \qquad \text{et} \qquad b = a \times 0 + b \times 1 \in c\Z
+    \]
+    Donc $\dfrac{a}{c} \in \Z$ et $\dfrac{b}{c} \in \Z^*$, d'où :
+    \[
+    \frac{a}{b} = \frac{a/c}{b/c} \in \Q \quad \left(\text{et } \frac{b}{a} \in \Q\right)
+    \]
+\end{itemize}
+D'où l'équivalence.
+\end{demonstration}
+
+\textbf{Exemples concrets :} $\Z + \pi\Z$ et $\Z + \sqrt{2}\Z$ sont denses dans $\R$.
+\end{exemples}
+
+\begin{exemples}[Groupes des périodes d'une fonction]
+Soit $f : \R \to \R$. On dit que $\tau \in \R$ est une \mot{période} de $f$ si :
+\[
+\forall x \in \R, \quad f(x + \tau) = f(x)
+\]
+On dit que $f$ est \mot{périodique} si elle possède une période $\neq 0$.
+
+Notons $\mathcal{P}_f$ l'ensemble des périodes de $f$. C'est un sous-groupe de $(\R, +)$ :
+\begin{itemize}
+    \item $\mathcal{P}_f \subset \R$ ;
+    \item $0 \in \mathcal{P}_f$ ;
+    \item si $\tau, \tau' \in \mathcal{P}_f$, alors $\forall x \in \R, \ f(x + \tau + \tau') = f(x + \tau) = f(x)$, donc $\tau + \tau' \in \mathcal{P}_f$ ;
+    \item si $\tau \in \mathcal{P}_f$, alors $\forall x \in \R, \ f(x - \tau) = f(x - \tau + \tau) = f(x)$, donc $-\tau \in \mathcal{P}_f$.
+\end{itemize}
+
+Supposons $f$ périodique, donc $\mathcal{P}_f \neq \{0\}$. Ou bien il existe $T > 0$ tel que $\mathcal{P}_f = T\Z$, ou bien $\mathcal{P}_f$ est dense dans $\R$.
+
+\begin{itemize}
+    \item \cas{1\textsuperscript{er} cas :} $f$ possède une plus petite période $> 0$ (à savoir $T$), et toute période de $f$ est un multiple de $T$.
+    
+    \textit{Exemples :} pour $\cos$ et $\sin$, $T = 2\pi$ ; pour $\tan$, $T = \pi$.
+
+    \item \cas{2\textsuperscript{nd} cas (Fonction indicatrice de $\Q$) :} Soit $f = \mathbf{1}_\Q$, c'est-à-dire :
+    \[
+    f(x) = \begin{cases} 1 & \text{si } x \in \Q \\ 0 & \text{si } x \in \R \setminus \Q \end{cases}
+    \]
+    Montrons que $\mathcal{P}_f = \Q$ :
+    \begin{itemize}
+        \item Si $\tau \in \mathcal{P}_f$, alors $f(0) = f(\tau)$. Or $f(0) = 1$, donc $f(\tau) = 1$, d'où $\tau \in \Q$.
+        \item Réciproquement, soit $\tau \in \Q$. Alors $\forall x \in \R, \ x \in \Q \iff x + \tau \in \Q$. Donc $\forall x \in \R, \ f(x + \tau) = f(x)$, c'est-à-dire $\tau \in \mathcal{P}_f$.
+    \end{itemize}
+\end{itemize}
+
+\begin{proposition}[Fonction continue à groupe de périodes dense]
+Si $f : \R \to \R$ est continue et $\mathcal{P}_f$ est dense dans $\R$, alors $f$ est constante.
+\end{proposition}
+
+\begin{demonstration}[Admis pour la continuité]
+Supposons $\mathcal{P}_f$ dense dans $\R$. Soit $x \in \R$. Il existe $(\tau_n)_{n \in \N} \in \mathcal{P}_f^{\N}$ telle que $\tau_n \to x$.
+
+Or $\forall n \in \N, \ f(\tau_n) = f(0)$, et $f(\tau_n) \xrightarrow[n \to +\infty]{} f(x)$ car $f$ est continue en $x$. Par unicité de la limite, $f(x) = f(0)$.
+\end{demonstration}
+
+Il en résulte qu'une fonction continue, périodique et non constante possède une plus petite période $> 0$.
+\end{exemples}
+
+% ==============================================================================
+% SECTION VI
+% ==============================================================================
+\newpage
+\section{VI -- Droite numérique achevée $\overline{\R}$}
+
+\subsection{6.1. Définitions et opérations dans $\overline{\R}$}
+
+\begin{definition}[Droite numérique achevée]
+On appelle \mot{droite numérique achevée} l'ensemble :
+\[
+\overline{\R} = \R \cup \{ -\infty, +\infty \}
+\]
+On prolonge la relation d'ordre de $\R$ à $\overline{\R}$ en posant :
+\[
+\forall x \in \R, \quad x \le +\infty \qquad \text{et} \qquad -\infty \le x
+\]
+Avec cette définition, il est immédiat que $+\infty$ est le plus grand élément de $\overline{\R}$ et $-\infty$ est le plus petit élément de $\overline{\R}$.
+\end{definition}
+
+\begin{proposition}[Borne supérieure et inférieure dans $\overline{\R}$]
+Toute partie non vide $X$ de $\R$ admet une borne supérieure et une borne inférieure dans $\overline{\R}$. Plus précisément :
+\begin{itemize}
+    \item si $X$ est majorée dans $\R$, alors $\sup_{\overline{\R}} X = \sup_{\R} X$ ;
+    \item si $X$ n'est pas majorée dans $\R$, alors $\sup_{\overline{\R}} X = +\infty$ ;
+    \item si $X$ est minorée dans $\R$, alors $\inf_{\overline{\R}} X = \inf_{\R} X$ ;
+    \item si $X$ n'est pas minorée dans $\R$, alors $\inf_{\overline{\R}} X = -\infty$.
+\end{itemize}
+\end{proposition}
+
+\begin{demonstration}
+Soit $X$ une partie non vide de $\R$. Si $M_{\R}(X)$ et $M_{\overline{\R}}(X)$ désignent les ensembles des majorants de $X$ dans $\R$ et $\overline{\R}$ respectivement, alors :
+\[
+M_{\overline{\R}}(X) = M_{\R}(X) \cup \{ +\infty \}
+\]
+\begin{itemize}
+    \item Si $X$ est majorée dans $\R$, alors $\ppe_{\R}\big(M_{\R}(X)\big) = \ppe_{\overline{\R}}\big(M_{\overline{\R}}(X)\big)$, c'est-à-dire $\sup_{\R} X = \sup_{\overline{\R}} X$.
+    \item Si $X$ n'est pas majorée dans $\R$, alors $M_{\overline{\R}}(X) = \{ +\infty \}$, donc $\sup_{\overline{\R}} X = \ppe_{\overline{\R}}\big(M_{\overline{\R}}(X)\big) = +\infty$.
+\end{itemize}
+Le raisonnement est analogue pour la borne inférieure.
+\end{demonstration}
+
+\textbf{Prolongement partiel des lois $+$ et $\times$ à $\overline{\R}$ :}
+On prolonge partiellement à $\overline{\R}$ les lois $+$ et $\times$ selon les règles suivantes (les croix $\times$ désignent les formes indéterminées) :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c|c|c|c}
+$+$ & $-\infty$ & $y \in \R$ & $+\infty$ \\
+\hline
+$-\infty$ & $-\infty$ & $-\infty$ & $\times$ \\
+\hline
+$x \in \R$ & $-\infty$ & $x + y$ & $+\infty$ \\
+\hline
+$+\infty$ & $\times$ & $+\infty$ & $+\infty$ \\
+\end{tabular}
+\qquad\qquad
+\begin{tabular}{c|c|c|c|c|c}
+$\times$ & $-\infty$ & $y \in \R_-^*$ & $0$ & $y \in \R_+^*$ & $+\infty$ \\
+\hline
+$-\infty$ & $+\infty$ & $+\infty$ & $\times$ & $-\infty$ & $-\infty$ \\
+\hline
+$x \in \R_-^*$ & $+\infty$ & $xy$ & $0$ & $xy$ & $-\infty$ \\
+\hline
+$0$ & $\times$ & $0$ & $0$ & $0$ & $\times$ \\
+\hline
+$x \in \R_+^*$ & $-\infty$ & $xy$ & $0$ & $xy$ & $+\infty$ \\
+\hline
+$+\infty$ & $-\infty$ & $-\infty$ & $\times$ & $+\infty$ & $+\infty$ \\
+\end{tabular}
+\end{center}
+
+\newpage
+\subsection{6.2. Intervalles de $\R$}
+
+Les \mot{intervalles} de $\R$, autres que $\R$, sont les parties de $\R$ de la forme (où $a \le b$) :
+\[
+[a, b], \quad [a, b[, \quad ]a, b[, \quad ]a, b]
+\]
+\[
+[a, +\infty[, \quad ]a, +\infty[, \quad ]-\infty, a], \quad ]-\infty, a[
+\]
+Cela fait $9$ types d'intervalles (en comptant $\R$).
+
+\begin{remarque}[Terminologie des intervalles]
+\begin{itemize}
+    \item L'ensemble vide $\emptyset$ est un intervalle : $\emptyset = \, ]a, a[$ pour tout $a \in \R$.
+    \item Les singletons sont des intervalles appelés \mot{intervalles triviaux} : $\{a\} = [a, a]$.
+    \item Les intervalles fermés et bornés $[a, b]$ sont appelés \mot{segments}.
+    \item Les intervalles $]a, +\infty[$ et $]-\infty, a[$ sont appelés \mot{demi-droites ouvertes} ($a \in \R$).
+    \item Les intervalles $[a, +\infty[$ et $]-\infty, a]$ sont appelés \mot{demi-droites fermées}.
+    \item Les intervalles $]a, b]$ et $[a, b[$ sont appelés \mot{intervalles semi-ouverts} ou \mot{semi-fermés}.
+\end{itemize}
+\end{remarque}
+
+\begin{theoreme}[Caractérisation des intervalles]
+Les intervalles de $\R$ sont les \mot{parties convexes} de $\R$, c'est-à-dire les parties $I \subset \R$ telles que :
+\[
+\forall x, y \in I, \quad x \le y \implies [x, y] \subset I
+\]
+\end{theoreme}
+
+\begin{demonstration}
+\textbf{Sens direct ($\implies$) :} Les intervalles sont clairement des parties convexes de $\R$.
+
+\textbf{Réciproquement ($\Longleftarrow$) :} Soit $I \subset \R$ une partie convexe de $\R$.
+\begin{itemize}
+    \item Si $I = \emptyset$, c'est un intervalle.
+    \item Supposons $I \neq \emptyset$. Posons :
+    \[
+    a = \inf_{\overline{\R}} I \qquad \text{et} \qquad b = \sup_{\overline{\R}} I
+    \]
+    Montrons que $I$ est un intervalle d'extrémités $a$ et $b$.
+\end{itemize}
+
+D'une part, comme on a $\forall x \in I, \ a \le x \le b$, $I$ est inclus dans l'intervalle indiqué dans le tableau ci-dessous selon l'appartenance de $a$ et $b$ à $I$ :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c|c|c|c}
+ & $b \in I$ & $b \in \R \setminus I$ & $b = +\infty$ \\
+\hline
+$a \in I$ & $[a, b]$ & $[a, b[$ & $[a, +\infty[$ \\
+\hline
+$a \in \R \setminus I$ & $]a, b]$ & $]a, b[$ & $]a, +\infty[$ \\
+\hline
+$a = -\infty$ & $]-\infty, b]$ & $]-\infty, b[$ & $\R$ \\
+\end{tabular}
+\end{center}
+
+Pour l'inclusion réciproque, il suffit de montrer que $]a, b[ \, \subset I$ (puisque les éventuelles bornes finies incluses dans l'intervalle du tableau appartiennent déjà à $I$).
+
+Soit $z \in \, ]a, b[$.
+\begin{itemize}
+    \item Comme $z > \inf_{\overline{\R}} I = a$, par caractérisation de la borne inférieure, il existe $x \in I$ tel que $a \le x < z$.
+    \item De même, comme $z < \sup_{\overline{\R}} I = b$, par caractérisation de la borne supérieure, il existe $y \in I$ tel que $z < y \le b$.
+\end{itemize}
+Donc $z \in [x, y]$. Or, par convexité de $I$ (et comme $x, y \in I$), on a $[x, y] \subset I$, donc $z \in I$.
+
+Ce qui montre $]a, b[ \, \subset I$, et achève la démonstration.
+\end{demonstration}
 
 \end{document}

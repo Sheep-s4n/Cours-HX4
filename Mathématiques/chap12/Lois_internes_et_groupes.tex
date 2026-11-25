@@ -42,6 +42,9 @@
 \newcommand{\intEnt}[2]{\llbracket #1, #2 \rrbracket}
 \DeclareMathOperator{\Argch}{Argch}
 \DeclareMathOperator{\sgn}{signe}
+\DeclareMathOperator{\Card}{Card}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Image}{Im}
 
 % Formule mise en valeur
 \newcommand{\cadre}[1]{%
@@ -91,10 +94,11 @@
 \newtcolorbox{definition}[1][]{bloc, colback=brun!7,colframe=brun,coltitle=brun,colbacktitle=brun!7, title={\titrebloc{Définition}{#1}}}
 \newtcolorbox{proposition}[1][]{bloc, colback=bordeaux!5,colframe=bordeaux,coltitle=bordeaux,colbacktitle=bordeaux!5, title={\titrebloc{Proposition}{#1}}}
 \newtcolorbox{theoreme}[1][]{bloc, colback=bordeaux!8,colframe=bordeaux,boxrule=1.4pt, coltitle=bordeaux,colbacktitle=bordeaux!8, title={\titrebloc{Théorème}{#1}}}
-\newtcolorbox{demonstration}{marge, colback=bleuclair,borderline west={2.5pt}{0pt}{bleu}, before upper={\textcolor{bleu}{\small\scshape Démonstration.}\ }, after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
+\newtcolorbox{demonstration}[1][]{marge, colback=bleuclair,borderline west={2.5pt}{0pt}{bleu}, before upper={\textcolor{bleu}{\small\scshape Démonstration\ifx\relax#1\relax\else\ (#1)\fi.}\ }, after upper={\par\nopagebreak\hfill\textcolor{bleu}{$\blacksquare$}}}
 \newtcolorbox{remarque}[1][]{marge, colback=vert!6,borderline west={2.5pt}{0pt}{vert}, coltitle=vert!70!black,colbacktitle=vert!6, title={\titreblocnum{Remarque}{#1}}}
 \newtcolorbox{exemples}[1][Exemples]{marge, colback=orange!6,borderline west={2.5pt}{0pt}{orange}, coltitle=orange!85!black,colbacktitle=orange!6, title={\textsc{#1}}}
 \newtcolorbox{methode}[1][Méthode]{marge, colback=violet!6,borderline west={2.5pt}{0pt}{violet}, coltitle=violet,colbacktitle=violet!6, title={\textsc{#1}}}
+\newtcolorbox{exercice}[1][]{marge, colback=vert!5,borderline west={2.5pt}{0pt}{vert!70!black}, coltitle=vert!80!black,colbacktitle=vert!5, title={\titreblocnum{Exercice}{#1}}}
 
 % Nouveaux environnements
 \newtcolorbox{lemme}[1][]{bloc, colback=bleu!5,colframe=bleu,coltitle=bleu,colbacktitle=bleu!5, title={\titrebloc{Lemme}{#1}}}
@@ -121,7 +125,7 @@ On appelle \mot{loi de composition interne} sur un ensemble $E$ toute applicatio
 \[
 T : E \times E \longrightarrow E
 \]
-de $E \times E$ dans $E$. ($T$ se lit \textit{« truc »}).
+de $E \times E$ dans $E$ ($T$ se lit \textit{« truc »}).
 
 Le couple $(E, T)$ s'appelle un \mot{magma}.
 \end{definition}
@@ -418,7 +422,7 @@ Toute permutation de $\mathfrak{S}_n$ étant composée de transpositions éléme
         \item $\forall n, p \in \N^*$, $\overset{n}{\top} x$ et $\overset{p}{\top} y$ sont permutables (en notation multiplicative, $x^n$ et $y^p$ sont permutables).
         \item En particulier, $\forall n \in \N^*$, $(\overset{n}{\top} x) \, T \, (\overset{n}{\top} y) = \overset{n}{\top} (x \, T \, y)$ (en notation multiplicative, $x^n \cdot y^n = (x \cdot y)^n$).
     \end{itemize}
-    \textit{(Preuve : par récurrence sur $n$, exercice à faire).}
+    \textit{(Démonstration : par récurrence sur $n$, exercice à faire).}
 \end{enumerate}
 \end{remarque}
 
@@ -645,7 +649,7 @@ Un groupe n'est \mot{jamais vide} (il contient au moins l'élément neutre $e$).
     
     \item $(\N, +)$ n'est pas un groupe, puisque seul $0$ est symétrisable.
     
-    \item Si $E$ est un ensemble, $(\mathfrak{S}_E, \circ)$, le monoïde des permutations de $E$, est un groupe, appelé le \mot{groupe des permutations} de $E$ (non abélien dès que $\mathrm{Card}(E) \ge 3$).
+    \item Si $E$ est un ensemble, $(\mathfrak{S}_E, \circ)$, le monoïde des permutations de $E$, est un groupe, appelé le \mot{groupe des permutations} de $E$ (non abélien dès que $\Card(E) \ge 3$).
     
     En effet, la loi $\mathfrak{S}_E \times \mathfrak{S}_E \to \mathfrak{S}_E, \ (\sigma, \tau) \mapsto \sigma \circ \tau$ vérifie :
     \begin{itemize}
@@ -1353,7 +1357,7 @@ Soit $H$ un sous-groupe de $(G, \cdot)$ et $(x, y) \in G^2$. Alors :
         \item \textbf{Réciproque ($\Longleftarrow$) :} Supposons $xH = yH$. En particulier, $y = y \cdot e \in yH = xH$, donc il existe $h \in H$ tel que $y = xh$, d'où $x^{-1} y = h \in H$.
     \end{itemize}
     
-    \item \textbf{Preuve analogue} (en utilisant la translation à droite) :
+    \item \textbf{Démonstration analogue} (en utilisant la translation à droite) :
     Si $xy^{-1} = h \in H$, alors $x = hy$, et en utilisant $\delta_x = \delta_{hy} = \delta_y \circ \delta_h$ :
     \[
     Hx = \delta_x(H) = \delta_{hy}(H) = (\delta_y \circ \delta_h)(H) = \delta_y(\delta_h(H)) = \delta_y(H) = Hy
@@ -1362,7 +1366,7 @@ Soit $H$ un sous-groupe de $(G, \cdot)$ et $(x, y) \in G^2$. Alors :
 \end{enumerate}
 \end{demonstration}
 
-\begin{demonstration}[Preuve de la proposition sur $\mathcal{R}_g$ et $\mathcal{R}_d$]
+\begin{demonstration}[sur $\mathcal{R}_g$ et $\mathcal{R}_d$]
 D'après le lemme, on a pour tout $(x, y) \in G^2$ :
 \[
 x \, \mathcal{R}_g \, y \iff x^{-1} y \in H \iff xH = yH
@@ -1410,373 +1414,306 @@ est bien définie et bijective.
 \end{itemize}
 \end{demonstration}
 
-% ==============================================================================
-% PAGE C12-44 & C12-45
-% ==============================================================================
+\vspace{10pt}
+\textbf{Théorème de Lagrange :}
 
-\begin{center}
-  {\Large \textbf{\underline{Théorème de Lagrange}}}
-\end{center}
-
-\vspace{0.5em}
-
-\begin{definition}
-Soit $G$ un groupe fini. Le cardinal de $G$ est appelé l'\textbf{ordre} de $G$. On le note $|G|$.
+\begin{definition}[Ordre d'un groupe fini]
+Soit $G$ un groupe fini. Le cardinal de $G$ est appelé l'\mot{ordre} de $G$. On le note $|G|$ ou $\Card(G)$.
 \end{definition}
-
-\vspace{0.5em}
 
 \begin{theoreme}[Lagrange]
 Soit $(G, \cdot)$ un groupe fini et $H$ un sous-groupe de $(G, \cdot)$. Alors l'ordre de $H$ divise l'ordre de $G$.
 \end{theoreme}
 
-\paragraph{Preuve :} Notons $G/H$ l'ensemble des classes à gauche modulo $H$ dans $G$.
-
+\begin{demonstration}
+Notons $G/H$ l'ensemble des classes à gauche modulo $H$ dans $G$.
 C'est une partition de $G$, donc :
 \[
-G = \bigsqcup_{X \in G/H} X, \quad \text{la réunion étant disjointe.}
+G = \bigsqcup_{X \in G/H} X \qquad \text{(la réunion étant disjointe)}.
 \]
-Donc :
+Ainsi :
 \[
 \Card(G) = \sum_{X \in G/H} \Card(X)
 \]
-Or toute classe $X$ est équipotente à $H$ car de la forme $xH = \gamma_x(H)$ où $x \in G$.
+Or toute classe $X \in G/H$ est équipotente à $H$ car elle est de la forme $xH = \gamma_x(H)$ avec $x \in G$. En effet, $\gamma_x$, étant une permutation de $G$, induit une bijection de $H$ sur $\gamma_x(H)$.
 
-En effet, $\gamma_x$, permutation de $G$, induit une bijection de $H$ sur $\gamma_x(H)$.
-
-Donc $\Card(X) = \Card(H)$ pour tout $X \in G/H$.
-
-Par suite :
+Donc $\Card(X) = \Card(H)$ pour tout $X \in G/H$. Par suite :
 \[
-\Card(G) = \sum_{X \in G/H} \Card(X) = \Card(G/H)\Card(H) \qquad \blacksquare
+\cadre{\Card(G) = \sum_{X \in G/H} \Card(X) = \Card(G/H) \cdot \Card(H)}
 \]
+\end{demonstration}
 
-\begin{remarque}[NB]
-La démonstration montre que :
+\begin{remarque}
+La démonstration montre en particulier que :
 \[
 \Card(G/H) = \frac{\Card(G)}{\Card(H)}
 \]
 \end{remarque}
 
-\vspace{0.5em}
-
 \begin{exercice}[1]
 \begin{enumerate}
-  \item Soit $G$ un groupe fini d'ordre $n$ et $a \in G$ tel que $a \neq e$ et $a^2 = e$. Alors $n$ est pair.
-  \item Soit $G$ un groupe fini d'ordre premier $p$ ($p$ est un nombre premier). Alors $G$ est monogène. En fait, pour tout $a \in G \setminus \{e\}$, $\langle a \rangle = G$.
+  \item Soit $G$ un groupe fini d'ordre $n$ et $a \in G$ tel que $a \neq e$ et $a^2 = e$. Montrer que $n$ est pair.
+  \item Soit $G$ un groupe fini d'ordre premier $p$ ($p$ étant un nombre premier). Montrer que $G$ est monogène et que, pour tout $a \in G \setminus \{e\}$, on a $\langle a \rangle = G$.
 \end{enumerate}
 \end{exercice}
 
-\paragraph{Preuve :}
+\begin{demonstration}
 \begin{enumerate}
-  \item $H = \{e, a\}$ est un sous-groupe de $G$, d'ordre $2$. Par Lagrange, $|H| = 2$ divise $|G| = n$.
-  \item Si $a \neq e$, le sous-groupe engendré par $a$, $\langle a \rangle$, est d'ordre $\ge 2$ car il contient $e$ et $a$.
+  \item L'ensemble $H = \{e, a\}$ est un sous-groupe de $G$ d'ordre $2$ (puisque $a \neq e$ et $a^2 = e$). Par le théorème de Lagrange, $|H| = 2$ divise $|G| = n$, donc $n$ est pair.
+  \item Si $a \in G \setminus \{e\}$, le sous-groupe $\langle a \rangle$ engendré par $a$ est d'ordre supérieur ou égal à $2$ car il contient les deux éléments distincts $e$ et $a$.
   
-  Par Lagrange, $|\langle a \rangle|$ divise $p = |G|$. Comme $p$ est premier et $|\langle a \rangle| > 1$, on a $|\langle a \rangle| = p = |G|$.
+  Par le théorème de Lagrange, $|\langle a \rangle|$ divise $p = |G|$. Comme $p$ est premier et $|\langle a \rangle| > 1$, on a nécessairement $|\langle a \rangle| = p = |G|$.
   
-  Donc $G = \langle a \rangle$. \hfill $\blacksquare$
+  Comme $\langle a \rangle \subset G$ et qu'ils ont le même cardinal fini, on conclut que $G = \langle a \rangle$, donc $G$ est monogène.
 \end{enumerate}
+\end{demonstration}
 
-% ==============================================================================
-% PAGE C12-46
-% ==============================================================================
 \newpage
+\section{IV -- Morphismes de groupes}
 
-\begin{center}
-  {\LARGE \textbf{\underline{IV. Morphisme de groupes}}}
-\end{center}
-
-\vspace{0.5em}
-
-\subsection*{4.1. Définitions, exemples}
+\subsection{4.1. Définitions et exemples}
 
 \begin{definition}
-Soient $(G_1, \cdot)$ et $(G_2, \cdot)$ deux groupes (ce ne sont pas les mêmes lois même si les deux sont notées par un $\cdot$). On dit qu'une application $\varphi : G_1 \to G_2$ est un \textbf{morphisme de groupes} si :
+Soient $(G_1, \cdot)$ et $(G_2, \cdot)$ deux groupes (les deux lois étant distinctes bien que notées par le même symbole $\cdot$). On dit qu'une application $\varphi : G_1 \to G_2$ est un \mot{morphisme de groupes} si :
 \[
-\forall x, y \in G_1, \quad \varphi(x \cdot y) = \varphi(x) \cdot \varphi(y)
+\forall (x, y) \in G_1^2, \quad \varphi(x \cdot y) = \varphi(x) \cdot \varphi(y)
 \]
-*(où $\cdot$ à gauche est la loi interne de $G_1$ et $\cdot$ à droite est la loi interne de $G_2$)*.
+\textit{(où $\cdot$ à gauche est la loi interne de $G_1$ et $\cdot$ à droite est la loi interne de $G_2$)}.
 \end{definition}
 
-\vspace{0.5em}
-
-\begin{exemple}
+\begin{exemples}
 \begin{enumerate}
-  \item $\exp : (\C, +) \to (\C^*, \times)$, $z \mapsto e^z$ est un morphisme de groupes :
+  \item $\exp : (\C, +) \to (\C^*, \times), \ z \mapsto e^z$ est un morphisme de groupes :
   \[
   \forall (z, z') \in \C^2, \quad e^{z + z'} = e^z \times e^{z'}
   \]
-  \item $f : (\R, +) \to (\U, \times)$, $\theta \mapsto e^{i\theta}$ :
+  \item $f : (\R, +) \to (\U, \times), \ \theta \mapsto e^{i\theta}$ est un morphisme de groupes :
   \[
   \forall (\theta, \theta') \in \R^2, \quad f(\theta + \theta') = e^{i(\theta + \theta')} = e^{i\theta} \times e^{i\theta'}
   \]
-  \item $\ln : (\R_+^*, \times) \to (\R, +)$ :
+  \item $\ln : (\R_+^*, \times) \to (\R, +)$ est un morphisme de groupes :
   \[
   \forall (x, y) \in (\R_+^*)^2, \quad \ln(xy) = \ln(x) + \ln(y)
   \]
-  \item Soit $(G, \cdot)$ un groupe, et $x \in G$. L'application $\varphi_x : \Z \to G$, $n \mapsto x^n$ est un morphisme de groupes :
+  \item Soit $(G, \cdot)$ un groupe et $x \in G$. L'application $\varphi_x : \Z \to G, \ n \mapsto x^n$ est un morphisme de groupes :
   \[
   \forall (m, n) \in \Z^2, \quad \varphi_x(m + n) = x^{m+n} = x^m \cdot x^n = \varphi_x(m) \cdot \varphi_x(n)
   \]
-  En notation additive, $(G, +)$ étant commutatif : $\varphi_x : \Z \to G, \, n \mapsto n \cdot x$.
+  En notation additive, lorsque $(G, +)$ est commutatif, ce morphisme s'écrit $\varphi_x : \Z \to G, \ n \mapsto n \cdot x$.
 \end{enumerate}
-\end{exemple}
+\end{exemples}
 
-% ==============================================================================
-% PAGE C12-47 & C12-48
-% ==============================================================================
-\vspace{0.5em}
-
-\begin{proposition}
-Soient $(G_1, \cdot)$ et $(G_2, \cdot)$ deux groupes, de neutres respectifs $e_1$ et $e_2$. Alors :
+\begin{proposition}[Propriétés élémentaires des morphismes]
+Soient $(G_1, \cdot)$ et $(G_2, \cdot)$ deux groupes, de neutres respectifs $e_1$ et $e_2$, et $\varphi : G_1 \to G_2$ un morphisme de groupes. Alors :
 \begin{enumerate}
   \item $\varphi(e_1) = e_2$
   \item $\forall x \in G_1, \quad \varphi(x^{-1}) = \varphi(x)^{-1}$
+  \item $\forall x \in G_1, \ \forall n \in \Z, \quad \varphi(x^n) = \varphi(x)^n$
 \end{enumerate}
 \end{proposition}
 
-\paragraph{Preuve :}
+\begin{demonstration}
 \begin{enumerate}
-  \item On a $e_1 \cdot e_1 = e_1$ donc $\varphi(e_1 \cdot e_1) = \varphi(e_1)$, soit $\varphi(e_1) \cdot \varphi(e_1) = \varphi(e_1) = \varphi(e_1) \cdot e_2$.
-  
-  En simplifiant par $\varphi(e_1)$ à gauche dans le groupe $(G_2, \cdot)$, il vient :
+  \item On a $e_1 \cdot e_1 = e_1$, donc $\varphi(e_1 \cdot e_1) = \varphi(e_1)$, soit :
+  \[
+  \varphi(e_1) \cdot \varphi(e_1) = \varphi(e_1) = \varphi(e_1) \cdot e_2
+  \]
+  En simplifiant à gauche par $\varphi(e_1)$ dans le groupe $(G_2, \cdot)$, il vient :
   \[
   \varphi(e_1) = e_2
   \]
-  \item Soit $x \in G_1$. Alors $x x^{-1} = e_1$ donc $\varphi(x x^{-1}) = \varphi(e_1) = e_2$, soit $\varphi(x) \cdot \varphi(x^{-1}) = e_2$.
+  \item Soit $x \in G_1$. Alors $x \cdot x^{-1} = e_1$, donc $\varphi(x \cdot x^{-1}) = \varphi(e_1) = e_2$, soit $\varphi(x) \cdot \varphi(x^{-1}) = e_2$.
   
-  Comme on sait que $\varphi(x)$ est inversible dans $G_2$, on a nécessairement :
+  Comme $\varphi(x)$ est inversible dans $G_2$, on en déduit nécessairement :
   \[
-  \varphi(x^{-1}) = \varphi(x)^{-1} \qquad \blacksquare
+  \varphi(x^{-1}) = \varphi(x)^{-1}
   \]
+  \item Pour $n = 0$, l'égalité est vraie car $\varphi(x^0) = \varphi(e_1) = e_2 = \varphi(x)^0$.
+  
+  Par une récurrence immédiate sur $n \in \N$, la propriété est vraie pour tout $n \in \N$.
+  
+  Enfin, si $n \in \Z^-$, on pose $|n| = -n \in \N$, et d'après le point 2) :
+  \begin{align*}
+  \varphi(x^n) = \varphi(x^{-|n|}) &= \varphi\left((x^{|n|})^{-1}\right) \\
+  &= \varphi(x^{|n|})^{-1} \\
+  &= \left(\varphi(x)^{|n|}\right)^{-1} \\
+  &= \varphi(x)^{-|n|} = \varphi(x)^n
+  \end{align*}
 \end{enumerate}
+\end{demonstration}
 
-\begin{remarque}
-On a aussi :
-\begin{enumerate}
-  \setcounter{enumi}{2}
-  \item $\forall x \in G_1, \, \forall n \in \Z, \quad \varphi(x^n) = \varphi(x)^n$
-\end{enumerate}
-\begin{itemize}
-  \item Vrai si $n = 0$ (car $x^0 = e_1$ dans $G_1$ et $y^0 = e_2$ dans $G_2$).
-  \item Par récurrence dans $n \in \N$, c'est vrai pour tout $n \in \N$.
-\end{itemize}
-Puis, si $n \in \Z^-$ :
+\begin{exemples}
+Pour le morphisme $f : (\R, +) \to (\U, \times), \ \theta \mapsto e^{i\theta}$, la propriété 3) donne :
 \[
-\begin{aligned}
-\varphi(x^n) = \varphi(x^{-|n|}) &= \varphi\left((x^{|n|})^{-1}\right) \\
-&= \varphi(x^{|n|})^{-1} \\
-&= \left(\varphi(x)^{|n|}\right)^{-1} \\
-&= \varphi(x)^{-|n|} \\
-&= \varphi(x)^n
-\end{aligned}
+\forall n \in \Z, \ \forall \theta \in \R, \quad f(n \cdot \theta) = f(\theta)^n, \quad \text{c'est-à-dire} \quad e^{in\theta} = \left(e^{i\theta}\right)^n
 \]
-\end{remarque}
+\end{exemples}
 
-\begin{exemple}
-$f : (\R, +) \to (\U, \times)$, $\theta \mapsto e^{i\theta}$ :
-\[
-\forall n \in \Z, \, \forall \theta \in \R, \quad f(n \cdot \theta) = f(\theta)^n \quad \text{c'est-à-dire} \quad e^{in\theta} = \left(e^{i\theta}\right)^n
-\]
-\end{exemple}
-
-% ==============================================================================
-% PAGE C12-48 (suite) & C12-49
-% ==============================================================================
-\vspace{0.5em}
-
-\subsection*{4.2. Image directe / réciproque d'un sous-groupe par un morphisme}
+\newpage
+\subsection{4.2. Image directe et image réciproque d'un sous-groupe par un morphisme}
 
 \begin{proposition}
 Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme de groupes.
 \begin{enumerate}
   \item Si $H$ est un sous-groupe de $(G_1, \cdot)$, alors $\varphi(H)$ est un sous-groupe de $(G_2, \cdot)$.
-  \item Si $H$ est un sous-groupe de $(G_2, \cdot)$, alors $\varphi^{-1}(H)$ est un sous-groupe de $(G_1, \cdot)$.
+  \item Si $K$ est un sous-groupe de $(G_2, \cdot)$, alors $\varphi^{-1}(K)$ est un sous-groupe de $(G_1, \cdot)$.
 \end{enumerate}
 \end{proposition}
 
-\paragraph{Preuve :}
+\begin{demonstration}
 \begin{enumerate}
-  \item D'abord $\varphi(H) \subset G_2$.
+  \item D'abord, $\varphi(H) \subset G_2$.
   \begin{itemize}
     \item $e_1 \in H$ donc $\varphi(e_1) = e_2 \in \varphi(H)$.
     \item Soient $x_2, y_2 \in \varphi(H)$. Il existe donc $x_1, y_1 \in H$ tels que $x_2 = \varphi(x_1)$ et $y_2 = \varphi(y_1)$.
-    
     Alors :
     \[
     x_2 y_2^{-1} = \varphi(x_1)\varphi(y_1)^{-1} = \varphi(x_1)\varphi(y_1^{-1}) = \varphi(x_1 y_1^{-1})
     \]
     Comme $H$ est un sous-groupe, $x_1 y_1^{-1} \in H$, donc $x_2 y_2^{-1} \in \varphi(H)$.
   \end{itemize}
-  Donc $\varphi(H)$ est un sous-groupe de $(G_2, \cdot)$.
+  Ainsi, $\varphi(H)$ est un sous-groupe de $(G_2, \cdot)$.
 
-  \item Soit $H$ un sous-groupe de $(G_2, \cdot)$. Alors $\varphi^{-1}(H) = \{x \in G_1 \mid \varphi(x) \in H\}$.
-  
-  Déjà $\varphi^{-1}(H) \subset G_1$.
+  \item Soit $K$ un sous-groupe de $(G_2, \cdot)$. Par définition, $\varphi^{-1}(K) = \{x \in G_1 \mid \varphi(x) \in K\} \subset G_1$.
   \begin{itemize}
-    \item $e_1 \in \varphi^{-1}(H)$ car $\varphi(e_1) = e_2 \in H$.
-    \item Soient $x_1, y_1 \in \varphi^{-1}(H)$. Alors :
+    \item $e_1 \in \varphi^{-1}(K)$ car $\varphi(e_1) = e_2 \in K$.
+    \item Soient $x_1, y_1 \in \varphi^{-1}(K)$. Alors $\varphi(x_1) \in K$ et $\varphi(y_1) \in K$. Comme $K$ est un sous-groupe de $(G_2, \cdot)$, on a :
     \[
-    \varphi(x_1 y_1^{-1}) = \varphi(x_1)\varphi(y_1)^{-1}
+    \varphi(x_1 y_1^{-1}) = \varphi(x_1)\varphi(y_1)^{-1} \in K
     \]
-    Or $\varphi(x_1), \varphi(y_1) \in H$, qui est un sous-groupe, donc $\varphi(x_1) \cdot \varphi(y_1)^{-1} \in H$.
-    
-    Donc $x_1 y_1^{-1} \in \varphi^{-1}(H)$. \hfill $\blacksquare$
+    Donc $x_1 y_1^{-1} \in \varphi^{-1}(K)$.
   \end{itemize}
+  Ainsi, $\varphi^{-1}(K)$ est un sous-groupe de $(G_1, \cdot)$.
 \end{enumerate}
+\end{demonstration}
 
-% ==============================================================================
-% PAGE C12-49 (suite) & C12-50
-% ==============================================================================
-\vspace{0.5em}
+\subsection{4.3. Noyau et image d'un morphisme}
 
-\subsection*{4.3. Noyau et image d'un morphisme}
-
-\begin{definition}
-Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme de groupes. On appelle \textbf{noyau} de $\varphi$, et on note $\Ker(\varphi)$ ou $\Ker \varphi$, l'ensemble $\varphi^{-1}(\{e_2\})$ où $e_2$ est le neutre de $(G_2, \cdot)$. Autrement dit :
+\begin{definition}[Noyau d'un morphisme]
+Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme de groupes. On appelle \mot{noyau} de $\varphi$, et on note $\Ker(\varphi)$ ou $\Ker \varphi$, l'ensemble $\varphi^{-1}(\{e_2\})$ où $e_2$ est le neutre de $(G_2, \cdot)$. Autrement dit :
 \[
-\Ker(\varphi) = \{x \in G_1 \mid \varphi(x) = e_2\}
+\cadre{\Ker(\varphi) = \{x \in G_1 \mid \varphi(x) = e_2\}}
 \]
 \end{definition}
 
-\begin{exemple}
+\begin{exemples}
 \begin{enumerate}
-  \item $\exp : (\C, +) \to (\C^*, \times)$, $z \mapsto e^z$ :
+  \item $\exp : (\C, +) \to (\C^*, \times), \ z \mapsto e^z$ :
   \[
   \Ker(\exp) = \{z \in \C \mid e^z = 1\} = 2i\pi\Z
   \]
-  \item $f : (\R, +) \to (\U, \times)$, $\theta \mapsto e^{i\theta}$ :
+  \item $f : (\R, +) \to (\U, \times), \ \theta \mapsto e^{i\theta}$ :
   \[
   \Ker(f) = \{\theta \in \R \mid e^{i\theta} = 1\} = 2\pi\Z
   \]
-  \item $\ln : (\R_+^*, \times) \to (\R, +)$, $x \mapsto \ln(x)$ :
+  \item $\ln : (\R_+^*, \times) \to (\R, +), \ x \mapsto \ln(x)$ :
   \[
   \Ker(\ln) = \{x \in \R_+^* \mid \ln x = 0\} = \{1\}
   \]
-  \item $m \in \Z$, $\varphi_m : \Z \to \Z$, $x \mapsto m \cdot x$ :
+  \item Pour $m \in \Z$, soit $\varphi_m : \Z \to \Z, \ x \mapsto m \cdot x$ :
   \begin{itemize}
     \item Si $m = 0$, $\Ker(\varphi_0) = \Z$.
     \item Si $m \neq 0$, $\Ker(\varphi_m) = \{x \in \Z \mid m \cdot x = 0\} = \{0\}$.
   \end{itemize}
 \end{enumerate}
-\end{exemple}
+\end{exemples}
 
-\begin{definition}
-Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme. On appelle \textbf{image} de $\varphi$, et on note $\Image(\varphi)$ ou $\Image \varphi$, l'ensemble $\varphi(G_1)$.
+\begin{definition}[Image d'un morphisme]
+Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme de groupes. On appelle \mot{image} de $\varphi$, et on note $\Image(\varphi)$ ou $\Image \varphi$, l'ensemble $\varphi(G_1)$.
 \end{definition}
 
 \begin{proposition}
-L'image et le noyau d'un morphisme de groupes $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ sont des sous-groupes de $(G_2, \cdot)$ et $(G_1, \cdot)$, respectivement.
+L'image et le noyau d'un morphisme de groupes $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ sont des sous-groupes respectifs de $(G_2, \cdot)$ et $(G_1, \cdot)$.
 \end{proposition}
 
-\paragraph{Preuve :}
+\begin{demonstration}
 \begin{itemize}
-  \item $H = G_1$ est un sous-groupe de $(G_1, \cdot)$, donc $\varphi(H) = \varphi(G_1)$ est un sous-groupe de $(G_2, \cdot)$.
-  \item $H = \{e_2\}$ est un sous-groupe de $(G_2, \cdot)$, donc $\varphi^{-1}(\{e_2\}) = \Ker(\varphi)$ est un sous-groupe de $(G_1, \cdot)$. \hfill $\blacksquare$
+  \item $H = G_1$ est un sous-groupe de $(G_1, \cdot)$, donc $\Image(\varphi) = \varphi(G_1)$ est un sous-groupe de $(G_2, \cdot)$ d'après la proposition précédente.
+  \item $K = \{e_2\}$ est un sous-groupe de $(G_2, \cdot)$, donc $\Ker(\varphi) = \varphi^{-1}(\{e_2\})$ est un sous-groupe de $(G_1, \cdot)$.
 \end{itemize}
+\end{demonstration}
 
-\begin{exemple}[Une preuve rapide de « $\U_n$ est un sous-groupe de $(\C^*, \times)$ »]
-Soit $n \in \N^*$ et $\varphi_n : \C^* \to \C^*$, $z \mapsto z^n$.
+\begin{exemples}[Démonstration rapide de « $\U_n$ est un sous-groupe de $(\C^*, \times)$ »]
+Soit $n \in \N^*$ et $\varphi_n : \C^* \to \C^*, \ z \mapsto z^n$.
 
 C'est un morphisme de groupes car :
 \[
-\forall (z, z') \in \C^* \times \C^*, \quad (zz')^n = z^n z'^n
+\forall (z, z') \in (\C^*)^2, \quad (zz')^n = z^n z'^n
 \]
 Donc $\Ker(\varphi_n) = \{z \in \C^* \mid z^n = 1\} = \U_n$ est un sous-groupe de $(\C^*, \times)$.
-\end{exemple}
+\end{exemples}
 
-% ==============================================================================
-% PAGE C12-50 (bas) & C12-51 & C12-52
-% ==============================================================================
-\vspace{0.5em}
-
-\begin{proposition}
+\begin{proposition}[Résolution de l'équation $\varphi(x) = a$]
 Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme de groupes, $a \in G_2$ et $x_0 \in G_1$ tel que $\varphi(x_0) = a$.
 
 Alors l'ensemble des solutions $x \in G_1$ de l'équation $\varphi(x) = a$ est :
 \[
-x_0 \cdot \Ker(\varphi) = \Ker(\varphi) \cdot x_0
+\cadre{x_0 \cdot \Ker(\varphi) = \Ker(\varphi) \cdot x_0}
 \]
 \end{proposition}
 
-\paragraph{Preuve :} $\forall x \in G_1$,
-\[
-\begin{aligned}
+\begin{demonstration}
+Pour tout $x \in G_1$ :
+\begin{align*}
 \varphi(x) = a &\iff \varphi(x) = \varphi(x_0) \\
 &\iff \varphi(x)\varphi(x_0)^{-1} = e_2 \\
 &\iff \varphi(x \cdot x_0^{-1}) = e_2 \\
-&\iff x x_0^{-1} \in \Ker \varphi \\
+&\iff x \cdot x_0^{-1} \in \Ker \varphi \\
 &\iff \exists h \in \Ker \varphi, \quad x \cdot x_0^{-1} = h \\
-&\iff \exists h \in \Ker \varphi, \quad x = h x_0 \\
-&\iff x \in \Ker(\varphi) x_0
-\end{aligned}
-\]
-On peut aussi écrire :
-\[
-\begin{aligned}
+&\iff \exists h \in \Ker \varphi, \quad x = h \cdot x_0 \\
+&\iff x \in \Ker(\varphi) \cdot x_0
+\end{align*}
+De manière symétrique, en multipliant à gauche par $\varphi(x_0)^{-1}$ :
+\begin{align*}
 \varphi(x) = \varphi(x_0) &\iff \varphi(x_0)^{-1}\varphi(x) = e_2 \\
-&\iff \varphi(x_0^{-1} x) = e_2 \\
-&\iff x_0^{-1} x \in \Ker \varphi \\
-&\iff \exists h \in \Ker \varphi, \quad x = x_0 h \\
+&\iff \varphi(x_0^{-1} \cdot x) = e_2 \\
+&\iff x_0^{-1} \cdot x \in \Ker \varphi \\
+&\iff \exists h \in \Ker \varphi, \quad x = x_0 \cdot h \\
 &\iff x \in x_0 \cdot \Ker(\varphi)
-\end{aligned}
-\]
+\end{align*}
+\end{demonstration}
 
-\paragraph{Lien avec les EDL :}
+\begin{remarque}[Lien avec les équations différentielles linéaires]
+Considérons l'équation différentielle linéaire avec second membre $(E_f)$ et son équation homogène associée $(E_0)$ sur un intervalle $I$ :
 \[
-\begin{aligned}
-(E_f) &: \sum_{k=0}^p a_k(t) y^{(k)} = f(t) \qquad (t \in I) \\
-(H) &: \sum_{k=0}^p a_k(t) y^{(k)} = 0
-\end{aligned}
+(E_f) : \sum_{k=0}^p a_k(t) y^{(k)} = f(t) \qquad (t \in I) \qquad \text{et} \qquad (E_0) : \sum_{k=0}^p a_k(t) y^{(k)} = 0
 \]
-Soient $G_1 : (\mathcal{D}^p(I, \R), +)$ et $G_2 : (\mathcal{F}(I, \R), +)$, et l'application :
+Soient $G_1 = (\D^p(I, \K), +)$ et $G_2 = (\mathcal{F}(I, \K), +)$, et l'application :
 \[
-\varphi : \mathcal{D}^p(I, \R) \to \mathcal{F}(I, \R), \quad y \mapsto \sum_{k=0}^p a_k y^{(k)}
+\varphi : \D^p(I, \K) \longrightarrow \mathcal{F}(I, \K), \quad y \longmapsto \sum_{k=0}^p a_k y^{(k)}
 \]
-On a $\forall y, z \in \mathcal{D}^p(I, \R)$, $\varphi(y + z) = \varphi(y) + \varphi(z)$.
+On a $\forall y, z \in \D^p(I, \K), \ \varphi(y + z) = \varphi(y) + \varphi(z)$, donc $\varphi$ est un morphisme de groupes.
 
-$\Ker(\varphi) = \text{ensemble des solutions de l'équation homogène } (E_0) = \mathcal{S}_0$.
+Son noyau est $\Ker(\varphi) = \{y \in \D^p(I, \K) \mid \varphi(y) = 0\} = \mathcal{S}_0$ (ensemble des solutions de l'équation homogène $(E_0)$).
 
-S'il existe $y_0 \in \mathcal{D}^p(I, \mathbb{K})$ tel que $\varphi(y_0) = f$, c'est-à-dire une solution particulière de $(E_f)$, alors l'ensemble des solutions de $(E_f)$ est :
+S'il existe $y_0 \in \D^p(I, \K)$ tel que $\varphi(y_0) = f$, c'est-à-dire une solution particulière de $(E_f)$, alors l'ensemble des solutions de $(E_f)$ est :
 \[
 y_0 + \Ker \varphi = y_0 + \mathcal{S}_0
 \]
+\end{remarque}
 
-\vspace{0.5em}
-
-\begin{proposition}
+\begin{proposition}[Caractérisation de l'injectivité d'un morphisme]
 Soit $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ un morphisme de groupes.
-
 Alors $\varphi$ est injectif si et seulement si $\Ker \varphi = \{e_1\}$.
 \end{proposition}
 
-\paragraph{Preuve :}
-\begin{enumerate}
-  \item Supposons $\varphi$ injectif, montrons que $\Ker \varphi = \{e_1\}$.
+\begin{demonstration}
+\begin{itemize}
+  \item \textbf{Sens direct ($\implies$) :} Supposons $\varphi$ injectif et montrons que $\Ker \varphi = \{e_1\}$.
   
   D'abord, $e_1 \in \Ker \varphi$ car $\varphi(e_1) = e_2$.
   
-  Réciproquement, soit $x \in \Ker \varphi$, c'est-à-dire $\varphi(x) = e_2$.
-  
-  Or $e_2 = \varphi(e_1)$, donc $\varphi(x) = \varphi(e_1)$ donc $x = e_1$ par injectivité de $\varphi$.
+  Réciproquement, soit $x \in \Ker \varphi$, c'est-à-dire $\varphi(x) = e_2$. Or $e_2 = \varphi(e_1)$, donc $\varphi(x) = \varphi(e_1)$, d'où $x = e_1$ par injectivité de $\varphi$.
   
   Par double inclusion, on a bien $\Ker \varphi = \{e_1\}$.
 
-  \item Supposons $\Ker \varphi = \{e_1\}$, montrons que $\varphi$ est injectif.
+  \item \textbf{Réciproque ($\Longleftarrow$) :} Supposons $\Ker \varphi = \{e_1\}$ et montrons que $\varphi$ est injectif.
   
-  Soient $x, y \in G_1$ tels que $\varphi(x) = \varphi(y)$.
+  Soient $x, y \in G_1$ tels que $\varphi(x) = \varphi(y)$. Alors $\varphi(x)\varphi(y)^{-1} = e_2$, soit $\varphi(x y^{-1}) = e_2$.
   
-  Alors $\varphi(x)\varphi(y)^{-1} = e_2$, soit $\varphi(x y^{-1}) = e_2$.
-  
-  Donc $x y^{-1} \in \Ker \varphi$. Or $\Ker \varphi = \{e_1\}$, donc $x y^{-1} = e_1$, donc $x = y$.
-  
-  Donc $\varphi$ est injective. \hfill $\blacksquare$
-\end{enumerate}
-
-% ==============================================================================
-% PAGE C12-53 & C12-54 & C12-55
-% ==============================================================================
-\vspace{0.5em}
+  Donc $x y^{-1} \in \Ker \varphi$. Or $\Ker \varphi = \{e_1\}$, donc $x y^{-1} = e_1$, d'où $x = y$. Ainsi $\varphi$ est injectif.
+\end{itemize}
+\end{demonstration}
 
 \begin{methode}
 Pour prouver qu'un morphisme de groupes $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ est injectif, il suffit de montrer que :
@@ -1786,118 +1723,104 @@ Pour prouver qu'un morphisme de groupes $\varphi : (G_1, \cdot) \to (G_2, \cdot)
 Il est inutile de rédiger la réciproque.
 \end{methode}
 
-\vspace{0.5em}
+\newpage
+\subsection{4.4. Isomorphismes de groupes}
 
-\subsection*{4.4. Isomorphisme de groupes}
-
-Soit $E = \{0, 1\}$. On sait que $(\mathcal{P}(E), \Delta)$ *(où $\Delta$ = différence symétrique)* est un groupe d'ordre $4$. Le groupe produit $(\U_2 \times \U_2, \times)$ est également d'ordre $4$.
+Soit $E = \{0, 1\}$. On sait que $(\mathcal{P}(E), \Delta)$ \textit{(où $\Delta$ désigne la différence symétrique)} est un groupe d'ordre $4$. Le groupe produit $(\U_2 \times \U_2, \times)$ est également d'ordre $4$.
 
 Leurs tables de Cayley respectives sont :
-
-\begin{center}
-\begin{tabular}{c|cccc}
-$\Delta$ & $\emptyset$ & $\{0\}$ & $\{1\}$ & $E$ \\
-\hline
-$\emptyset$ & $\emptyset$ & $\{0\}$ & $\{1\}$ & $E$ \\
-$\{0\}$ & $\{0\}$ & $\emptyset$ & $E$ & $\{1\}$ \\
-$\{1\}$ & $\{1\}$ & $E$ & $\emptyset$ & $\{0\}$ \\
-$E$ & $E$ & $\{1\}$ & $\{0\}$ & $\emptyset$ \\
-\end{tabular}
-\qquad \qquad
-\begin{tabular}{c|cccc}
-$\times$ & $(1, 1)$ & $(1, -1)$ & $(-1, 1)$ & $(-1, -1)$ \\
-\hline
-$(1, 1)$ & $(1, 1)$ & $(1, -1)$ & $(-1, 1)$ & $(-1, -1)$ \\
-$(1, -1)$ & $(1, -1)$ & $(1, 1)$ & $(-1, -1)$ & $(1, 1)$ \\
-$(-1, 1)$ & $(-1, 1)$ & $(-1, -1)$ & $(1, 1)$ & $(1, -1)$ \\
-$(-1, -1)$ & $(-1, -1)$ & $(1, 1)$ & $(1, -1)$ & $(1, 1)$ \\
-\end{tabular}
-\end{center}
-
-On remarque que ces $2$ tables coïncident si on identifie :
 \[
-\begin{aligned}
-\emptyset &\text{ à } (1, 1) \\
-\{0\} &\text{ à } (1, -1) \\
-\{1\} &\text{ à } (-1, 1) \\
-E &\text{ à } (-1, -1)
-\end{aligned}
+\begin{array}{c|cccc}
+\Delta & \emptyset & \{0\} & \{1\} & E \\
+\hline
+\emptyset & \emptyset & \{0\} & \{1\} & E \\
+\{0\} & \{0\} & \emptyset & E & \{1\} \\
+\{1\} & \{1\} & E & \emptyset & \{0\} \\
+E & E & \{1\} & \{0\} & \emptyset
+\end{array}
+\qquad \qquad
+\begin{array}{c|cccc}
+\times & (1, 1) & (1, -1) & (-1, 1) & (-1, -1) \\
+\hline
+(1, 1) & (1, 1) & (1, -1) & (-1, 1) & (-1, -1) \\
+(1, -1) & (1, -1) & (1, 1) & (-1, -1) & (-1, 1) \\
+(-1, 1) & (-1, 1) & (-1, -1) & (1, 1) & (1, -1) \\
+(-1, -1) & (-1, -1) & (1, 1) & (1, -1) & (1, 1)
+\end{array}
+\]
+
+On remarque que ces deux tables coïncident si l'on identifie :
+\[
+\emptyset \longleftrightarrow (1, 1), \qquad \{0\} \longleftrightarrow (1, -1), \qquad \{1\} \longleftrightarrow (-1, 1), \qquad E \longleftrightarrow (-1, -1)
 \]
 En revanche, la table de Cayley de $(\U_4, \times)$ est essentiellement différente, car :
 \[
-\forall x \in \U_2 \times \U_2, \quad x^2 = (1, 1) \qquad (\forall X \in \mathcal{P}(E), \, X \Delta X = \emptyset)
+\forall x \in \U_2 \times \U_2, \quad x^2 = (1, 1) \qquad (\text{et } \forall X \in \mathcal{P}(E), \ X \Delta X = \emptyset)
 \]
-alors que $i^2 \neq 1$ (neutre de $\U_4$).
+alors que $i^2 = -1 \neq 1$ (neutre de $\U_4$).
 
-Pour cette raison, il n'existe aucune bijection de $(\U_2 \times \U_2, \times)$ vers $(\U_4, \times)$ qui identifie les $2$ tables.
+Pour cette raison, il n'existe aucune bijection de $(\U_2 \times \U_2, \times)$ vers $(\U_4, \times)$ qui identifie les deux tables. On dira que $(\mathcal{P}(E), \Delta)$ et $(\U_2 \times \U_2, \times)$ sont \mot{isomorphes}, mais $(\U_2 \times \U_2, \times)$ et $(\U_4, \times)$ ne le sont pas.
 
-On dira que $(\mathcal{P}(E), \Delta)$ et $(\U_2 \times \U_2, \times)$ sont \textbf{isomorphes}, mais $(\U_2 \times \U_2, \times)$ et $(\U_4, \times)$ ne le sont pas.
+\begin{definition}[Isomorphisme de groupes]
+Soient $(G_1, \cdot)$ et $(G_2, \cdot)$ deux groupes. On appelle \mot{isomorphisme} de $(G_1, \cdot)$ sur $(G_2, \cdot)$ tout morphisme de groupes bijectif $\varphi : (G_1, \cdot) \to (G_2, \cdot)$.
 
-\vspace{0.5em}
-
-\begin{definition}
-Soient $(G_1, \cdot)$ et $(G_2, \cdot)$ deux groupes. On appelle \textbf{isomorphisme} ($\neq$ involution) $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ tout morphisme bijectif.
+S'il existe un isomorphisme entre $(G_1, \cdot)$ et $(G_2, \cdot)$, on dit que les deux groupes sont \mot{isomorphes}.
 \end{definition}
 
 \begin{proposition}
-Si $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ est un isomorphisme, alors $\varphi^{-1} : (G_2, \cdot) \to (G_1, \cdot)$ est un morphisme (donc isomorphisme).
+Si $\varphi : (G_1, \cdot) \to (G_2, \cdot)$ est un isomorphisme de groupes, alors sa bijection réciproque $\varphi^{-1} : (G_2, \cdot) \to (G_1, \cdot)$ est également un isomorphisme de groupes.
 \end{proposition}
 
-\paragraph{Preuve :} Notons $\varphi^{-1} : G_2 \to G_1$ l'application réciproque de la bijection $\varphi$.
+\begin{demonstration}
+Notons $\varphi^{-1} : G_2 \to G_1$ l'application réciproque de la bijection $\varphi$.
 
-Soient $x_2, y_2 \in G_2$. En notant $x_1 = \varphi^{-1}(x_2)$ et $y_1 = \varphi^{-1}(y_2)$, on a $x_1, y_1 \in G_1$ et $\varphi(x_1) = x_2$, $\varphi(y_1) = y_2$.
-
-Alors :
+Soient $x_2, y_2 \in G_2$. En notant $x_1 = \varphi^{-1}(x_2)$ et $y_1 = \varphi^{-1}(y_2)$, on a $x_1, y_1 \in G_1$ avec $\varphi(x_1) = x_2$ et $\varphi(y_1) = y_2$. Alors :
 \[
 x_2 \cdot y_2 = \varphi(x_1) \cdot \varphi(y_1) = \varphi(x_1 \cdot y_1)
 \]
-Donc $x_1 y_1 = \varphi^{-1}(x_2 y_2)$, c'est-à-dire :
+En appliquant $\varphi^{-1}$, on obtient $x_1 \cdot y_1 = \varphi^{-1}(x_2 \cdot y_2)$, c'est-à-dire :
 \[
-\varphi^{-1}(x_2) \varphi^{-1}(y_2) = \varphi^{-1}(x_2 y_2)
+\varphi^{-1}(x_2) \cdot \varphi^{-1}(y_2) = \varphi^{-1}(x_2 \cdot y_2)
 \]
-C'est vrai pour tout $(x_2, y_2) \in G_2^2$, donc $\varphi^{-1}$ est un morphisme de groupes. \hfill $\blacksquare$
+Cette égalité étant vraie pour tout $(x_2, y_2) \in G_2^2$, $\varphi^{-1}$ est un morphisme de groupes bijectif, donc un isomorphisme.
+\end{demonstration}
 
-\begin{remarque}
-S'il existe un isomorphisme entre $(G_1, \cdot)$ et $(G_2, \cdot)$, on dit que $(G_1, \cdot)$ et $(G_2, \cdot)$ sont \textbf{isomorphes}.
-\end{remarque}
-
-\vspace{0.5em}
-
-\begin{exemple}
+\begin{exemples}
 \begin{enumerate}
-  \item $\varphi : (\Z/2\Z, +) \to (\U_2, \times)$ définie par $\begin{cases} \dot{0} \mapsto 1 \\ \dot{1} \mapsto -1 \end{cases}$ est un isomorphisme.
+  \item L'application $\varphi : (\Z/2\Z, +) \to (\U_2, \times)$ définie par $\begin{cases} \dot{0} \longmapsto 1 \\ \dot{1} \longmapsto -1 \end{cases}$ est un isomorphisme.
   
-  En effet, $\Z/2\Z = \{\dot{0}, \dot{1}\}$ avec $\dot{0} = 2\Z$ et $\dot{1} = 1 + 2\Z$ :
-  \begin{center}
-  \begin{tabular}{c|cc}
-  $+$ & $\dot{0}$ & $\dot{1}$ \\
+  En effet, $\Z/2\Z = \{\dot{0}, \dot{1}\}$ avec $\dot{0} = 2\Z$ et $\dot{1} = 1 + 2\Z$, et leurs tables de Cayley coïncident :
+  \[
+  \begin{array}{c|cc}
+  + & \dot{0} & \dot{1} \\
   \hline
-  $\dot{0}$ & $\dot{0}$ & $\dot{1}$ \\
-  $\dot{1}$ & $\dot{1}$ & $\dot{0}$ \\
-  \end{tabular}
+  \dot{0} & \dot{0} & \dot{1} \\
+  \dot{1} & \dot{1} & \dot{0}
+  \end{array}
   \qquad \qquad
-  \begin{tabular}{c|cc}
-  $\times$ & $1$ & $-1$ \\
+  \begin{array}{c|cc}
+  \times & 1 & -1 \\
   \hline
-  $1$ & $1$ & $-1$ \\
-  $-1$ & $-1$ & $1$ \\
-  \end{tabular}
-  \end{center}
+  1 & 1 & -1 \\
+  -1 & -1 & 1
+  \end{array}
+  \]
   
-  \item Si $n \in \N^*$, on montrera que $(\Z/n\Z, +)$ et $(\U_n, \times)$ sont isomorphes.
+  \item Plus généralement, pour tout $n \in \N^*$, on montrera que $(\Z/n\Z, +)$ et $(\U_n, \times)$ sont isomorphes.
   
-  \item Plus généralement, si $E$ est de cardinal $n$, alors $(\mathcal{P}(E), \Delta)$ et $(\U_2^n, \times)$ (groupe-produit) sont isomorphes.
+  \item Si $E$ est un ensemble fini de cardinal $n$, alors $(\mathcal{P}(E), \Delta)$ et le groupe produit $(\U_2^n, \times)$ sont isomorphes.
+  
+  \item \textbf{Preuve que $(\U_2 \times \U_2, \times)$ et $(\U_4, \times)$ ne sont pas isomorphes :}
+  
+  Par l'absurde, supposons qu'il existe un isomorphisme $\varphi : \U_4 \to \U_2 \times \U_2$ \textit{(on exhibe une propriété de groupe qui doit être conservée par isomorphisme)}.
+  
+  On a alors $\varphi(i)^2 = (1, 1)$ (car $\forall x \in \U_2 \times \U_2, \ x^2 = (1, 1)$), soit $\varphi(i^2) = (1, 1)$, le neutre de $\U_2 \times \U_2$.
+  
+  Donc $i^2 = -1 \in \Ker \varphi$, ce qui entraîne $\Ker \varphi \neq \{1\}$. Ainsi $\varphi$ n'est pas injectif, et \textit{a fortiori} pas bijectif, d'où une contradiction.
 \end{enumerate}
-\end{exemple}
+\end{exemples}
 
-\begin{exemple}[2 -- $(\U_2 \times \U_2, \times)$ et $(\U_4, \times)$ ne sont pas isomorphes]
-Par l'absurde, supposons qu'il existe un isomorphisme $\varphi : \U_4 \to \U_2 \times \U_2$ *(on exhibe une propriété de groupe qui doit être invariante dans les deux groupes)*.
-
-On a alors $\varphi(i)^2 = (1, 1)$ (car $\forall x \in \U_2 \times \U_2, \, x^2 = (1, 1)$), soit $\varphi(i^2) = (1, 1) = \text{le neutre de } \U_2 \times \U_2$.
-
-Donc $i^2 = -1 \in \Ker \varphi$, donc $\Ker \varphi \neq \{1\}$. Donc $\varphi$ n'est pas injectif, *a fortiori* pas bijectif.
-\end{exemple}
-
+\newpage
 \section{V -- Structure quotient -- Applications}
 
 \subsection{5.1. Relation d'équivalence compatible avec une loi interne}
@@ -2015,7 +1938,7 @@ Les propriétés 1) à 3) découlent de la surjectivité de $s$ et de la propri�
 \forall (x, y) \in M^2, \quad s(x \, T \, y) = s(x) \, \overline{T} \, s(y)
 \]
 \begin{itemize}
-    \item \textbf{Preuve de 1) :} Soient $X, Y, Z \in M / \mathcal{R}$. Choisissons $x, y, z \in M$ tels que $X = s(x) = \overline{x}$, $Y = s(y) = \overline{y}$ et $Z = s(z) = \overline{z}$ (c'est-à-dire $x \in X$, $y \in Y$ et $z \in Z$). Alors :
+    \item \textbf{Démonstration de 1) :} Soient $X, Y, Z \in M / \mathcal{R}$. Choisissons $x, y, z \in M$ tels que $X = s(x) = \overline{x}$, $Y = s(y) = \overline{y}$ et $Z = s(z) = \overline{z}$ (c'est-à-dire $x \in X$, $y \in Y$ et $z \in Z$). Alors :
     \begin{align*}
         (X \, \overline{T} \, Y) \, \overline{T} \, Z &= (s(x) \, \overline{T} \, s(y)) \, \overline{T} \, s(z) \\
                                                        &= s(x \, T \, y) \, \overline{T} \, s(z) \\
@@ -2025,7 +1948,7 @@ Les propriétés 1) à 3) découlent de la surjectivité de $s$ et de la propri�
                                                        &= X \, \overline{T} \, (Y \, \overline{T} \, Z)
     \end{align*}
     \item Les points 2) et 3) se démontrent de manière analogue.
-    \item \textbf{Preuve de 4) :} Découle directement des points 1) et 3).
+    \item \textbf{Démonstration de 4) :} Découle directement des points 1) et 3).
 \end{itemize}
 \end{demonstration}
 
@@ -2045,7 +1968,7 @@ Soit $(M, +)$ un monoïde abélien régulier de neutre $0$. Munissons $M^2$ de l
 \[
 \forall (m, n), (m', n') \in M^2, \quad (m, n) \, \mathcal{R} \, (m', n') \iff m + n' = m' + n
 \]
-*(L'idée sous-jacente est de s'affranchir de la soustraction en écrivant $m - n = m' - n'$ sous la forme $m + n' = m' + n$ pour pouvoir construire les symétriques).*
+\textit{(L'idée sous-jacente est de s'affranchir de la soustraction en écrivant $m - n = m' - n'$ sous la forme $m + n' = m' + n$ pour pouvoir construire les symétriques).}
 
 Munissons par ailleurs $M^2$ de la structure de \mot{monoïde produit} :
 \[
